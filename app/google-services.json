@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "311570259031",
+    "firebase_url": "https://gather-34e2c.firebaseio.com",
+    "project_id": "gather-34e2c",
+    "storage_bucket": "gather-34e2c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:311570259031:android:1a281c2ed2c692d4",
+        "android_client_info": {
+          "package_name": "com.github.overpass.gather"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "311570259031-d1orq4pa9b2n8b7j37kostpgvdmddofe.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBBH561ZcFw89XEmXC4IeBEoYiKSO0t918"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

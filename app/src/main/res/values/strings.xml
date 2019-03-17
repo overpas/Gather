@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Gather</string>
+    <string name="mapbox_token">pk.eyJ1Ijoib3ZlcnBhc3MiLCJhIjoiY2p0Y3VpYTYxMGR4YjN6cGIyMmRybGo2YyJ9.ffJfo6Yun6qUpIRR9MQ6XQ</string>
+    <string name="search">Search</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="sign_in">Sign In</string>
+    <string name="forgot_password">Forgot Password?</string>
+</resources>
