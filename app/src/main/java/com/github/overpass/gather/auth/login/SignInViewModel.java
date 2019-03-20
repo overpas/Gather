@@ -1,14 +1,15 @@
 package com.github.overpass.gather.auth.login;
 
 import com.github.overpass.gather.SingleLiveEvent;
-import com.github.overpass.gather.auth.CredsValidator;
+import com.github.overpass.gather.auth.BaseValidator;
 
 import androidx.lifecycle.ViewModel;
 
 public class SignInViewModel extends ViewModel {
 
-    private SignInUseCase signInUseCase = new SignInUseCase(new SignInRepo(), new CredsValidator());
-    private SingleLiveEvent<SignInStatus> signInData = new SingleLiveEvent<>();
+    private final SignInUseCase signInUseCase = new SignInUseCase(new SignInRepo(),
+            new BaseValidator());
+    private final SingleLiveEvent<SignInStatus> signInData = new SingleLiveEvent<>();
 
     public SingleLiveEvent<SignInStatus> getSignInData() {
         return signInData;

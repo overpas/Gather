@@ -1,19 +1,19 @@
-package com.github.overpass.gather.auth.login;
+package com.github.overpass.gather.auth.register;
 
 import com.github.overpass.gather.Sealed;
 
-public abstract class SignInStatus extends Sealed {
+public abstract class SignUpStatus extends Sealed {
 
-    public static final String ERROR = "SignInStatus_ERROR";
-    public static final String SUCCESS = "SignInStatus_SUCCESS";
-    public static final String PROGRESS = "SignInStatus_PROGRESS";
-    public static final String INVALID_EMAIL = "SignInStatus_INVALID_EMAIL";
-    public static final String INVALID_PASSWORD = "SignInStatus_INVALID_PASSWORD";
+    public static final String ERROR = "SignUpStatus_ERROR";
+    public static final String SUCCESS = "SignUpStatus_SUCCESS";
+    public static final String PROGRESS = "SignUpStatus_PROGRESS";
+    public static final String INVALID_EMAIL = "SignUpStatus_INVALID_EMAIL";
+    public static final String INVALID_PASSWORD = "SignUpStatus_INVALID_PASSWORD";
 
-    private SignInStatus() {
+    public SignUpStatus() {
     }
 
-    public static class Error extends SignInStatus {
+    public static class Error extends SignUpStatus {
 
         private final Throwable throwable;
 
@@ -31,7 +31,7 @@ public abstract class SignInStatus extends Sealed {
         }
     }
 
-    public static class InvalidEmail extends SignInStatus {
+    public static class InvalidEmail extends SignUpStatus {
 
         private final String message;
 
@@ -49,7 +49,7 @@ public abstract class SignInStatus extends Sealed {
         }
     }
 
-    public static class InvalidPassword extends SignInStatus {
+    public static class InvalidPassword extends SignUpStatus {
 
         private final String message;
 
@@ -67,14 +67,14 @@ public abstract class SignInStatus extends Sealed {
         }
     }
 
-    public static class Success extends SignInStatus {
+    public static class Success extends SignUpStatus {
         @Override
         public String tag() {
             return SUCCESS;
         }
     }
 
-    public static class Progress extends SignInStatus {
+    public static class Progress extends SignUpStatus {
         @Override
         public String tag() {
             return PROGRESS;

@@ -9,7 +9,7 @@ import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 
 import com.github.overpass.gather.R;
-import com.github.overpass.gather.auth.AuthActivity;
+import com.github.overpass.gather.auth.login.LoginActivity;
 import com.github.overpass.gather.map.MapActivity;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -58,7 +58,7 @@ public class SplashScreenActivity extends AppCompatActivity {
             startActivity(new Intent(this, MapActivity.class));
             finish();
         } else {
-            startActivity(new Intent(this, AuthActivity.class));
+            startActivity(new Intent(this, LoginActivity.class));
             finish();
         }
     }

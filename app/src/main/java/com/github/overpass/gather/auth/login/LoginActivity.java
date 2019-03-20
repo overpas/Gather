@@ -1,4 +1,4 @@
-package com.github.overpass.gather.auth;
+package com.github.overpass.gather.auth.login;
 
 import android.os.Bundle;
 
@@ -9,7 +9,7 @@ import com.github.overpass.gather.auth.login.SignInFragment;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-public class AuthActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

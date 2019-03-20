@@ -1,14 +1,14 @@
 package com.github.overpass.gather.auth.login;
 
 import com.github.overpass.gather.SingleLiveEvent;
-import com.github.overpass.gather.auth.CredsValidator;
+import com.github.overpass.gather.auth.BaseValidator;
 
 public class SignInUseCase {
 
     private final SignInRepo signInRepo;
-    private final CredsValidator validator;
+    private final BaseValidator validator;
 
-    public SignInUseCase(SignInRepo signInRepo, CredsValidator credsValidator) {
+    public SignInUseCase(SignInRepo signInRepo, BaseValidator credsValidator) {
         this.signInRepo = signInRepo;
         this.validator = credsValidator;
     }

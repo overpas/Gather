@@ -6,7 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.github.overpass.gather.FragmentUtils;
 import com.github.overpass.gather.R;
+import com.github.overpass.gather.auth.register.SignUpFragment;
 import com.github.overpass.gather.map.MapActivity;
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -18,8 +20,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.github.overpass.gather.UIUtil.snackbar;
 import static com.github.overpass.gather.UIUtil.textOf;
-import static com.github.overpass.gather.UIUtil.toast;
 
 public class SignInFragment extends Fragment {
 
@@ -32,7 +34,9 @@ public class SignInFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_sign_in, container, false);
         ButterKnife.bind(this, view);
         return view;
@@ -55,20 +59,20 @@ public class SignInFragment extends Fragment {
                 String message = status.as(SignInStatus.Error.class)
                         .getThrowable()
                         .getLocalizedMessage();
-                toast(this, message);
+                snackbar(tietEmail, message);
                 break;
             case SignInStatus.SUCCESS:
                 startActivity(new Intent(getContext(), MapActivity.class));
                 getActivity().finish();
                 break;
             case SignInStatus.PROGRESS:
-                toast(this, "Signing In ...");
+                snackbar(tietEmail, "Signing In ...");
                 break;
             case SignInStatus.INVALID_EMAIL:
-                toast(this, status.as(SignInStatus.InvalidEmail.class).getMessage());
+                snackbar(tietEmail, status.as(SignInStatus.InvalidEmail.class).getMessage());
                 break;
             case SignInStatus.INVALID_PASSWORD:
-                toast(this, status.as(SignInStatus.InvalidPassword.class).getMessage());
+                snackbar(tietEmail, status.as(SignInStatus.InvalidPassword.class).getMessage());
                 break;
         }
     }
@@ -76,6 +80,12 @@ public class SignInFragment extends Fragment {
     @OnClick(R.id.tvSignIn)
     public void onSignInClick() {
         viewModel.signIn(textOf(tietEmail), textOf(tietPassword));
+    }
+
+    @OnClick(R.id.tvSignUp)
+    public void onSignUpClicked() {
+        FragmentUtils.putOnTop(getFragmentManager(), R.id.flAuthContainer,
+                SignUpFragment.newInstance(), true);
     }
 
     public static SignInFragment newInstance() {

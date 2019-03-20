@@ -17,4 +17,19 @@ public class FragmentUtils {
         }
         transaction.commit();
     }
+
+    public static void putOnTop(FragmentManager fragmentManager,
+                                int containerId,
+                                Fragment fragment,
+                                boolean addToBackStack) {
+        int size = fragmentManager.getFragments().size();
+        Fragment previous = fragmentManager.getFragments().get(size - 1);
+        FragmentTransaction transaction = fragmentManager.beginTransaction()
+                .hide(previous)
+                .add(containerId, fragment);
+        if (addToBackStack) {
+            transaction.addToBackStack(null);
+        }
+        transaction.commit();
+    }
 }
