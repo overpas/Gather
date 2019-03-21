@@ -1,4 +1,4 @@
-package com.github.overpass.gather.auth.register;
+package com.github.overpass.gather.auth.register.signup;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

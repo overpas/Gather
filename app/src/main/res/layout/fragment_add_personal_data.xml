@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/tvAddPersonalDataPrompt"
+        style="@style/TextOnly"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/please_submit_some_personal_info"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilUsername"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvAddPersonalDataPrompt">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/tietEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/username"
+            android:inputType="textEmailAddress" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <ImageView
+        android:id="@+id/ivAvatarPreview"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:scaleType="center"
+        android:scaleX="2"
+        android:scaleY="2"
+        android:src="@drawable/ic_add_pic"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tilUsername" />
+
+    <TextView
+        android:id="@+id/tvAvatarPrompt"
+        style="@style/TextOnly"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/choose_your_avatar_optional"
+        app:layout_constraintBottom_toTopOf="@+id/tvSubmit"
+        app:layout_constraintEnd_toEndOf="@+id/tilUsername"
+        app:layout_constraintStart_toEndOf="@id/ivAvatarPreview"
+        app:layout_constraintTop_toBottomOf="@id/tilUsername"
+        app:layout_constraintVertical_bias="0.3" />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/lavTick"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        app:layout_constraintStart_toStartOf="@id/ivAvatarPreview"
+        app:layout_constraintEnd_toEndOf="@id/ivAvatarPreview"
+        app:layout_constraintHorizontal_bias="1.6"
+        app:layout_constraintVertical_bias="1.6"
+        app:layout_constraintBottom_toBottomOf="@id/ivAvatarPreview"
+        app:layout_constraintTop_toTopOf="@id/ivAvatarPreview"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/anim_tick" />
+
+    <TextView
+        android:id="@+id/tvSubmit"
+        style="@style/ButtonNormal"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="8dp"
+        android:text="@string/submit"
+        app:layout_constraintEnd_toEndOf="@+id/tilUsername"
+        app:layout_constraintStart_toStartOf="@+id/ivAvatarPreview"
+        app:layout_constraintTop_toBottomOf="@id/ivAvatarPreview" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -14,7 +14,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".auth.register.RegisterActivity"></activity>
+        <activity
+            android:name=".auth.register.RegisterActivity"
+            android:screenOrientation="portrait" />
         <activity android:name=".map.MapActivity" />
         <activity android:name=".profile.ProfileActivity" />
         <activity android:name=".splash.SplashScreenActivity">

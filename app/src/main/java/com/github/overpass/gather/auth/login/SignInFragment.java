@@ -8,7 +8,8 @@ import android.view.ViewGroup;
 
 import com.github.overpass.gather.FragmentUtils;
 import com.github.overpass.gather.R;
-import com.github.overpass.gather.auth.register.SignUpFragment;
+import com.github.overpass.gather.auth.register.RegisterActivity;
+import com.github.overpass.gather.auth.register.signup.SignUpFragment;
 import com.github.overpass.gather.map.MapActivity;
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -84,8 +85,9 @@ public class SignInFragment extends Fragment {
 
     @OnClick(R.id.tvSignUp)
     public void onSignUpClicked() {
-        FragmentUtils.putOnTop(getFragmentManager(), R.id.flAuthContainer,
-                SignUpFragment.newInstance(), true);
+        startActivity(new Intent(getContext(), RegisterActivity.class));
+//        FragmentUtils.putOnTop(getFragmentManager(), R.id.flAuthContainer,
+//                SignUpFragment.newInstance(), true);
     }
 
     public static SignInFragment newInstance() {

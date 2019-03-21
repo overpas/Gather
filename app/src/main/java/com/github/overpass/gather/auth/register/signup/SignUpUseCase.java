@@ -1,8 +1,7 @@
-package com.github.overpass.gather.auth.register;
+package com.github.overpass.gather.auth.register.signup;
 
 import com.github.overpass.gather.SingleLiveEvent;
 import com.github.overpass.gather.auth.BaseValidator;
-import com.github.overpass.gather.auth.login.SignInStatus;
 
 public class SignUpUseCase {
 
