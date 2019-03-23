@@ -86,8 +86,6 @@ public class SignInFragment extends Fragment {
     @OnClick(R.id.tvSignUp)
     public void onSignUpClicked() {
         startActivity(new Intent(getContext(), RegisterActivity.class));
-//        FragmentUtils.putOnTop(getFragmentManager(), R.id.flAuthContainer,
-//                SignUpFragment.newInstance(), true);
     }
 
     public static SignInFragment newInstance() {

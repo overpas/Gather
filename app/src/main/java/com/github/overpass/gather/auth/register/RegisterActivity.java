@@ -2,22 +2,22 @@ package com.github.overpass.gather.auth.register;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.viewpager2.widget.ViewPager2;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import android.os.Bundle;
 import android.view.WindowManager;
+import android.widget.ViewFlipper;
 
 import com.github.overpass.gather.R;
 
-public class RegisterActivity extends AppCompatActivity {
+public class RegisterActivity extends AppCompatActivity implements RegistrationController {
 
     private RegisterViewModel viewModel;
 
-    @BindView(R.id.viewPager)
-    ViewPager2 viewPager;
+    @BindView(R.id.viewFlipper)
+    ViewFlipper viewFlipper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +26,6 @@ public class RegisterActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         viewModel = ViewModelProviders.of(this).get(RegisterViewModel.class);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
-        viewPager.setAdapter(viewModel.getAdapter(getSupportFragmentManager()));
         subscribe();
     }
 
@@ -34,13 +33,21 @@ public class RegisterActivity extends AppCompatActivity {
         viewModel.getRegistrationProgressData().observe(this, this::moveToNextStep);
     }
 
+    private void moveToNextStep(Integer step) {
+        if (viewModel.shouldShowNextStep(step)) {
+            viewFlipper.showNext();
+        } else {
+
+        }
+    }
+
     @OnClick(R.id.tvNext)
     public void onNext() {
         viewModel.next();
     }
 
-    public void moveToNextStep(int nextItem) {
-        viewPager.setCurrentItem(nextItem);
+    @Override
+    public void moveToNextStep() {
+        viewModel.next();
     }
-
 }

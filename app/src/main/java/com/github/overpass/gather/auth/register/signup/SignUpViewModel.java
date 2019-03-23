@@ -2,11 +2,11 @@ package com.github.overpass.gather.auth.register.signup;
 
 import com.github.overpass.gather.SingleLiveEvent;
 import com.github.overpass.gather.auth.BaseValidator;
+import com.github.overpass.gather.auth.register.RegistrationStepViewModel;
 
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.ViewModel;
 
-public class SignUpViewModel extends ViewModel {
+public class SignUpViewModel extends RegistrationStepViewModel {
 
     private final SignUpUseCase signUpUseCase = new SignUpUseCase(new SignUpRepo(),
             new BaseValidator());
