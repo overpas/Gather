@@ -1,56 +1,39 @@
 package com.github.overpass.gather.auth.login;
 
 import android.content.Intent;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
-import com.github.overpass.gather.FragmentUtils;
+import com.github.overpass.gather.base.BaseFragment;
 import com.github.overpass.gather.R;
 import com.github.overpass.gather.auth.register.RegisterActivity;
-import com.github.overpass.gather.auth.register.signup.SignUpFragment;
 import com.github.overpass.gather.map.MapActivity;
 import com.google.android.material.textfield.TextInputEditText;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.github.overpass.gather.UIUtil.snackbar;
 import static com.github.overpass.gather.UIUtil.textOf;
 
-public class SignInFragment extends Fragment {
-
-    private SignInViewModel viewModel;
+public class SignInFragment extends BaseFragment<SignInViewModel> {
 
     @BindView(R.id.tietEmail)
     TextInputEditText tietEmail;
     @BindView(R.id.tietPassword)
     TextInputEditText tietPassword;
 
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_sign_in, container, false);
-        ButterKnife.bind(this, view);
-        return view;
+    protected SignInViewModel createViewModel() {
+        return ViewModelProviders.of(this).get(SignInViewModel.class);
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        viewModel = ViewModelProviders.of(this).get(SignInViewModel.class);
-        subscribe();
+    protected int getLayoutRes() {
+        return R.layout.fragment_sign_in;
     }
 
-    private void subscribe() {
+    @Override
+    protected void subscribe() {
         viewModel.getSignInData().observe(getViewLifecycleOwner(), this::handleSignInStatus);
     }
 

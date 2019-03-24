@@ -1,7 +1,10 @@
-package com.github.overpass.gather;
+package com.github.overpass.gather.dialog;
 
 import android.app.Dialog;
 import android.os.Bundle;
+import android.util.Log;
+
+import com.github.overpass.gather.R;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -23,7 +26,11 @@ public class ProgressDialogFragment extends DialogFragment {
                 .create();
     }
 
-    public static void show(FragmentManager fragmentManager) {
+    public static void show(@Nullable FragmentManager fragmentManager) {
+        if (fragmentManager == null) {
+            Log.e(TAG, "Passed FragmentManager is null");
+            return;
+        }
         Fragment previous = fragmentManager.findFragmentByTag(TAG);
         if (previous != null) {
             fragmentManager.beginTransaction().remove(previous).commitNow();
@@ -33,7 +40,11 @@ public class ProgressDialogFragment extends DialogFragment {
         fragment.showNow(fragmentManager, TAG);
     }
 
-    public static void hide(FragmentManager fragmentManager) {
+    public static void hide(@Nullable FragmentManager fragmentManager) {
+        if (fragmentManager == null) {
+            Log.e(TAG, "Passed FragmentManager is null");
+            return;
+        }
         Fragment progressFragment = fragmentManager.findFragmentByTag(TAG);
         if (progressFragment instanceof ProgressDialogFragment) {
             ((ProgressDialogFragment) progressFragment).dismiss();

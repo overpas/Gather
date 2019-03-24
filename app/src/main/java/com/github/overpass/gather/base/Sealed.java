@@ -1,4 +1,4 @@
-package com.github.overpass.gather;
+package com.github.overpass.gather.base;
 
 /**
  * Workaround to do without sealed classes in kotlin

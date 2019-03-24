@@ -17,9 +17,14 @@
         android:id="@+id/viewFlipper"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@id/tvNext"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/imageView">
 
+        <fragment
+            android:id="@+id/fragmentAddPersonalData"
+            class="com.github.overpass.gather.auth.register.add.AddPersonalDataFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
         <fragment
             android:id="@+id/fragmentSignUp"
             class="com.github.overpass.gather.auth.register.signup.SignUpFragment"
@@ -27,25 +32,20 @@
             android:layout_height="match_parent" />
         <fragment
             android:id="@+id/fragmentConfirm"
-            class="com.github.overpass.gather.auth.register.confirm.ConfirmCodeFragment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-        <fragment
-            android:id="@+id/fragmentAddPersonalData"
-            class="com.github.overpass.gather.auth.register.add.AddPersonalDataFragment"
+            class="com.github.overpass.gather.auth.register.confirm.ConfirmEmailFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </ViewFlipper>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/tvNext"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="12dp"
-        android:src="@drawable/ic_double_arrow_right"
-        app:backgroundTint="@color/colorAccent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+    <!--<com.google.android.material.floatingactionbutton.FloatingActionButton-->
+        <!--android:id="@+id/fabNext"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginEnd="16dp"-->
+        <!--android:layout_marginBottom="12dp"-->
+        <!--android:src="@drawable/ic_double_arrow_right"-->
+        <!--app:backgroundTint="@color/colorAccent"-->
+        <!--app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--app:layout_constraintEnd_toEndOf="parent" />-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

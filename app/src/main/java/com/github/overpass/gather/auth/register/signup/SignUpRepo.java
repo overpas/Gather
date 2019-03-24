@@ -2,18 +2,40 @@ package com.github.overpass.gather.auth.register.signup;
 
 import com.github.overpass.gather.SingleLiveEvent;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
-public class SignUpRepo {
+import java.util.concurrent.Executors;
 
-    public void signUp(SingleLiveEvent<SignUpStatus> signUpData, String email, String password) {
+class SignUpRepo {
+
+    private final FirebaseAuth firebaseAuth;
+
+    SignUpRepo(FirebaseAuth firebaseAuth) {
+        this.firebaseAuth = firebaseAuth;
+    }
+
+    void signUp(SingleLiveEvent<SignUpStatus> signUpData, String email, String password) {
         signUpData.setValue(new SignUpStatus.Progress());
-        FirebaseAuth.getInstance()
+        firebaseAuth
                 .createUserWithEmailAndPassword(email, password)
-                .addOnSuccessListener(authResult -> {
-                    signUpData.setValue(new SignUpStatus.Success());
+                .addOnSuccessListener(Executors.newSingleThreadExecutor(), authResult -> {
+                    sendConfirmationCode(signUpData);
                 })
                 .addOnFailureListener(e -> {
                     signUpData.setValue(new SignUpStatus.Error(e));
                 });
+    }
+
+    void sendConfirmationCode(SingleLiveEvent<SignUpStatus> signUpData) {
+        FirebaseUser currentUser = firebaseAuth.getCurrentUser();
+        if (currentUser != null && !currentUser.isEmailVerified()) {
+            currentUser.sendEmailVerification()
+                    .addOnSuccessListener((result) -> {
+                        signUpData.setValue(new SignUpStatus.Success());
+                    })
+                    .addOnFailureListener((e) -> {
+                        signUpData.setValue(new SignUpStatus.Error(e));
+                    });
+        }
     }
 }

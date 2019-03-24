@@ -1,6 +1,6 @@
 package com.github.overpass.gather.auth.login;
 
-import com.github.overpass.gather.Sealed;
+import com.github.overpass.gather.base.Sealed;
 
 public abstract class SignInStatus extends Sealed {
 

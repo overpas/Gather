@@ -7,9 +7,13 @@ import androidx.lifecycle.ViewModel;
 
 public class SignInViewModel extends ViewModel {
 
-    private final SignInUseCase signInUseCase = new SignInUseCase(new SignInRepo(),
-            new BaseValidator());
-    private final SingleLiveEvent<SignInStatus> signInData = new SingleLiveEvent<>();
+    private final SignInUseCase signInUseCase;
+    private final SingleLiveEvent<SignInStatus> signInData;
+
+    public SignInViewModel() {
+        signInUseCase = new SignInUseCase(new SignInRepo(), new BaseValidator());
+        signInData = new SingleLiveEvent<>();
+    }
 
     public SingleLiveEvent<SignInStatus> getSignInData() {
         return signInData;

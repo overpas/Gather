@@ -1,0 +1,30 @@
+package com.github.overpass.gather.base;
+
+import android.os.Bundle;
+import android.view.WindowManager;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModel;
+import butterknife.ButterKnife;
+
+public abstract class BaseActivity<VM extends ViewModel> extends AppCompatActivity {
+
+    protected VM viewModel;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(getLayoutRes());
+        ButterKnife.bind(this);
+        viewModel = createViewModel();
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+        subscribe();
+    }
+
+    protected abstract int getLayoutRes();
+
+    protected abstract VM createViewModel();
+
+    protected void subscribe() {
+    }
+}

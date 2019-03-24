@@ -1,33 +1,20 @@
 package com.github.overpass.gather.auth.register.signup;
 
-import android.content.Context;
-import android.os.Bundle;
 import android.os.Handler;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
-import com.github.overpass.gather.ProgressDialogFragment;
+import com.github.overpass.gather.dialog.ProgressDialogFragment;
 import com.github.overpass.gather.R;
-import com.github.overpass.gather.auth.register.RegistrationController;
+import com.github.overpass.gather.auth.register.RegistrationFragment;
 import com.google.android.material.textfield.TextInputEditText;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.github.overpass.gather.UIUtil.snackbar;
 import static com.github.overpass.gather.UIUtil.textOf;
-import static com.github.overpass.gather.UIUtil.toast;
 
-public class SignUpFragment extends Fragment {
-
-    private SignUpViewModel viewModel;
-    private RegistrationController registrationController;
+public class SignUpFragment extends RegistrationFragment<SignUpViewModel> {
 
     @BindView(R.id.tietEmail)
     TextInputEditText tietEmail;
@@ -35,38 +22,17 @@ public class SignUpFragment extends Fragment {
     TextInputEditText tietPassword;
 
     @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        if (context instanceof RegistrationController) {
-            registrationController = (RegistrationController) context;
-        } else {
-            throw new RuntimeException(context + " must implement "
-                    + RegistrationController.class.getSimpleName());
-        }
-    }
-
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_sign_up, container, false);
-        ButterKnife.bind(this, view);
-        return view;
+    protected SignUpViewModel createViewModel() {
+        return ViewModelProviders.of(this).get(SignUpViewModel.class);
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        viewModel = ViewModelProviders.of(this).get(SignUpViewModel.class);
-        subscribe();
+    protected int getLayoutRes() {
+        return R.layout.fragment_sign_up;
     }
 
     @Override
-    public void onDetach() {
-        super.onDetach();
-        registrationController = null;
-    }
-
-    private void subscribe() {
+    protected void subscribe() {
         viewModel.getSignUpData().observe(getViewLifecycleOwner(), this::handleSignUp);
     }
 
