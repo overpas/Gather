@@ -7,16 +7,22 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.SystemClock;
+import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.util.Log;
 import android.widget.ImageView;
 
+import com.github.overpass.gather.BuildConfig;
+import com.github.overpass.gather.SingleLiveEvent;
 import com.github.overpass.gather.auth.register.RegistrationStepViewModel;
 
+import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.LiveData;
@@ -34,15 +40,22 @@ public class AddPersonalDataViewModel extends RegistrationStepViewModel {
 
     private final ChooseImageUseCase chooseImageUseCase;
     private final MutableLiveData<Uri> chosenImageData;
+    private final SingleLiveEvent<Boolean> permissionDeniedData;
     private ImageSourceUseCase imageSourceUseCase;
+    private String imagePath;
 
     public AddPersonalDataViewModel() {
         chooseImageUseCase = new ChooseImageUseCase();
         chosenImageData = new MutableLiveData<>();
+        permissionDeniedData = new SingleLiveEvent<>();
     }
 
     public LiveData<Uri> getChosenImageData() {
         return chosenImageData;
+    }
+
+    public LiveData<Boolean> getPermissionDeniedData() {
+        return permissionDeniedData;
     }
 
     public void chooseFromGallery(Fragment fragment) {
@@ -56,7 +69,17 @@ public class AddPersonalDataViewModel extends RegistrationStepViewModel {
                     //data.getData returns the content URI for the selected Image
                     imageFromGalleryChosen(data);
                     break;
+                case REQUEST_CODE_FROM_CAMERA:
+                    imageFromCameraChosen();
+                    break;
             }
+
+        }
+    }
+
+    private void imageFromCameraChosen() {
+        if (!TextUtils.isEmpty(imagePath)) {
+            chosenImageData.setValue(Uri.parse(imagePath));
         }
     }
 
@@ -74,29 +97,58 @@ public class AddPersonalDataViewModel extends RegistrationStepViewModel {
         }
     }
 
+    private void chooseFromCamera(Fragment fragment) {
+        imagePath = chooseImageUseCase.chooseFromCamera(fragment, REQUEST_CODE_FROM_CAMERA);
+    }
+
     public void resetChosenImage() {
+        imagePath = null;
         chosenImageData.setValue(null);
     }
 
-    public void chooseFromCamera(FragmentActivity activity) {
+    public void chooseFromCamera(FragmentActivity activity, Fragment fragment) {
         // Here, thisActivity is the current activity
         if (ContextCompat.checkSelfPermission(activity,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             // Permission is not granted
             // Should we show an explanation?
-            permissionNotGranted(activity);
+            permissionNotGranted(fragment);
         } else {
             // Permission has already been granted
-            // TODO
-            toast(activity, "Camera");
+            chooseFromCamera(fragment);
         }
     }
 
-    public void permissionNotGranted(FragmentActivity activity) {
-        ActivityCompat.requestPermissions(
-                activity,
+    public void permissionNotGranted(Fragment fragment) {
+        fragment.requestPermissions(
                 new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
                 REQUEST_CODE_WRITE_PERMISSION
         );
+    }
+
+    public void onRequestPermissionsResult(int requestCode,
+                                           String[] permissions,
+                                           int[] grantResults,
+                                           Fragment fragment) {
+        switch (requestCode) {
+            case REQUEST_CODE_WRITE_PERMISSION: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    chooseFromCamera(fragment);
+                } else {
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                    permissionDeniedData.setValue(true);
+                }
+            }
+            break;
+            // other 'case' lines to check for other
+            // permissions this app might request.
+        }
+    }
+
+    public void submit(String username) {
+
     }
 }

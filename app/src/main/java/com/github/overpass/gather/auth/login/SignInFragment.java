@@ -5,6 +5,7 @@ import android.content.Intent;
 import com.github.overpass.gather.base.BaseFragment;
 import com.github.overpass.gather.R;
 import com.github.overpass.gather.auth.register.RegisterActivity;
+import com.github.overpass.gather.dialog.ProgressDialogFragment;
 import com.github.overpass.gather.map.MapActivity;
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -32,30 +33,29 @@ public class SignInFragment extends BaseFragment<SignInViewModel> {
         return R.layout.fragment_sign_in;
     }
 
-    @Override
-    protected void subscribe() {
-        viewModel.getSignInData().observe(getViewLifecycleOwner(), this::handleSignInStatus);
-    }
-
     public void handleSignInStatus(SignInStatus status) {
         switch (status.tag()) {
             case SignInStatus.ERROR:
+                ProgressDialogFragment.hide(getFragmentManager());
                 String message = status.as(SignInStatus.Error.class)
                         .getThrowable()
                         .getLocalizedMessage();
                 snackbar(tietEmail, message);
                 break;
             case SignInStatus.SUCCESS:
+                ProgressDialogFragment.hide(getFragmentManager());
                 startActivity(new Intent(getContext(), MapActivity.class));
                 getActivity().finish();
                 break;
             case SignInStatus.PROGRESS:
-                snackbar(tietEmail, "Signing In ...");
+                ProgressDialogFragment.show(getFragmentManager());
                 break;
             case SignInStatus.INVALID_EMAIL:
+                ProgressDialogFragment.hide(getFragmentManager());
                 snackbar(tietEmail, status.as(SignInStatus.InvalidEmail.class).getMessage());
                 break;
             case SignInStatus.INVALID_PASSWORD:
+                ProgressDialogFragment.hide(getFragmentManager());
                 snackbar(tietEmail, status.as(SignInStatus.InvalidPassword.class).getMessage());
                 break;
         }
@@ -63,7 +63,8 @@ public class SignInFragment extends BaseFragment<SignInViewModel> {
 
     @OnClick(R.id.tvSignIn)
     public void onSignInClick() {
-        viewModel.signIn(textOf(tietEmail), textOf(tietPassword));
+        viewModel.signIn(textOf(tietEmail), textOf(tietPassword))
+                .observe(getViewLifecycleOwner(), this::handleSignInStatus);
     }
 
     @OnClick(R.id.tvSignUp)

@@ -1,16 +1,16 @@
 package com.github.overpass.gather.auth.register.confirm;
 
-import com.github.overpass.gather.SingleLiveEvent;
+import androidx.lifecycle.LiveData;
 
-public class ConfirmEmailUseCase {
+class ConfirmEmailUseCase {
 
     private final ConfirmEmailRepo confirmEmailRepo;
 
-    public ConfirmEmailUseCase(ConfirmEmailRepo confirmEmailRepo) {
+    ConfirmEmailUseCase(ConfirmEmailRepo confirmEmailRepo) {
         this.confirmEmailRepo = confirmEmailRepo;
     }
 
-    public void confirmEmail(SingleLiveEvent<ConfirmEmailStatus> confirmEmailData) {
-        confirmEmailRepo.confirmEmail(confirmEmailData);
+    LiveData<ConfirmEmailStatus> confirmEmail() {
+        return confirmEmailRepo.confirmEmail();
     }
 }

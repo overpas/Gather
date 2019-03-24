@@ -1,11 +1,14 @@
 package com.github.overpass.gather.auth.login;
 
-import com.github.overpass.gather.SingleLiveEvent;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class SignInRepo {
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
-    public void signIn(SingleLiveEvent<SignInStatus> signInStatus, String email, String password) {
+class SignInRepo {
+
+    LiveData<SignInStatus> signIn(String email, String password) {
+        MutableLiveData<SignInStatus> signInStatus = new MutableLiveData<>();
         signInStatus.setValue(new SignInStatus.Progress());
         FirebaseAuth.getInstance()
                 .signInWithEmailAndPassword(email, password)
@@ -15,5 +18,6 @@ public class SignInRepo {
                 .addOnFailureListener(e -> {
                     signInStatus.setValue(new SignInStatus.Error(e));
                 });
+        return signInStatus;
     }
 }

@@ -31,11 +31,6 @@ public class SignUpFragment extends RegistrationFragment<SignUpViewModel> {
         return R.layout.fragment_sign_up;
     }
 
-    @Override
-    protected void subscribe() {
-        viewModel.getSignUpData().observe(getViewLifecycleOwner(), this::handleSignUp);
-    }
-
     public void handleSignUp(SignUpStatus status) {
         switch (status.tag()) {
             case SignUpStatus.ERROR:
@@ -68,7 +63,8 @@ public class SignUpFragment extends RegistrationFragment<SignUpViewModel> {
 
     @OnClick(R.id.tvSignUp)
     public void onSignUpClicked() {
-        viewModel.signUp(textOf(tietEmail), textOf(tietPassword));
+        viewModel.signUp2(textOf(tietEmail), textOf(tietPassword))
+                .observe(getViewLifecycleOwner(), this::handleSignUp);
     }
 
     public static SignUpFragment newInstance() {

@@ -1,27 +1,31 @@
 package com.github.overpass.gather.auth.login;
 
-import com.github.overpass.gather.SingleLiveEvent;
 import com.github.overpass.gather.auth.BaseValidator;
 
-public class SignInUseCase {
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+
+class SignInUseCase {
 
     private final SignInRepo signInRepo;
     private final BaseValidator validator;
 
-    public SignInUseCase(SignInRepo signInRepo, BaseValidator credsValidator) {
+    SignInUseCase(SignInRepo signInRepo, BaseValidator credsValidator) {
         this.signInRepo = signInRepo;
         this.validator = credsValidator;
     }
 
-    public void signIn(SingleLiveEvent<SignInStatus> signInStatus, String email, String password) {
+    LiveData<SignInStatus> signIn(String email, String password) {
         if (!validator.isEmailValid(email)) {
+            MutableLiveData<SignInStatus> signInStatus = new MutableLiveData<>();
             signInStatus.setValue(new SignInStatus.InvalidEmail("Invalid Email"));
-            return;
+            return signInStatus;
         }
         if (!validator.isPasswordValid(password)) {
+            MutableLiveData<SignInStatus> signInStatus = new MutableLiveData<>();
             signInStatus.setValue(new SignInStatus.InvalidPassword("Invalid Password"));
-            return;
+            return signInStatus;
         }
-        signInRepo.signIn(signInStatus, email, password);
+        return signInRepo.signIn(email, password);
     }
 }

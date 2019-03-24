@@ -27,7 +27,7 @@
         app:layout_constraintTop_toBottomOf="@id/tvAddPersonalDataPrompt">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/tietEmail"
+            android:id="@+id/tietUsername"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/username"

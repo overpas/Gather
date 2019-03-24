@@ -23,6 +23,7 @@ android {
 }
 
 dependencies {
+    // TODO: Exclude junk
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'androidx.appcompat:appcompat:1.1.0-alpha03'
     // UI
@@ -35,6 +36,7 @@ dependencies {
     // Firebase
     implementation 'com.google.firebase:firebase-core:16.0.8'
     implementation 'com.google.firebase:firebase-auth:16.2.0'
+    implementation 'com.google.firebase:firebase-storage:16.1.0'
     // Maps
     implementation 'com.mapbox.mapboxsdk:mapbox-android-sdk:7.2.0'
     // Test

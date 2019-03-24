@@ -1,40 +1,44 @@
 package com.github.overpass.gather.auth.register.confirm;
 
-import com.github.overpass.gather.SingleLiveEvent;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class ConfirmEmailRepo {
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+
+class ConfirmEmailRepo {
 
     private final FirebaseAuth firebaseAuth;
 
-    public ConfirmEmailRepo(FirebaseAuth firebaseAuth) {
+    ConfirmEmailRepo(FirebaseAuth firebaseAuth) {
         this.firebaseAuth = firebaseAuth;
     }
 
-    public void confirmEmail(SingleLiveEvent<ConfirmEmailStatus> confirmEmailData) {
+    LiveData<ConfirmEmailStatus> confirmEmail() {
+        MutableLiveData<ConfirmEmailStatus> confirmEmailStatus = new MutableLiveData<>();
         FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
         if (firebaseUser == null) {
             Throwable throwable = new Throwable("Something went wrong");
-            confirmEmailData.setValue(new ConfirmEmailStatus.Error(throwable));
-            return;
+            confirmEmailStatus.setValue(new ConfirmEmailStatus.Error(throwable));
+            return confirmEmailStatus;
         }
         firebaseUser.reload()
                 .addOnSuccessListener(result -> {
-                    isEmailVerified(confirmEmailData);
+                    confirmEmailStatus.setValue(isEmailVerified());
                 })
                 .addOnFailureListener(e -> {
-                    confirmEmailData.setValue(new ConfirmEmailStatus.Error(e));
+                    confirmEmailStatus.setValue(new ConfirmEmailStatus.Error(e));
                 });
+        return confirmEmailStatus;
     }
 
-    public void isEmailVerified(SingleLiveEvent<ConfirmEmailStatus> confirmEmailData) {
+    private ConfirmEmailStatus isEmailVerified() {
         FirebaseUser user = firebaseAuth.getCurrentUser();
         if (user != null && user.isEmailVerified()) {
-            confirmEmailData.setValue(new ConfirmEmailStatus.Success());
+            return new ConfirmEmailStatus.Success();
         } else {
             Throwable throwable = new Throwable("Sorry, your email hasn't been verified");
-            confirmEmailData.setValue(new ConfirmEmailStatus.Error(throwable));
+            return new ConfirmEmailStatus.Error(throwable);
         }
     }
 }

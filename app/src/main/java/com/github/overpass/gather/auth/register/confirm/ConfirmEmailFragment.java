@@ -25,12 +25,6 @@ public class ConfirmEmailFragment extends RegistrationFragment<ConfirmEmailViewM
         return R.layout.fragment_confirm_email;
     }
 
-    @Override
-    protected void subscribe() {
-        super.subscribe();
-        viewModel.getConfirmationData().observe(getViewLifecycleOwner(), this::handleConfirmation);
-    }
-
     private void handleConfirmation(ConfirmEmailStatus confirmEmailStatus) {
         switch (confirmEmailStatus.tag()) {
             case ConfirmEmailStatus.SUCCESS:
@@ -56,6 +50,6 @@ public class ConfirmEmailFragment extends RegistrationFragment<ConfirmEmailViewM
 
     @OnClick(R.id.tvConfirm)
     public void onConfirmClicked() {
-        viewModel.confirm();
+        viewModel.confirm().observe(getViewLifecycleOwner(), this::handleConfirmation);
     }
 }
