@@ -41,8 +41,6 @@
                 android:resource="@xml/file_paths">
             </meta-data>
         </provider>
-        <service android:name=".auth.register.add.UploadImageService"
-            android:exported="false" />
     </application>
 
 </manifest>

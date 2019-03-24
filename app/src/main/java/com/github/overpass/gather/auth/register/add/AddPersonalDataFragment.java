@@ -1,5 +1,6 @@
 package com.github.overpass.gather.auth.register.add;
 
+import android.Manifest;
 import android.content.Intent;
 import android.net.Uri;
 import android.view.View;
@@ -7,9 +8,11 @@ import android.widget.ImageView;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.github.overpass.gather.R;
+import com.github.overpass.gather.auth.login.LoginActivity;
 import com.github.overpass.gather.auth.register.RegisterViewModel;
 import com.github.overpass.gather.auth.register.RegistrationFragment;
 import com.github.overpass.gather.dialog.PickImageDialogFragment;
+import com.github.overpass.gather.dialog.ProgressDialogFragment;
 import com.google.android.material.textfield.TextInputEditText;
 
 import androidx.annotation.NonNull;
@@ -56,10 +59,13 @@ public class AddPersonalDataFragment extends RegistrationFragment<AddPersonalDat
         super.subscribe();
         viewModel.getChosenImageData().observe(getViewLifecycleOwner(), this::handleChosenImageUri);
         viewModel.getImageSourceData().observe(getViewLifecycleOwner(), this::handleImageSource);
-        viewModel.getPermissionDeniedData().observe(getViewLifecycleOwner(), this::onPermission);
+        viewModel.getWritePermissionDeniedData()
+                .observe(getViewLifecycleOwner(), this::onPermissionChanged);
+        viewModel.getReadPermissionDeniedData()
+                .observe(getViewLifecycleOwner(), this::onPermissionChanged);
     }
 
-    private void onPermission(Boolean denied) {
+    private void onPermissionChanged(boolean denied) {
         if (denied) {
             snackbar(ivAvatarPreview, "Sorry, you can't choose photo without permissions");
         }
@@ -67,7 +73,7 @@ public class AddPersonalDataFragment extends RegistrationFragment<AddPersonalDat
 
     private void handleImageSource(ImageSource imageSource) {
         if (imageSource == ImageSource.GALLERY) {
-            viewModel.chooseFromGallery(this);
+            viewModel.chooseFromGallery(getActivity(), this);
         } else if (imageSource == ImageSource.CAMERA) {
             viewModel.chooseFromCamera(getActivity(), this);
         }
@@ -102,7 +108,33 @@ public class AddPersonalDataFragment extends RegistrationFragment<AddPersonalDat
 
     @OnClick(R.id.tvSubmit)
     public void onSubmitClick() {
-        viewModel.submit(textOf(tietUsername));
+        viewModel.submit(getContext().getContentResolver(), textOf(tietUsername))
+                .observe(getViewLifecycleOwner(), this::handleAddDataStatus);
+    }
+
+    private void handleAddDataStatus(AddDataStatus addDataStatus) {
+        switch (addDataStatus.tag()) {
+            case AddDataStatus.PROGRESS:
+                ProgressDialogFragment.show(getFragmentManager());
+                break;
+            case AddDataStatus.INVALID_USERNAME:
+                ProgressDialogFragment.hide(getFragmentManager());
+                tietUsername.setError("Invalid username");
+                break;
+            case AddDataStatus.ERROR:
+                ProgressDialogFragment.hide(getFragmentManager());
+                String message = addDataStatus.as(AddDataStatus.Error.class)
+                        .getThrowable()
+                        .getLocalizedMessage();
+                snackbar(ivAvatarPreview, message);
+                break;
+            case AddDataStatus.SUCCESS:
+                ProgressDialogFragment.hide(getFragmentManager());
+                Intent intent = new Intent(getContext(), LoginActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                break;
+        }
     }
 
     @Override

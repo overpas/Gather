@@ -2,34 +2,27 @@ package com.github.overpass.gather.auth.register.add;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
+import android.media.MediaScannerConnection;
 import android.net.Uri;
-import android.os.SystemClock;
-import android.provider.MediaStore;
-import android.text.TextUtils;
-import android.util.Log;
-import android.widget.ImageView;
 
-import com.github.overpass.gather.BuildConfig;
+import com.github.overpass.gather.Runners;
 import com.github.overpass.gather.SingleLiveEvent;
 import com.github.overpass.gather.auth.register.RegistrationStepViewModel;
+import com.github.overpass.gather.auth.register.UsernameValidator;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.storage.FirebaseStorage;
 
-import java.io.IOException;
-import java.util.concurrent.TimeUnit;
+import java.io.File;
 
 import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-
-import static com.github.overpass.gather.UIUtil.toast;
-import static com.google.gson.internal.$Gson$Types.arrayOf;
 
 public class AddPersonalDataViewModel extends RegistrationStepViewModel {
 
@@ -37,28 +30,69 @@ public class AddPersonalDataViewModel extends RegistrationStepViewModel {
     private static final int REQUEST_CODE_FROM_GALLERY = 12;
     private static final int REQUEST_CODE_FROM_CAMERA = 13;
     private static final int REQUEST_CODE_WRITE_PERMISSION = 14;
+    private static final int REQUEST_CODE_READ_PERMISSION = 15;
+    private static final int REQUEST_CODE_READ_AND_WRITE_PERMISSIONS = 16;
 
     private final ChooseImageUseCase chooseImageUseCase;
+    private final PersonalDataUseCase personalDataUseCase;
     private final MutableLiveData<Uri> chosenImageData;
-    private final SingleLiveEvent<Boolean> permissionDeniedData;
+    private final SingleLiveEvent<Boolean> writePermissionDeniedData;
+    private final SingleLiveEvent<Boolean> readPermissionDeniedData;
     private ImageSourceUseCase imageSourceUseCase;
-    private String imagePath;
+
+    private Uri contentUriFromCamera;
 
     public AddPersonalDataViewModel() {
+        personalDataUseCase = new PersonalDataUseCase(
+                new UserRepo(FirebaseAuth.getInstance()),
+                new UploadImageRepo(FirebaseStorage.getInstance()),
+                new UsernameValidator(),
+                FirebaseAuth.getInstance()
+        );
         chooseImageUseCase = new ChooseImageUseCase();
         chosenImageData = new MutableLiveData<>();
-        permissionDeniedData = new SingleLiveEvent<>();
+        writePermissionDeniedData = new SingleLiveEvent<>();
+        readPermissionDeniedData = new SingleLiveEvent<>();
     }
 
     public LiveData<Uri> getChosenImageData() {
         return chosenImageData;
     }
 
-    public LiveData<Boolean> getPermissionDeniedData() {
-        return permissionDeniedData;
+    public LiveData<Boolean> getWritePermissionDeniedData() {
+        return writePermissionDeniedData;
     }
 
-    public void chooseFromGallery(Fragment fragment) {
+    public SingleLiveEvent<Boolean> getReadPermissionDeniedData() {
+        return readPermissionDeniedData;
+    }
+
+    public void firstAskPermissionsThenRun(FragmentActivity activity,
+                                           Fragment fragment,
+                                           int requestCode,
+                                           Runnable action) {
+        // Here, thisActivity is the current activity
+        if (ContextCompat.checkSelfPermission(activity,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
+                || ContextCompat.checkSelfPermission(activity,
+                Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            // Permission is not granted
+            // Should we show an explanation?
+            requestPermissions(fragment, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    requestCode);
+        } else {
+            // Permission has already been granted
+            action.run();
+        }
+    }
+
+    public void chooseFromGallery(FragmentActivity activity, Fragment fragment) {
+        firstAskPermissionsThenRun(activity, fragment, REQUEST_CODE_FROM_GALLERY, () -> {
+            chooseFromGallery(fragment);
+        });
+    }
+
+    private void chooseFromGallery(Fragment fragment) {
         chooseImageUseCase.chooseFromGallery(fragment, REQUEST_CODE_FROM_GALLERY);
     }
 
@@ -78,12 +112,10 @@ public class AddPersonalDataViewModel extends RegistrationStepViewModel {
     }
 
     private void imageFromCameraChosen() {
-        if (!TextUtils.isEmpty(imagePath)) {
-            chosenImageData.setValue(Uri.parse(imagePath));
-        }
+        chosenImageData.setValue(chosenImageData.getValue());
     }
 
-    public void setImageSourceUseCase(ImageSourceUseCase imageSourceUseCase) {
+    void setImageSourceUseCase(ImageSourceUseCase imageSourceUseCase) {
         this.imageSourceUseCase = imageSourceUseCase;
     }
 
@@ -98,32 +130,26 @@ public class AddPersonalDataViewModel extends RegistrationStepViewModel {
     }
 
     private void chooseFromCamera(Fragment fragment) {
-        imagePath = chooseImageUseCase.chooseFromCamera(fragment, REQUEST_CODE_FROM_CAMERA);
+        File file = chooseImageUseCase.chooseFromCamera(fragment, REQUEST_CODE_FROM_CAMERA);
+        Uri imageUri = Uri.parse("file://" + file.getAbsolutePath());
+        chosenImageData.setValue(imageUri);
+        MediaScannerConnection.scanFile(fragment.getContext(), new String[]{file.getAbsolutePath()},
+                null, (path, uri) -> contentUriFromCamera = uri);
     }
 
     public void resetChosenImage() {
-        imagePath = null;
+        contentUriFromCamera = null;
         chosenImageData.setValue(null);
     }
 
     public void chooseFromCamera(FragmentActivity activity, Fragment fragment) {
-        // Here, thisActivity is the current activity
-        if (ContextCompat.checkSelfPermission(activity,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            // Permission is not granted
-            // Should we show an explanation?
-            permissionNotGranted(fragment);
-        } else {
-            // Permission has already been granted
+        firstAskPermissionsThenRun(activity, fragment, REQUEST_CODE_FROM_CAMERA, () -> {
             chooseFromCamera(fragment);
-        }
+        });
     }
 
-    public void permissionNotGranted(Fragment fragment) {
-        fragment.requestPermissions(
-                new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                REQUEST_CODE_WRITE_PERMISSION
-        );
+    private void requestPermissions(Fragment fragment, String[] permissions, int requestCode) {
+        fragment.requestPermissions(permissions, requestCode);
     }
 
     public void onRequestPermissionsResult(int requestCode,
@@ -131,16 +157,16 @@ public class AddPersonalDataViewModel extends RegistrationStepViewModel {
                                            int[] grantResults,
                                            Fragment fragment) {
         switch (requestCode) {
-            case REQUEST_CODE_WRITE_PERMISSION: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            case REQUEST_CODE_FROM_CAMERA: {
+                handlePermissionResult(grantResults, writePermissionDeniedData, fragment, () -> {
                     chooseFromCamera(fragment);
-                } else {
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
-                    permissionDeniedData.setValue(true);
-                }
+                });
+            }
+            break;
+            case REQUEST_CODE_FROM_GALLERY: {
+                handlePermissionResult(grantResults, readPermissionDeniedData, fragment, () -> {
+                    chooseFromGallery(fragment);
+                });
             }
             break;
             // other 'case' lines to check for other
@@ -148,7 +174,28 @@ public class AddPersonalDataViewModel extends RegistrationStepViewModel {
         }
     }
 
-    public void submit(String username) {
+    private void handlePermissionResult(int[] grantResults,
+                                        SingleLiveEvent<Boolean> permissionDeniedData,
+                                        Fragment fragment,
+                                        Runnable action) {
+        // If request is cancelled, the result arrays are empty.
+        if (grantResults.length > 0
+                && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            action.run();
+        } else {
+            // permission denied, boo! Disable the
+            // functionality that depends on this permission.
+            permissionDeniedData.setValue(true);
+        }
+    }
 
+    public LiveData<AddDataStatus> submit(ContentResolver contentResolver, String username) {
+        Uri imageUri;
+        if (contentUriFromCamera != null) {
+            imageUri = contentUriFromCamera;
+        } else {
+            imageUri = chosenImageData.getValue();
+        }
+        return personalDataUseCase.submit(contentResolver, username, imageUri);
     }
 }

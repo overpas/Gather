@@ -2,6 +2,8 @@ package com.github.overpass.gather.auth.register;
 
 import android.os.Bundle;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ViewFlipper;
 
 import com.github.overpass.gather.R;
@@ -21,6 +23,18 @@ public class RegisterActivity extends BaseActivity<RegisterViewModel>
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+        setViewFlipperAnimations();
+    }
+
+    private void setViewFlipperAnimations() {
+        Animation imgAnimationIn = AnimationUtils.loadAnimation(this,
+                android.R.anim.slide_in_left);
+        imgAnimationIn.setDuration(700);
+        viewFlipper.setInAnimation(imgAnimationIn);
+        Animation imgAnimationOut = AnimationUtils.loadAnimation(this,
+                android.R.anim.slide_out_right);
+        imgAnimationOut.setDuration(700);
+        viewFlipper.setOutAnimation(imgAnimationOut);
     }
 
     @Override
@@ -41,8 +55,6 @@ public class RegisterActivity extends BaseActivity<RegisterViewModel>
     private void moveToNextStep(Integer step) {
         if (viewModel.shouldShowNextStep(step)) {
             viewFlipper.showNext();
-        } else {
-
         }
     }
 

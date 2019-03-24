@@ -19,8 +19,8 @@ import androidx.lifecycle.MutableLiveData;
 
 public class UploadImageRepo {
 
-    private static final String BUCKET_AVATARS = "Avatars";
-    private static final String BUCKET_MEETINGS = "Meetings";
+    public static final String BUCKET_AVATARS = "Avatars";
+    public static final String BUCKET_MEETINGS = "Meetings";
 
     private final FirebaseStorage storage;
 
@@ -52,7 +52,7 @@ public class UploadImageRepo {
                         }
                     })
                     .addOnSuccessListener(uri -> {
-                        data.postValue(new ImageUploadStatus.Success());
+                        data.postValue(new ImageUploadStatus.Success(uri));
                     })
                     .addOnFailureListener(e -> {
                         data.postValue(new ImageUploadStatus.Error(e));
@@ -66,8 +66,7 @@ public class UploadImageRepo {
         Bitmap bitmap = uriToBitmap(contentResolver, imageUri);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-        byte[] data = baos.toByteArray();
-        return data;
+        return baos.toByteArray();
     }
 
     @WorkerThread

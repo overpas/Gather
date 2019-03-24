@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -43,7 +44,7 @@ public class ChooseImageUseCase {
     }
 
     @Nullable
-    String chooseFromCamera(Fragment fragment, int requestCode) {
+    File chooseFromCamera(Fragment fragment, int requestCode) {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         File imageFile = null;
         try {
@@ -57,7 +58,7 @@ public class ChooseImageUseCase {
             intent.putExtra(MediaStore.EXTRA_OUTPUT, createPhotoUri(fragment, imageFile));
             fragment.startActivityForResult(intent, requestCode);
             // Save a file: path for using again
-            return "file://" + imageFile.getAbsolutePath();
+            return imageFile;
         }
     }
 
@@ -78,10 +79,6 @@ public class ChooseImageUseCase {
         File storageDir = new File(Environment.getExternalStoragePublicDirectory(
                 Environment.DIRECTORY_DCIM), "Camera");
         storageDir.mkdirs();
-        return File.createTempFile(
-                imageFileName,  /* prefix */
-                ".jpg",         /* suffix */
-                storageDir      /* directory */
-        );
+        return File.createTempFile(imageFileName, ".jpg", storageDir);
     }
 }

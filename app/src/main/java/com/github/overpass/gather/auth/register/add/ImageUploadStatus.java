@@ -1,12 +1,14 @@
 package com.github.overpass.gather.auth.register.add;
 
+import android.net.Uri;
+
 import com.github.overpass.gather.base.Sealed;
 
 public abstract class ImageUploadStatus extends Sealed {
 
-    private static final String ERROR = "ImageUploadStatus_ERROR";
-    private static final String SUCCESS = "ImageUploadStatus_SUCCESS";
-    private static final String PROGRESS = "ImageUploadStatus_PROGRESS";
+    public static final String ERROR = "ImageUploadStatus_ERROR";
+    public static final String SUCCESS = "ImageUploadStatus_SUCCESS";
+    public static final String PROGRESS = "ImageUploadStatus_PROGRESS";
 
     public static class Error extends ImageUploadStatus {
 
@@ -27,6 +29,16 @@ public abstract class ImageUploadStatus extends Sealed {
     }
 
     public static class Success extends ImageUploadStatus {
+
+        private final Uri uri;
+
+        public Success(Uri uri) {
+            this.uri = uri;
+        }
+
+        public Uri getUri() {
+            return uri;
+        }
 
         @Override
         public String tag() {
