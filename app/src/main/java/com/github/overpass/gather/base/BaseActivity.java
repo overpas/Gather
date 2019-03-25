@@ -17,7 +17,6 @@ public abstract class BaseActivity<VM extends ViewModel> extends AppCompatActivi
         setContentView(getLayoutRes());
         ButterKnife.bind(this);
         viewModel = createViewModel();
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         subscribe();
     }
 
