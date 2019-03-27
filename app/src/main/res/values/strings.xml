@@ -19,4 +19,5 @@
     <string name="gallery">Gallery</string>
     <string name="camera">Camera</string>
     <string name="choose_image">Choose Image From</string>
+    <string name="no_location_permissions">Sorry, we\'re unable to locate you without location permissions</string>
 </resources>

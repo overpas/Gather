@@ -1,7 +1,6 @@
 package com.github.overpass.gather.map;
 
 import android.os.Bundle;
-import android.view.ViewPropertyAnimator;
 import android.view.animation.DecelerateInterpolator;
 
 import com.github.overpass.gather.FragmentUtils;
@@ -9,10 +8,12 @@ import com.github.overpass.gather.R;
 import com.github.overpass.gather.base.BaseActivity;
 import com.google.android.material.bottomappbar.BottomAppBar;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProviders;
 import butterknife.BindView;
 
-public class MapActivity extends BaseActivity<MapViewModel> implements MapFragment.BottomAppBarController {
+public class MapActivity extends BaseActivity<MapViewModel>
+        implements MainMapFragment.BottomAppBarController {
 
     @BindView(R.id.bottomAppBar)
     BottomAppBar bottomAppBar;
@@ -32,7 +33,7 @@ public class MapActivity extends BaseActivity<MapViewModel> implements MapFragme
         super.onCreate(savedInstanceState);
         if (savedInstanceState == null) {
             FragmentUtils.replace(getSupportFragmentManager(), R.id.flMapFragmentContainer,
-                    MapFragment.newInstance(), false);
+                    MainMapFragment.newInstance(), false);
         }
     }
 
@@ -52,5 +53,12 @@ public class MapActivity extends BaseActivity<MapViewModel> implements MapFragme
                 .setInterpolator(new DecelerateInterpolator())
                 .setDuration(600)
                 .start();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        viewModel.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 }

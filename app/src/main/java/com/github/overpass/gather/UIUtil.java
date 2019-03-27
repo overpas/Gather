@@ -27,4 +27,8 @@ public class UIUtil {
         Snackbar.make(view, message, Snackbar.LENGTH_SHORT).show();
     }
 
+    public static void longSnackbar(View view, String message) {
+        Snackbar.make(view, message, Snackbar.LENGTH_LONG).show();
+    }
+
 }
