@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.location.Location;
 
 import com.github.overpass.gather.SingleLiveEvent;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.mapbox.android.core.location.LocationEngine;
 import com.mapbox.android.core.location.LocationEngineCallback;
 import com.mapbox.android.core.location.LocationEngineRequest;
@@ -20,6 +21,7 @@ import com.mapbox.mapboxsdk.maps.Style;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -30,6 +32,7 @@ public class MainMapViewModel extends ViewModel implements PermissionsListener, 
     private final SingleLiveEvent<Boolean> permissionGrantedData;
     private final MutableLiveData<Location> locationData;
     private final PermissionsManager permissionsManager;
+    private final MeetingsUseCase meetingsUseCase;
     private LocationPermissionUseCase locationPermissionUseCase;
     private Style style;
     private MapboxMap mapboxMap;
@@ -38,6 +41,7 @@ public class MainMapViewModel extends ViewModel implements PermissionsListener, 
         permissionsManager = new PermissionsManager(this);
         permissionGrantedData = new SingleLiveEvent<>();
         locationData = new MutableLiveData<>();
+        meetingsUseCase = new MeetingsUseCase(new MeetingRepo(FirebaseFirestore.getInstance()));
     }
 
     SingleLiveEvent<Boolean> getPermissionGrantedData() {
@@ -119,5 +123,9 @@ public class MainMapViewModel extends ViewModel implements PermissionsListener, 
     @Override
     public void onFailure(@NonNull Exception exception) {
 
+    }
+
+    public LiveData<List<Meeting>> scanArea(Location location) {
+        return meetingsUseCase.getMeetings(location);
     }
 }

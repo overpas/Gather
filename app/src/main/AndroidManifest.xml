@@ -30,6 +30,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".auth.login.LoginActivity" />
+        <activity android:name=".create.NewMeetingActivity" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

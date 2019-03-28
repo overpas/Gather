@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.github.overpass.gather.R;
 import com.github.overpass.gather.base.BaseFragment;
 import com.mapbox.mapboxsdk.maps.MapFragment;
 import com.mapbox.mapboxsdk.maps.MapView;
@@ -94,7 +93,6 @@ public class SupportMapFragment<VM extends ViewModel> extends BaseFragment<VM>
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container,
                              Bundle savedInstanceState) {
-        super.onCreateView(inflater, container, savedInstanceState);
         Context context = inflater.getContext();
         map = new MapView(context, MapFragmentUtils.resolveArgs(context, getArguments()));
         return map;
@@ -125,8 +123,7 @@ public class SupportMapFragment<VM extends ViewModel> extends BaseFragment<VM>
 
     @Override
     protected int getLayoutRes() {
-        // STUB
-        return R.layout.fragment_dialog_progress;
+        return 0;
     }
 
     @Override
