@@ -1,26 +1,26 @@
 package com.github.overpass.gather.map;
 
-class PermissionRequestResult {
+public class PermissionRequestResult {
 
     private int requestCode;
     private String[] permissions;
     private int[] grantResults;
 
-    PermissionRequestResult(int requestCode, String[] permissions, int[] grantResults) {
+    public PermissionRequestResult(int requestCode, String[] permissions, int[] grantResults) {
         this.requestCode = requestCode;
         this.permissions = permissions;
         this.grantResults = grantResults;
     }
 
-    int getRequestCode() {
+    public int getRequestCode() {
         return requestCode;
     }
 
-    String[] getPermissions() {
+    public String[] getPermissions() {
         return permissions;
     }
 
-    int[] getGrantResults() {
+    public int[] getGrantResults() {
         return grantResults;
     }
 }

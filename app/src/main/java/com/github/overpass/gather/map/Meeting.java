@@ -1,15 +1,19 @@
 package com.github.overpass.gather.map;
 
+import java.util.Date;
+
 public class Meeting {
 
     private String name;
     private double latitude;
     private double longitude;
+    private Date date;
 
-    public Meeting(String name, double latitude, double longitude) {
+    public Meeting(String name, double latitude, double longitude, Date date) {
         this.name = name;
         this.latitude = latitude;
         this.longitude = longitude;
+        this.date = date;
     }
 
     public String getName() {
@@ -34,5 +38,13 @@ public class Meeting {
 
     public void setLongitude(double longitude) {
         this.longitude = longitude;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 }

@@ -4,9 +4,8 @@
     package="com.github.overpass.gather">
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:name=".App"
@@ -30,7 +29,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".auth.login.LoginActivity" />
-        <activity android:name=".create.NewMeetingActivity" />
+        <activity
+            android:name=".create.NewMeetingActivity"
+            android:theme="@style/AppTheme.WithActionBar" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -39,8 +40,7 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths">
-            </meta-data>
+                android:resource="@xml/file_paths" />
         </provider>
     </application>
 

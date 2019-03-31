@@ -1,10 +1,16 @@
-package com.github.overpass.gather.map;
+package com.github.overpass.gather.map.detail;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.location.Location;
 
 import com.github.overpass.gather.SingleLiveEvent;
+import com.github.overpass.gather.map.LocationPermissionUseCase;
+import com.github.overpass.gather.map.Meeting;
+import com.github.overpass.gather.map.MeetingRepo;
+import com.github.overpass.gather.map.MeetingsUseCase;
+import com.github.overpass.gather.map.PermissionRequestResult;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.mapbox.android.core.location.LocationEngine;
 import com.mapbox.android.core.location.LocationEngineCallback;
@@ -25,9 +31,10 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class MainMapViewModel extends ViewModel implements PermissionsListener, LocationEngineCallback<LocationEngineResult> {
+public class MapDetailViewModel extends ViewModel implements PermissionsListener,
+        LocationEngineCallback<LocationEngineResult> {
 
-    private static final String TAG = "MainMapViewModel";
+    private static final String TAG = "MapDetailViewModel";
 
     private final SingleLiveEvent<Boolean> permissionGrantedData;
     private final MutableLiveData<Location> locationData;
@@ -36,24 +43,27 @@ public class MainMapViewModel extends ViewModel implements PermissionsListener, 
     private LocationPermissionUseCase locationPermissionUseCase;
     private Style style;
     private MapboxMap mapboxMap;
+    private MutableLiveData<FabAction> fabActionData;
 
-    public MainMapViewModel() {
+    public MapDetailViewModel() {
         permissionsManager = new PermissionsManager(this);
         permissionGrantedData = new SingleLiveEvent<>();
         locationData = new MutableLiveData<>();
-        meetingsUseCase = new MeetingsUseCase(new MeetingRepo(FirebaseFirestore.getInstance()));
+        fabActionData = new MutableLiveData<>();
+        fabActionData.setValue(FabAction.INIT);
+        meetingsUseCase = new MeetingsUseCase(new MeetingRepo(FirebaseFirestore.getInstance(), FirebaseAuth.getInstance()));
     }
 
-    SingleLiveEvent<Boolean> getPermissionGrantedData() {
+    LiveData<Boolean> getPermissionGrantedData() {
         return permissionGrantedData;
     }
 
-    public MutableLiveData<Location> getLocationData() {
+    public LiveData<Location> getLocationData() {
         return locationData;
     }
 
-    public Style getStyle() {
-        return style;
+    public LiveData<FabAction> getFabActionData() {
+        return fabActionData;
     }
 
     void enableLocation(Style style, MapboxMap mapboxMap, Activity activity) {
@@ -127,5 +137,18 @@ public class MainMapViewModel extends ViewModel implements PermissionsListener, 
 
     public LiveData<List<Meeting>> scanArea(Location location) {
         return meetingsUseCase.getMeetings(location);
+    }
+
+    public void onFabClick() {
+        if (FabAction.ADD_NEW == fabActionData.getValue()
+                || FabAction.INIT == fabActionData.getValue()) {
+            fabActionData.setValue(FabAction.CONFIRM_MARKER);
+        } else {
+            fabActionData.setValue(FabAction.ADD_NEW);
+        }
+    }
+
+    enum FabAction {
+        INIT, ADD_NEW, CONFIRM_MARKER
     }
 }

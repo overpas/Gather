@@ -1,22 +1,16 @@
 package com.github.overpass.gather.map;
 
 import android.os.Bundle;
-import android.view.animation.DecelerateInterpolator;
 
 import com.github.overpass.gather.FragmentUtils;
 import com.github.overpass.gather.R;
 import com.github.overpass.gather.base.BaseActivity;
-import com.google.android.material.bottomappbar.BottomAppBar;
+import com.github.overpass.gather.map.detail.MapFragment;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProviders;
-import butterknife.BindView;
 
-public class MapActivity extends BaseActivity<MapViewModel>
-        implements MainMapFragment.BottomAppBarController {
-
-    @BindView(R.id.bottomAppBar)
-    BottomAppBar bottomAppBar;
+public class MapActivity extends BaseActivity<MapViewModel> {
 
     @Override
     protected int getLayoutRes() {
@@ -33,26 +27,8 @@ public class MapActivity extends BaseActivity<MapViewModel>
         super.onCreate(savedInstanceState);
         if (savedInstanceState == null) {
             FragmentUtils.replace(getSupportFragmentManager(), R.id.flMapFragmentContainer,
-                    MainMapFragment.newInstance(), false);
+                    MapFragment.newInstance(), false);
         }
-    }
-
-    @Override
-    public void hideBottomAppBar() {
-        bottomAppBar.animate()
-                .translationY(bottomAppBar.getMinimumHeight())
-                .setInterpolator(new DecelerateInterpolator())
-                .setDuration(600)
-                .start();
-    }
-
-    @Override
-    public void showBottomAppBar() {
-        bottomAppBar.animate()
-                .translationY(0)
-                .setInterpolator(new DecelerateInterpolator())
-                .setDuration(600)
-                .start();
     }
 
     @Override

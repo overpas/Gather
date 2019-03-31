@@ -1,4 +1,4 @@
-package com.github.overpass.gather.map;
+package com.github.overpass.gather.map.detail;
 
 import com.mapbox.android.gestures.MoveGestureDetector;
 import com.mapbox.mapboxsdk.maps.MapboxMap;

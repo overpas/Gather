@@ -2,11 +2,11 @@ package com.github.overpass.gather.map;
 
 import com.github.overpass.gather.SingleLiveEvent;
 
-class LocationPermissionUseCase {
+public class LocationPermissionUseCase {
 
     private final SingleLiveEvent<PermissionRequestResult> permissionRequestResultData;
 
-    LocationPermissionUseCase() {
+    public LocationPermissionUseCase() {
         this.permissionRequestResultData = new SingleLiveEvent<>();
     }
 
@@ -14,7 +14,7 @@ class LocationPermissionUseCase {
         return permissionRequestResultData;
     }
 
-    void onRequestPermissionsResult(int requestCode,
+    public void onRequestPermissionsResult(int requestCode,
                                     String[] permissions,
                                     int[] grantResults) {
         permissionRequestResultData.setValue(new PermissionRequestResult(requestCode,

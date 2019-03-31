@@ -55,37 +55,41 @@ public class FailedTask<T> extends Task<T> {
     @NonNull
     @Override
     public Task<T> addOnSuccessListener(@NonNull OnSuccessListener<? super T> onSuccessListener) {
-        return null;
+        return this;
     }
 
     @NonNull
     @Override
-    public Task<T> addOnSuccessListener(@NonNull Executor executor, @NonNull OnSuccessListener<? super T> onSuccessListener) {
-        return null;
+    public Task<T> addOnSuccessListener(@NonNull Executor executor,
+                                        @NonNull OnSuccessListener<? super T> onSuccessListener) {
+        return this;
     }
 
     @NonNull
     @Override
-    public Task<T> addOnSuccessListener(@NonNull Activity activity, @NonNull OnSuccessListener<? super T> onSuccessListener) {
-        return null;
+    public Task<T> addOnSuccessListener(@NonNull Activity activity,
+                                        @NonNull OnSuccessListener<? super T> onSuccessListener) {
+        return this;
     }
 
     @NonNull
     @Override
     public Task<T> addOnFailureListener(@NonNull OnFailureListener onFailureListener) {
-        return null;
+        return this;
     }
 
     @NonNull
     @Override
-    public Task<T> addOnFailureListener(@NonNull Executor executor, @NonNull OnFailureListener onFailureListener) {
-        return null;
+    public Task<T> addOnFailureListener(@NonNull Executor executor,
+                                        @NonNull OnFailureListener onFailureListener) {
+        return this;
     }
 
     @NonNull
     @Override
-    public Task<T> addOnFailureListener(@NonNull Activity activity, @NonNull OnFailureListener onFailureListener) {
-        return null;
+    public Task<T> addOnFailureListener(@NonNull Activity activity,
+                                        @NonNull OnFailureListener onFailureListener) {
+        return this;
     }
 
     public static class UploadFailedException extends Exception {

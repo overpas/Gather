@@ -10,7 +10,7 @@ public class MapViewModel extends ViewModel {
         this.locationPermissionUseCase = new LocationPermissionUseCase();
     }
 
-    LocationPermissionUseCase getLocationPermissionUseCase() {
+    public LocationPermissionUseCase getLocationPermissionUseCase() {
         return locationPermissionUseCase;
     }
 

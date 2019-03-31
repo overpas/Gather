@@ -11,6 +11,16 @@
         <!--<item name="android:colorBackground">@color/colorAlmostWhite</item>-->
     </style>
 
+    <style name="AppTheme.WithActionBar" parent="Theme.MaterialComponents">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <!--<item name="android:background">@color/colorAlmostWhite</item>-->
+        <item name="android:windowBackground">@color/colorAlmostWhite</item>
+        <!--<item name="android:colorBackground">@color/colorAlmostWhite</item>-->
+    </style>
+
     <style name="ButtonNormal">
         <item name="android:paddingStart">20dp</item>
         <item name="android:paddingEnd">20dp</item>
