@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/type_business"
+        android:icon="@drawable/ic_case"
+        android:title="@string/business" />
+
+    <item
+        android:id="@+id/type_entertainment"
+        android:icon="@drawable/ic_beer"
+        android:title="@string/entertainment" />
+
+    <item
+        android:id="@+id/type_protest"
+        android:icon="@drawable/ic_bund"
+        android:title="Protest" />
+</menu>

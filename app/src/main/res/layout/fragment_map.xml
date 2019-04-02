@@ -42,4 +42,16 @@
         android:src="@drawable/mapbox_marker_icon_default"
         android:visibility="gone" />
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabMyLocation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:layout_marginBottom="100dp"
+        android:scaleX="0.7"
+        android:scaleY="0.7"
+        android:src="@drawable/ic_navigation_white"
+        app:backgroundTint="@color/colorPrimary"
+        app:tint="@android:color/white" />
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

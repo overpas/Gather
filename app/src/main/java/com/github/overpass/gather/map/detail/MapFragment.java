@@ -13,6 +13,7 @@ import com.github.overpass.gather.base.BaseFragment;
 import com.github.overpass.gather.create.NewMeetingActivity;
 import com.github.overpass.gather.map.LocationPermissionUseCase;
 import com.github.overpass.gather.map.MapViewModel;
+import com.github.overpass.gather.map.Meeting;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.mapbox.mapboxsdk.camera.CameraPosition;
@@ -23,6 +24,8 @@ import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import com.mapbox.mapboxsdk.maps.Style;
 import com.mapbox.mapboxsdk.plugins.annotation.SymbolManager;
+
+import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProviders;
@@ -173,18 +176,30 @@ public class MapFragment extends BaseFragment<MapDetailViewModel> implements OnM
         Log.d(TAG, "location: " + location.getLatitude() + "; " + location.getLongitude());
 
         CameraPosition position = new CameraPosition.Builder()
-                .target(new LatLng(location.getLatitude(), location.getLongitude())) // Sets the new camera position
+                .target(new LatLng(location.getLatitude(), location.getLongitude()))
                 .zoom(17) // Sets the zoom
                 .bearing(180) // Rotate the camera
                 .build(); // Creates a CameraPosition from the builder
 
         map.moveCamera(CameraUpdateFactory.newCameraPosition(position));
-        viewModel.scanArea(location);
+        viewModel.scanArea(location)
+                .observe(getViewLifecycleOwner(), this::onMeetingsLoaded);
+    }
+
+    private void onMeetingsLoaded(List<Meeting> meetings) {
+        Log.d(TAG, "onMeetingsLoaded: " + meetings.toString());
     }
 
     @OnClick(R.id.fab)
     public void onFabClick() {
         viewModel.onFabClick();
+    }
+
+    @OnClick(R.id.fabMyLocation)
+    public void onMyLocationClick() {
+        if (viewModel.getLocationData().getValue() != null) {
+            onLocationUpdated(viewModel.getLocationData().getValue());
+        }
     }
 
     private void onPermissionResponse(boolean granted) {

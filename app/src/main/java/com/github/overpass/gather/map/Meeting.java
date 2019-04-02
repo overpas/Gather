@@ -1,6 +1,8 @@
 package com.github.overpass.gather.map;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class Meeting {
 
@@ -8,12 +10,23 @@ public class Meeting {
     private double latitude;
     private double longitude;
     private Date date;
+    private int type;
+    private List<String> photos;
 
-    public Meeting(String name, double latitude, double longitude, Date date) {
+    public Meeting() {
+    }
+
+    public Meeting(String name, double latitude, double longitude, Date date, int type) {
+        this(name, latitude, longitude, date, type, new ArrayList<>());
+    }
+
+    public Meeting(String name, double latitude, double longitude, Date date, int type, List<String> photos) {
         this.name = name;
         this.latitude = latitude;
         this.longitude = longitude;
         this.date = date;
+        this.type = type;
+        this.photos = photos;
     }
 
     public String getName() {
@@ -46,5 +59,21 @@ public class Meeting {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
+
+    public List<String> getPhotos() {
+        return photos;
+    }
+
+    public void setPhotos(List<String> photos) {
+        this.photos = photos;
     }
 }

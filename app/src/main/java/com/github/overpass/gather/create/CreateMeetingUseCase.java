@@ -21,12 +21,13 @@ class CreateMeetingUseCase {
     public LiveData<SaveMeetingStatus> createMeeting(double latitude,
                                                      double longitude,
                                                      String title,
-                                                     Date date) {
+                                                     Date date,
+                                                     MeetingType type) {
         if (TextUtils.isEmpty(title)) {
             MutableLiveData<SaveMeetingStatus> resultData = new MutableLiveData<>();
             resultData.setValue(new SaveMeetingStatus.EmptyName());
             return resultData;
         }
-        return meetingRepo.save(latitude, longitude, date, title);
+        return meetingRepo.save(latitude, longitude, date, title, type);
     }
 }

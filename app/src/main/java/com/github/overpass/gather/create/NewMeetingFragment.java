@@ -11,6 +11,7 @@ import com.github.overpass.gather.R;
 import com.github.overpass.gather.base.BaseFragment;
 import com.github.overpass.gather.dialog.ProgressDialogFragment;
 import com.github.overpass.gather.map.SaveMeetingStatus;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.Date;
@@ -35,6 +36,8 @@ public class NewMeetingFragment extends BaseFragment<NewMeetingViewModel> {
     TextInputEditText tietName;
     @BindView(R.id.datePicker)
     DatePicker datePicker;
+    @BindView(R.id.bnvMeetingType)
+    BottomNavigationView bnvMeetingType;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -72,11 +75,22 @@ public class NewMeetingFragment extends BaseFragment<NewMeetingViewModel> {
     }
 
     private void create() {
+        MeetingType meetingType;
+        switch (bnvMeetingType.getSelectedItemId()) {
+            case R.id.type_business:
+                meetingType = MeetingType.BUSINESS;
+                break;
+            case R.id.type_entertainment:
+                meetingType = MeetingType.ENTERTAINMENT;
+                break;
+            default:
+                meetingType = MeetingType.PROTEST;
+        }
         double latitude = getArguments().getDouble(KEY_LATITUDE);
         double longitude = getArguments().getDouble(KEY_LONGITUDE);
         String title = textOf(tietName);
         Date date = dateOf(datePicker);
-        viewModel.createMeeting(latitude, longitude, title, date)
+        viewModel.createMeeting(latitude, longitude, title, date, meetingType)
                 .observe(getViewLifecycleOwner(), this::handleSaveMeetingStatus);
     }
 

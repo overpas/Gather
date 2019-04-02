@@ -8,12 +8,15 @@
     <DatePicker
         android:id="@+id/datePicker"
         android:layout_width="match_parent"
-        android:layout_height="400dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="16dp"
         android:background="@color/colorPrimary"
+        android:calendarViewShown="false"
+        android:datePickerMode="spinner"
+        app:layout_constraintBottom_toTopOf="@id/bnvMeetingType"
         app:layout_constraintTop_toBottomOf="@id/tilName" />
 
     <com.google.android.material.textfield.TextInputLayout
@@ -31,5 +34,18 @@
             android:layout_height="wrap_content"
             android:hint="@string/meeting_name" />
     </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bnvMeetingType"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_gravity="start"
+        app:itemBackground="@color/colorAlmostWhite"
+        app:itemIconSize="30dp"
+        app:itemIconTint="@drawable/selector_bottom_nav"
+        app:itemTextColor="@drawable/selector_bottom_nav"
+        app:labelVisibilityMode="labeled"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:menu="@menu/menu_meeting_type" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

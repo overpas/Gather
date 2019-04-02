@@ -23,7 +23,8 @@ public class NewMeetingViewModel extends ViewModel {
     public LiveData<SaveMeetingStatus> createMeeting(double latitude,
                                                      double longitude,
                                                      String title,
-                                                     Date date) {
-        return createMeetingUseCase.createMeeting(latitude, longitude, title, date);
+                                                     Date date,
+                                                     MeetingType type) {
+        return createMeetingUseCase.createMeeting(latitude, longitude, title, date, type);
     }
 }
