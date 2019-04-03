@@ -7,6 +7,18 @@
     android:fitsSystemWindows="true"
     tools:context="com.github.overpass.gather.map.MapActivity">
 
+    <ImageButton
+        android:elevation="10dp"
+        android:id="@+id/ibBack"
+        android:visibility="gone"
+        android:background="@drawable/bg_back"
+        android:src="@drawable/ic_close_black"
+        android:layout_gravity="start|top"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
     <com.mapbox.mapboxsdk.maps.MapView
         android:id="@+id/mapView"
         android:layout_width="match_parent"

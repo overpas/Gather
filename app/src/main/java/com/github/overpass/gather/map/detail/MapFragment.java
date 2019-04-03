@@ -1,13 +1,15 @@
 package com.github.overpass.gather.map.detail;
 
-import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 
+import com.annimon.stream.Stream;
+import com.github.overpass.gather.BackPressFragment;
 import com.github.overpass.gather.R;
 import com.github.overpass.gather.base.BaseFragment;
 import com.github.overpass.gather.create.NewMeetingActivity;
@@ -16,6 +18,7 @@ import com.github.overpass.gather.map.MapViewModel;
 import com.github.overpass.gather.map.Meeting;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.mapbox.mapboxsdk.annotations.MarkerOptions;
 import com.mapbox.mapboxsdk.camera.CameraPosition;
 import com.mapbox.mapboxsdk.camera.CameraUpdateFactory;
 import com.mapbox.mapboxsdk.geometry.LatLng;
@@ -34,10 +37,12 @@ import butterknife.OnClick;
 
 import static com.github.overpass.gather.UIUtil.snackbar;
 
-public class MapFragment extends BaseFragment<MapDetailViewModel> implements OnMapReadyCallback {
+public class MapFragment extends BaseFragment<MapDetailViewModel>
+        implements BackPressFragment, OnMapReadyCallback {
 
     private static final String TAG = "MainMapFragment";
 
+    private MarkersHelper markersHelper;
     private SymbolManager symbolManager;
     private MapboxMap map;
 
@@ -49,6 +54,8 @@ public class MapFragment extends BaseFragment<MapDetailViewModel> implements OnM
     FloatingActionButton fab;
     @BindView(R.id.ivCenterMarker)
     ImageView ivCenterMarker;
+    @BindView(R.id.ibBack)
+    ImageButton ibBack;
 
     @Override
     protected MapDetailViewModel createViewModel() {
@@ -97,9 +104,11 @@ public class MapFragment extends BaseFragment<MapDetailViewModel> implements OnM
         if (confirmMarker) {
             fab.setImageResource(R.drawable.ic_tick);
             ivCenterMarker.setVisibility(View.VISIBLE);
+            ibBack.setVisibility(View.VISIBLE);
         } else {
             ivCenterMarker.setVisibility(View.GONE);
             fab.setImageResource(R.drawable.ic_add_marker);
+            ibBack.setVisibility(View.GONE);
         }
     }
 
@@ -173,6 +182,10 @@ public class MapFragment extends BaseFragment<MapDetailViewModel> implements OnM
     }
 
     private void onLocationUpdated(Location location) {
+        onLocationUpdated(location, false);
+    }
+
+    private void onLocationUpdated(Location location, boolean forceCameraMove) {
         Log.d(TAG, "location: " + location.getLatitude() + "; " + location.getLongitude());
 
         CameraPosition position = new CameraPosition.Builder()
@@ -181,13 +194,21 @@ public class MapFragment extends BaseFragment<MapDetailViewModel> implements OnM
                 .bearing(180) // Rotate the camera
                 .build(); // Creates a CameraPosition from the builder
 
-        map.moveCamera(CameraUpdateFactory.newCameraPosition(position));
+        if (!viewModel.hasShownLocationOnce() || forceCameraMove) {
+            map.moveCamera(CameraUpdateFactory.newCameraPosition(position));
+            viewModel.setHasShownLocationOnce(true);
+        }
         viewModel.scanArea(location)
                 .observe(getViewLifecycleOwner(), this::onMeetingsLoaded);
     }
 
     private void onMeetingsLoaded(List<Meeting> meetings) {
         Log.d(TAG, "onMeetingsLoaded: " + meetings.toString());
+        markersHelper.replace(Stream.of(meetings)
+                .map(m -> new MarkerOptions()
+                        .position(new LatLng(m.getLatitude(), m.getLongitude()))
+                        .title(m.getName()))
+                .toList());
     }
 
     @OnClick(R.id.fab)
@@ -198,8 +219,13 @@ public class MapFragment extends BaseFragment<MapDetailViewModel> implements OnM
     @OnClick(R.id.fabMyLocation)
     public void onMyLocationClick() {
         if (viewModel.getLocationData().getValue() != null) {
-            onLocationUpdated(viewModel.getLocationData().getValue());
+            onLocationUpdated(viewModel.getLocationData().getValue(), true);
         }
+    }
+
+    @OnClick(R.id.ibBack)
+    public void onBackClick() {
+        viewModel.resetFabAction();
     }
 
     private void onPermissionResponse(boolean granted) {
@@ -217,6 +243,7 @@ public class MapFragment extends BaseFragment<MapDetailViewModel> implements OnM
 
     private void onStyleLoaded(Style style, MapboxMap mapboxMap) {
         this.map = mapboxMap;
+        this.markersHelper = new MarkersHelper(map);
         symbolManager = new SymbolManager(mapView, mapboxMap, style);
         mapboxMap.addOnMoveListener(new MapVerticalFlingListener() {
             @Override
@@ -252,5 +279,15 @@ public class MapFragment extends BaseFragment<MapDetailViewModel> implements OnM
 
     public static MapFragment newInstance() {
         return new MapFragment();
+    }
+
+    @Override
+    public boolean handleBackPress() {
+        if (viewModel.getFabActionData().getValue() == MapDetailViewModel.FabAction.CONFIRM_MARKER) {
+            onBackClick();
+            return true;
+        } else {
+            return false;
+        }
     }
 }

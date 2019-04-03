@@ -44,6 +44,7 @@ public class MapDetailViewModel extends ViewModel implements PermissionsListener
     private Style style;
     private MapboxMap mapboxMap;
     private MutableLiveData<FabAction> fabActionData;
+    private boolean hasShownLocationOnce;
 
     public MapDetailViewModel() {
         permissionsManager = new PermissionsManager(this);
@@ -146,6 +147,18 @@ public class MapDetailViewModel extends ViewModel implements PermissionsListener
         } else {
             fabActionData.setValue(FabAction.ADD_NEW);
         }
+    }
+
+    public void resetFabAction() {
+        fabActionData.setValue(FabAction.INIT);
+    }
+
+    public boolean hasShownLocationOnce() {
+        return hasShownLocationOnce;
+    }
+
+    public void setHasShownLocationOnce(boolean hasShownLocationOnce) {
+        this.hasShownLocationOnce = hasShownLocationOnce;
     }
 
     enum FabAction {
