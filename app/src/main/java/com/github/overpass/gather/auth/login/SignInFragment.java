@@ -2,6 +2,7 @@ package com.github.overpass.gather.auth.login;
 
 import android.content.Intent;
 
+import com.github.overpass.gather.auth.login.forgot.ForgotPasswordBottomFragment;
 import com.github.overpass.gather.base.BaseFragment;
 import com.github.overpass.gather.R;
 import com.github.overpass.gather.auth.register.RegisterActivity;
@@ -70,6 +71,11 @@ public class SignInFragment extends BaseFragment<SignInViewModel> {
     @OnClick(R.id.tvSignUp)
     public void onSignUpClicked() {
         startActivity(new Intent(getContext(), RegisterActivity.class));
+    }
+
+    @OnClick(R.id.tvForgotPassword)
+    public void onForgotPasswordClick() {
+        ForgotPasswordBottomFragment.open(getFragmentManager());
     }
 
     public static SignInFragment newInstance() {

@@ -38,7 +38,7 @@ public class MarkersHelper {
     @Nullable
     String getIdByMarker(Marker marker) {
         for (Map.Entry<String, Marker> entry : data.entrySet()) {
-            if (entry.getValue().getTitle().equals(marker.getTitle())) {
+            if (entry.getValue().equals(marker)) {
                 return entry.getKey();
             }
         }
@@ -71,7 +71,7 @@ public class MarkersHelper {
     public LiveData<Marker> updateSnippet(Marker marker, Current2MaxPeopleRatio ratio) {
         SingleLiveEvent<Marker> markerUpdateStatus = new SingleLiveEvent<>();
         for (Map.Entry<String, Marker> entry : data.entrySet()) {
-            if (entry.getValue().getTitle().equals(marker.getTitle())) {
+            if (entry.getValue().equals(marker)) {
                 entry.getValue().setSnippet(ratio.getCurrent() + " / " + ratio.getMax());
                 markerUpdateStatus.setValue(entry.getValue());
             }
@@ -81,7 +81,7 @@ public class MarkersHelper {
 
     public boolean isRatioKnown(Marker marker) {
         for (Map.Entry<String, Marker> entry : data.entrySet()) {
-            if (entry.getValue().getTitle().equals(marker.getTitle())
+            if (entry.getValue().equals(marker)
                     && !TextUtils.isEmpty(entry.getValue().getSnippet())) {
                 return true;
             }
