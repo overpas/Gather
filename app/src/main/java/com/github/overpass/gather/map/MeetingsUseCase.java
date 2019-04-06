@@ -2,7 +2,9 @@ package com.github.overpass.gather.map;
 
 import android.location.Location;
 
-import java.util.List;
+import com.github.overpass.gather.map.detail.Current2MaxPeopleRatio;
+
+import java.util.Map;
 
 import androidx.lifecycle.LiveData;
 
@@ -16,7 +18,11 @@ public class MeetingsUseCase {
         this.meetingRepo = meetingRepo;
     }
 
-    public LiveData<List<Meeting>> getMeetings(Location location) {
+    public LiveData<Map<String, Meeting>> getMeetings(Location location) {
         return meetingRepo.getMeetings(location.getLatitude(), location.getLongitude(), RADIUS);
+    }
+
+    public LiveData<Current2MaxPeopleRatio> getCurrent2MaxPeopleRatio(String id) {
+        return meetingRepo.getCurrent2MaxRatio(id);
     }
 }

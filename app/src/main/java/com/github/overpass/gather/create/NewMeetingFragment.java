@@ -12,7 +12,9 @@ import com.github.overpass.gather.base.BaseFragment;
 import com.github.overpass.gather.dialog.ProgressDialogFragment;
 import com.github.overpass.gather.map.SaveMeetingStatus;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.android.material.textfield.TextInputEditText;
+import com.shawnlin.numberpicker.NumberPicker;
 
 import java.util.Date;
 
@@ -38,6 +40,10 @@ public class NewMeetingFragment extends BaseFragment<NewMeetingViewModel> {
     DatePicker datePicker;
     @BindView(R.id.bnvMeetingType)
     BottomNavigationView bnvMeetingType;
+    @BindView(R.id.npMaxPeople)
+    NumberPicker npMaxPeople;
+    @BindView(R.id.switchPrivate)
+    SwitchMaterial switchPrivate;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -90,7 +96,9 @@ public class NewMeetingFragment extends BaseFragment<NewMeetingViewModel> {
         double longitude = getArguments().getDouble(KEY_LONGITUDE);
         String title = textOf(tietName);
         Date date = dateOf(datePicker);
-        viewModel.createMeeting(latitude, longitude, title, date, meetingType)
+        int maxPeople = npMaxPeople.getValue();
+        boolean isPrivate = switchPrivate.isChecked();
+        viewModel.createMeeting(latitude, longitude, title, date, meetingType, maxPeople, isPrivate)
                 .observe(getViewLifecycleOwner(), this::handleSaveMeetingStatus);
     }
 

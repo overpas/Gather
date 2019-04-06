@@ -12,21 +12,36 @@ public class Meeting {
     private Date date;
     private int type;
     private List<String> photos;
+    private int maxPeople;
+    private boolean isPrivate;
 
     public Meeting() {
     }
 
-    public Meeting(String name, double latitude, double longitude, Date date, int type) {
-        this(name, latitude, longitude, date, type, new ArrayList<>());
+    public Meeting(String name,
+                   double latitude,
+                   double longitude,
+                   Date date,
+                   int type,
+                   int maxPeople, boolean isPrivate) {
+        this(name, latitude, longitude, date, type, new ArrayList<>(), maxPeople, isPrivate);
     }
 
-    public Meeting(String name, double latitude, double longitude, Date date, int type, List<String> photos) {
+    public Meeting(String name,
+                   double latitude,
+                   double longitude,
+                   Date date,
+                   int type,
+                   List<String> photos,
+                   int maxPeople, boolean isPrivate) {
         this.name = name;
         this.latitude = latitude;
         this.longitude = longitude;
         this.date = date;
         this.type = type;
         this.photos = photos;
+        this.maxPeople = maxPeople;
+        this.isPrivate = isPrivate;
     }
 
     public String getName() {
@@ -75,5 +90,21 @@ public class Meeting {
 
     public void setPhotos(List<String> photos) {
         this.photos = photos;
+    }
+
+    public int getMaxPeople() {
+        return maxPeople;
+    }
+
+    public void setMaxPeople(int maxPeople) {
+        this.maxPeople = maxPeople;
+    }
+
+    public boolean isPrivate() {
+        return isPrivate;
+    }
+
+    public void setPrivate(boolean aPrivate) {
+        isPrivate = aPrivate;
     }
 }
