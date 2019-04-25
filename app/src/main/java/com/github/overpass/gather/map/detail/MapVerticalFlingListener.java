@@ -1,9 +1,9 @@
 package com.github.overpass.gather.map.detail;
 
+import androidx.annotation.NonNull;
+
 import com.mapbox.android.gestures.MoveGestureDetector;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
-
-import androidx.annotation.NonNull;
 
 public abstract class MapVerticalFlingListener implements MapboxMap.OnMoveListener {
 

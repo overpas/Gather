@@ -1,10 +1,10 @@
 package com.github.overpass.gather.auth.register.signup;
 
+import androidx.lifecycle.LiveData;
+
 import com.github.overpass.gather.auth.BaseValidator;
 import com.github.overpass.gather.auth.register.RegistrationStepViewModel;
 import com.google.firebase.auth.FirebaseAuth;
-
-import androidx.lifecycle.LiveData;
 
 public class SignUpViewModel extends RegistrationStepViewModel {
 

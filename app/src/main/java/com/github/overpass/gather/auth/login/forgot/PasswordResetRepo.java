@@ -1,9 +1,9 @@
 package com.github.overpass.gather.auth.login.forgot;
 
-import com.google.firebase.auth.FirebaseAuth;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+
+import com.google.firebase.auth.FirebaseAuth;
 
 public class PasswordResetRepo {
 

@@ -2,6 +2,10 @@ package com.github.overpass.gather.map.detail;
 
 import android.location.Location;
 
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
+
 import com.github.overpass.gather.map.Meeting;
 import com.github.overpass.gather.map.MeetingRepo;
 import com.github.overpass.gather.map.MeetingsUseCase;
@@ -10,11 +14,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.mapbox.mapboxsdk.annotations.Marker;
 
 import java.util.Map;
-
-import androidx.lifecycle.Lifecycle;
-import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
 
 public class MapDetailViewModel extends BaseMapDetailViewModel {
 

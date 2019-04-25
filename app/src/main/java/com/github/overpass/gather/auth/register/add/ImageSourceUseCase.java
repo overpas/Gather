@@ -1,8 +1,8 @@
 package com.github.overpass.gather.auth.register.add;
 
-import com.github.overpass.gather.SingleLiveEvent;
-
 import androidx.lifecycle.LiveData;
+
+import com.github.overpass.gather.SingleLiveEvent;
 
 public class ImageSourceUseCase {
 

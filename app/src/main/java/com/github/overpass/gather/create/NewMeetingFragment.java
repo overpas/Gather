@@ -7,6 +7,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProviders;
+
 import com.github.overpass.gather.R;
 import com.github.overpass.gather.base.BaseFragment;
 import com.github.overpass.gather.dialog.ProgressDialogFragment;
@@ -18,11 +24,6 @@ import com.shawnlin.numberpicker.NumberPicker;
 
 import java.util.Date;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.ViewModelProviders;
 import butterknife.BindView;
 
 import static com.github.overpass.gather.UIUtil.dateOf;

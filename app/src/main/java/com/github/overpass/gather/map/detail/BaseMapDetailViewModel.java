@@ -4,14 +4,14 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.location.Location;
 
+import androidx.annotation.NonNull;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModel;
+
 import com.github.overpass.gather.SingleLiveEvent;
 import com.github.overpass.gather.map.LocationPermissionUseCase;
-import com.github.overpass.gather.map.Meeting;
-import com.github.overpass.gather.map.MeetingRepo;
-import com.github.overpass.gather.map.MeetingsUseCase;
 import com.github.overpass.gather.map.PermissionRequestResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.mapbox.android.core.location.LocationEngine;
 import com.mapbox.android.core.location.LocationEngineCallback;
 import com.mapbox.android.core.location.LocationEngineRequest;
@@ -25,11 +25,6 @@ import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.Style;
 
 import java.util.List;
-
-import androidx.annotation.NonNull;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 
 public abstract class BaseMapDetailViewModel extends ViewModel implements PermissionsListener,
         LocationEngineCallback<LocationEngineResult> {

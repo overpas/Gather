@@ -2,12 +2,13 @@ package com.github.overpass.gather.auth.register.signup;
 
 import android.os.Handler;
 
-import com.github.overpass.gather.dialog.ProgressDialogFragment;
+import androidx.lifecycle.ViewModelProviders;
+
 import com.github.overpass.gather.R;
 import com.github.overpass.gather.auth.register.RegistrationFragment;
+import com.github.overpass.gather.dialog.ProgressDialogFragment;
 import com.google.android.material.textfield.TextInputEditText;
 
-import androidx.lifecycle.ViewModelProviders;
 import butterknife.BindView;
 import butterknife.OnClick;
 

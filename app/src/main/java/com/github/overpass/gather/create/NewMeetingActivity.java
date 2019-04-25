@@ -4,12 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.github.overpass.gather.FragmentUtils;
 import com.github.overpass.gather.R;
 import com.mapbox.mapboxsdk.geometry.LatLng;
-
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 
 public class NewMeetingActivity extends AppCompatActivity {
 

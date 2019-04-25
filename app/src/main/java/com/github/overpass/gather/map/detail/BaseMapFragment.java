@@ -8,6 +8,8 @@ import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
+import androidx.annotation.NonNull;
+
 import com.github.overpass.gather.BackPressFragment;
 import com.github.overpass.gather.R;
 import com.github.overpass.gather.base.BaseFragment;
@@ -24,7 +26,6 @@ import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import com.mapbox.mapboxsdk.maps.Style;
 import com.mapbox.mapboxsdk.plugins.annotation.SymbolManager;
 
-import androidx.annotation.NonNull;
 import butterknife.BindView;
 import butterknife.OnClick;
 

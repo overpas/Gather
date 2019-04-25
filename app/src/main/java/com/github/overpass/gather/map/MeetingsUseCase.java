@@ -2,11 +2,11 @@ package com.github.overpass.gather.map;
 
 import android.location.Location;
 
+import androidx.lifecycle.LiveData;
+
 import com.github.overpass.gather.map.detail.Current2MaxPeopleRatio;
 
 import java.util.Map;
-
-import androidx.lifecycle.LiveData;
 
 public class MeetingsUseCase {
 

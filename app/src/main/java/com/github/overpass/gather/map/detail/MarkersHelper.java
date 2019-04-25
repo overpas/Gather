@@ -2,6 +2,9 @@ package com.github.overpass.gather.map.detail;
 
 import android.text.TextUtils;
 
+import androidx.annotation.Nullable;
+import androidx.lifecycle.LiveData;
+
 import com.github.overpass.gather.SingleLiveEvent;
 import com.github.overpass.gather.map.Meeting;
 import com.mapbox.mapboxsdk.annotations.Marker;
@@ -11,9 +14,6 @@ import com.mapbox.mapboxsdk.maps.MapboxMap;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import androidx.annotation.Nullable;
-import androidx.lifecycle.LiveData;
 
 public class MarkersHelper {
 

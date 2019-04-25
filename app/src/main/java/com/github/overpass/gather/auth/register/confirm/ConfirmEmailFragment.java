@@ -1,10 +1,11 @@
 package com.github.overpass.gather.auth.register.confirm;
 
-import com.github.overpass.gather.dialog.ProgressDialogFragment;
+import androidx.lifecycle.ViewModelProviders;
+
 import com.github.overpass.gather.R;
 import com.github.overpass.gather.auth.register.RegistrationFragment;
+import com.github.overpass.gather.dialog.ProgressDialogFragment;
 
-import androidx.lifecycle.ViewModelProviders;
 import butterknife.OnClick;
 
 import static com.github.overpass.gather.UIUtil.toast;

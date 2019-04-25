@@ -1,6 +1,5 @@
 package com.github.overpass.gather.map;
 
-import com.github.overpass.gather.auth.register.add.SaveUserStatus;
 import com.github.overpass.gather.base.Sealed;
 
 public abstract class SaveMeetingStatus extends Sealed {

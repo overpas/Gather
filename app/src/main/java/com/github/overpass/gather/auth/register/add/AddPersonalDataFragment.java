@@ -1,10 +1,13 @@
 package com.github.overpass.gather.auth.register.add;
 
-import android.Manifest;
 import android.content.Intent;
 import android.net.Uri;
 import android.view.View;
 import android.widget.ImageView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.github.overpass.gather.R;
@@ -15,9 +18,6 @@ import com.github.overpass.gather.dialog.PickImageDialogFragment;
 import com.github.overpass.gather.dialog.ProgressDialogFragment;
 import com.google.android.material.textfield.TextInputEditText;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.lifecycle.ViewModelProviders;
 import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnLongClick;

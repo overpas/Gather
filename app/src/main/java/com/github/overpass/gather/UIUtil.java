@@ -6,12 +6,12 @@ import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.fragment.app.Fragment;
+
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.Calendar;
 import java.util.Date;
-
-import androidx.fragment.app.Fragment;
 
 public class UIUtil {
 

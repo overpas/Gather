@@ -2,12 +2,11 @@ package com.github.overpass.gather.auth.login;
 
 import android.os.Bundle;
 
-import com.github.overpass.gather.FragmentUtils;
-import com.github.overpass.gather.R;
-import com.github.overpass.gather.auth.login.SignInFragment;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.github.overpass.gather.FragmentUtils;
+import com.github.overpass.gather.R;
 
 public class LoginActivity extends AppCompatActivity {
 

@@ -1,9 +1,9 @@
 package com.github.overpass.gather.auth.login.forgot;
 
-import com.github.overpass.gather.auth.BaseValidator;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+
+import com.github.overpass.gather.auth.BaseValidator;
 
 public class ForgotPasswordUseCase {
 

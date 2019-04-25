@@ -1,9 +1,9 @@
 package com.github.overpass.gather.auth.login;
 
-import com.google.firebase.auth.FirebaseAuth;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+
+import com.google.firebase.auth.FirebaseAuth;
 
 class SignInRepo {
 

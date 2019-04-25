@@ -8,12 +8,13 @@ import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.github.overpass.gather.R;
 import com.github.overpass.gather.auth.login.LoginActivity;
 import com.github.overpass.gather.map.MapActivity;
 import com.google.firebase.auth.FirebaseAuth;
 
-import androidx.appcompat.app.AppCompatActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 

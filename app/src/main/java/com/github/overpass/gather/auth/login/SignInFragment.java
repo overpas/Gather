@@ -2,15 +2,16 @@ package com.github.overpass.gather.auth.login;
 
 import android.content.Intent;
 
-import com.github.overpass.gather.auth.login.forgot.ForgotPasswordBottomFragment;
-import com.github.overpass.gather.base.BaseFragment;
+import androidx.lifecycle.ViewModelProviders;
+
 import com.github.overpass.gather.R;
+import com.github.overpass.gather.auth.login.forgot.ForgotPasswordBottomFragment;
 import com.github.overpass.gather.auth.register.RegisterActivity;
+import com.github.overpass.gather.base.BaseFragment;
 import com.github.overpass.gather.dialog.ProgressDialogFragment;
 import com.github.overpass.gather.map.MapActivity;
 import com.google.android.material.textfield.TextInputEditText;
 
-import androidx.lifecycle.ViewModelProviders;
 import butterknife.BindView;
 import butterknife.OnClick;
 

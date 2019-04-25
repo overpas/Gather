@@ -2,14 +2,14 @@ package com.github.overpass.gather.auth.register.add;
 
 import android.app.Activity;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 
 import java.util.concurrent.Executor;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 public class FailedTask<T> extends Task<T> {
 

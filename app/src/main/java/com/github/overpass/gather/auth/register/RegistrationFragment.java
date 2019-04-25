@@ -2,10 +2,10 @@ package com.github.overpass.gather.auth.register;
 
 import android.content.Context;
 
-import com.github.overpass.gather.base.BaseFragment;
-
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
+
+import com.github.overpass.gather.base.BaseFragment;
 
 public abstract class RegistrationFragment<VM extends ViewModel> extends BaseFragment<VM> {
 

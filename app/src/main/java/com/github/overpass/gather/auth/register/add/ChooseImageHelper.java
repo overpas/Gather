@@ -2,15 +2,14 @@ package com.github.overpass.gather.auth.register.add;
 
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
-import android.widget.ImageView;
+
+import androidx.annotation.Nullable;
+import androidx.core.content.FileProvider;
+import androidx.fragment.app.Fragment;
 
 import com.github.overpass.gather.BuildConfig;
 
@@ -21,14 +20,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-import androidx.annotation.Nullable;
-import androidx.core.content.FileProvider;
-import androidx.fragment.app.Fragment;
-
 @SuppressWarnings("SameParameterValue")
-public class ChooseImageUseCase {
+public class ChooseImageHelper {
 
-    private static final String TAG = "ChooseImageUseCase";
+    private static final String TAG = "ChooseImageHelper";
 
     void chooseFromGallery(Fragment fragment, int requestCode) {
         // Create an Intent with action as ACTION_PICK

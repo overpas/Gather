@@ -1,10 +1,10 @@
 package com.github.overpass.gather.auth.register;
 
-import com.github.overpass.gather.SingleLiveEvent;
-import com.github.overpass.gather.auth.register.add.ImageSourceUseCase;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
+
+import com.github.overpass.gather.SingleLiveEvent;
+import com.github.overpass.gather.auth.register.add.ImageSourceUseCase;
 
 public class RegisterViewModel extends ViewModel {
 

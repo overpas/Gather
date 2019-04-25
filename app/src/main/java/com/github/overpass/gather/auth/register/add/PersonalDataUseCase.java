@@ -3,12 +3,12 @@ package com.github.overpass.gather.auth.register.add;
 import android.content.ContentResolver;
 import android.net.Uri;
 
-import com.github.overpass.gather.auth.register.UsernameValidator;
-import com.google.firebase.auth.FirebaseAuth;
-
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
+
+import com.github.overpass.gather.auth.register.UsernameValidator;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class PersonalDataUseCase {
 

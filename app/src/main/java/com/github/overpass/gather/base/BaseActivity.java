@@ -1,10 +1,10 @@
 package com.github.overpass.gather.base;
 
 import android.os.Bundle;
-import android.view.WindowManager;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModel;
+
 import butterknife.ButterKnife;
 
 public abstract class BaseActivity<VM extends ViewModel> extends AppCompatActivity {

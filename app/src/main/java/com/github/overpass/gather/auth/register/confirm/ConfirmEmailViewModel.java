@@ -1,9 +1,9 @@
 package com.github.overpass.gather.auth.register.confirm;
 
+import androidx.lifecycle.LiveData;
+
 import com.github.overpass.gather.auth.register.RegistrationStepViewModel;
 import com.google.firebase.auth.FirebaseAuth;
-
-import androidx.lifecycle.LiveData;
 
 public class ConfirmEmailViewModel extends RegistrationStepViewModel {
 

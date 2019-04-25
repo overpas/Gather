@@ -3,6 +3,9 @@ package com.github.overpass.gather.map.detail;
 import android.location.Location;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+import androidx.lifecycle.ViewModelProviders;
+
 import com.github.overpass.gather.BackPressFragment;
 import com.github.overpass.gather.R;
 import com.github.overpass.gather.map.LocationPermissionUseCase;
@@ -14,9 +17,6 @@ import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import com.mapbox.mapboxsdk.maps.Style;
 
 import java.util.Map;
-
-import androidx.annotation.NonNull;
-import androidx.lifecycle.ViewModelProviders;
 
 public class MapFragment extends BaseMapFragment<MapDetailViewModel>
         implements BackPressFragment, OnMapReadyCallback {

@@ -2,6 +2,9 @@ package com.github.overpass.gather.map;
 
 import android.util.Log;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+
 import com.annimon.stream.Stream;
 import com.github.overpass.gather.auth.register.add.FailedTask;
 import com.github.overpass.gather.create.MeetingType;
@@ -12,9 +15,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 
 public class MeetingRepo {
 

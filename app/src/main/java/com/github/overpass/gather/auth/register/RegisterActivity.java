@@ -6,11 +6,12 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ViewFlipper;
 
+import androidx.lifecycle.ViewModelProviders;
+
 import com.github.overpass.gather.R;
 import com.github.overpass.gather.base.BaseActivity;
 import com.github.overpass.gather.dialog.PickImageDialogFragment;
 
-import androidx.lifecycle.ViewModelProviders;
 import butterknife.BindView;
 
 public class RegisterActivity extends BaseActivity<RegisterViewModel>

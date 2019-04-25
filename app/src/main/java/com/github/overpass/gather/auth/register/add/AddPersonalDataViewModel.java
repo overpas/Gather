@@ -8,7 +8,13 @@ import android.content.pm.PackageManager;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 
-import com.github.overpass.gather.Runners;
+import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+
 import com.github.overpass.gather.SingleLiveEvent;
 import com.github.overpass.gather.auth.register.RegistrationStepViewModel;
 import com.github.overpass.gather.auth.register.UsernameValidator;
@@ -17,23 +23,13 @@ import com.google.firebase.storage.FirebaseStorage;
 
 import java.io.File;
 
-import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
-
 public class AddPersonalDataViewModel extends RegistrationStepViewModel {
 
     private static final String TAG = "AddPersonalDataViewMode";
     private static final int REQUEST_CODE_FROM_GALLERY = 12;
     private static final int REQUEST_CODE_FROM_CAMERA = 13;
-    private static final int REQUEST_CODE_WRITE_PERMISSION = 14;
-    private static final int REQUEST_CODE_READ_PERMISSION = 15;
-    private static final int REQUEST_CODE_READ_AND_WRITE_PERMISSIONS = 16;
 
-    private final ChooseImageUseCase chooseImageUseCase;
+    private final ChooseImageHelper chooseImageHelper;
     private final PersonalDataUseCase personalDataUseCase;
     private final MutableLiveData<Uri> chosenImageData;
     private final SingleLiveEvent<Boolean> writePermissionDeniedData;
@@ -49,7 +45,7 @@ public class AddPersonalDataViewModel extends RegistrationStepViewModel {
                 new UsernameValidator(),
                 FirebaseAuth.getInstance()
         );
-        chooseImageUseCase = new ChooseImageUseCase();
+        chooseImageHelper = new ChooseImageHelper();
         chosenImageData = new MutableLiveData<>();
         writePermissionDeniedData = new SingleLiveEvent<>();
         readPermissionDeniedData = new SingleLiveEvent<>();
@@ -93,7 +89,7 @@ public class AddPersonalDataViewModel extends RegistrationStepViewModel {
     }
 
     private void chooseFromGallery(Fragment fragment) {
-        chooseImageUseCase.chooseFromGallery(fragment, REQUEST_CODE_FROM_GALLERY);
+        chooseImageHelper.chooseFromGallery(fragment, REQUEST_CODE_FROM_GALLERY);
     }
 
     public void onImageChosen(int requestCode, int resultCode, @Nullable Intent data) {
@@ -130,7 +126,7 @@ public class AddPersonalDataViewModel extends RegistrationStepViewModel {
     }
 
     private void chooseFromCamera(Fragment fragment) {
-        File file = chooseImageUseCase.chooseFromCamera(fragment, REQUEST_CODE_FROM_CAMERA);
+        File file = chooseImageHelper.chooseFromCamera(fragment, REQUEST_CODE_FROM_CAMERA);
         Uri imageUri = Uri.parse("file://" + file.getAbsolutePath());
         chosenImageData.setValue(imageUri);
         MediaScannerConnection.scanFile(fragment.getContext(), new String[]{file.getAbsolutePath()},

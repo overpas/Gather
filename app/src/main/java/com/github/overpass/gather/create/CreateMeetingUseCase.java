@@ -2,13 +2,13 @@ package com.github.overpass.gather.create;
 
 import android.text.TextUtils;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+
 import com.github.overpass.gather.map.MeetingRepo;
 import com.github.overpass.gather.map.SaveMeetingStatus;
 
 import java.util.Date;
-
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 
 class CreateMeetingUseCase {
 
