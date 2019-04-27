@@ -8,7 +8,7 @@ import com.github.overpass.gather.dialog.ProgressDialogFragment;
 
 import butterknife.OnClick;
 
-import static com.github.overpass.gather.UIUtil.toast;
+import static com.github.overpass.gather.model.commons.UIUtil.toast;
 
 public class ConfirmEmailFragment extends RegistrationFragment<ConfirmEmailViewModel> {
 

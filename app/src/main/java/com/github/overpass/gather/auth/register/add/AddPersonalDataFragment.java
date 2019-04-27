@@ -16,14 +16,15 @@ import com.github.overpass.gather.auth.register.RegisterViewModel;
 import com.github.overpass.gather.auth.register.RegistrationFragment;
 import com.github.overpass.gather.dialog.PickImageDialogFragment;
 import com.github.overpass.gather.dialog.ProgressDialogFragment;
+import com.github.overpass.gather.model.usecase.image.ImageSourceUseCase;
 import com.google.android.material.textfield.TextInputEditText;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnLongClick;
 
-import static com.github.overpass.gather.UIUtil.snackbar;
-import static com.github.overpass.gather.UIUtil.textOf;
+import static com.github.overpass.gather.model.commons.UIUtil.snackbar;
+import static com.github.overpass.gather.model.commons.UIUtil.textOf;
 
 public class AddPersonalDataFragment extends RegistrationFragment<AddPersonalDataViewModel> {
 

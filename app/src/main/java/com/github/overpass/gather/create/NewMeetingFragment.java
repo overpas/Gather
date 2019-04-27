@@ -14,7 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.github.overpass.gather.R;
-import com.github.overpass.gather.base.BaseFragment;
+import com.github.overpass.gather.model.commons.base.BaseFragment;
 import com.github.overpass.gather.dialog.ProgressDialogFragment;
 import com.github.overpass.gather.map.SaveMeetingStatus;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -26,9 +26,9 @@ import java.util.Date;
 
 import butterknife.BindView;
 
-import static com.github.overpass.gather.UIUtil.dateOf;
-import static com.github.overpass.gather.UIUtil.snackbar;
-import static com.github.overpass.gather.UIUtil.textOf;
+import static com.github.overpass.gather.model.commons.UIUtil.dateOf;
+import static com.github.overpass.gather.model.commons.UIUtil.snackbar;
+import static com.github.overpass.gather.model.commons.UIUtil.textOf;
 
 public class NewMeetingFragment extends BaseFragment<NewMeetingViewModel> {
 

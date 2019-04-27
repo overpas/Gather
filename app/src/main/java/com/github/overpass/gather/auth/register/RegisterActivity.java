@@ -9,7 +9,7 @@ import android.widget.ViewFlipper;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.github.overpass.gather.R;
-import com.github.overpass.gather.base.BaseActivity;
+import com.github.overpass.gather.model.commons.base.BaseActivity;
 import com.github.overpass.gather.dialog.PickImageDialogFragment;
 
 import butterknife.BindView;

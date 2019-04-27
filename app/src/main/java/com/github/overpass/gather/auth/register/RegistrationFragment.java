@@ -5,7 +5,7 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 
-import com.github.overpass.gather.base.BaseFragment;
+import com.github.overpass.gather.model.commons.base.BaseFragment;
 
 public abstract class RegistrationFragment<VM extends ViewModel> extends BaseFragment<VM> {
 

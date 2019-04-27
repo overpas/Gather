@@ -7,8 +7,8 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 
 import com.github.overpass.gather.map.Meeting;
-import com.github.overpass.gather.map.MeetingRepo;
-import com.github.overpass.gather.map.MeetingsUseCase;
+import com.github.overpass.gather.model.repo.meeting.MeetingRepo;
+import com.github.overpass.gather.model.usecase.meeting.MeetingsUseCase;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.mapbox.mapboxsdk.annotations.Marker;

@@ -6,10 +6,10 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.annimon.stream.Stream;
-import com.github.overpass.gather.BackPressFragment;
-import com.github.overpass.gather.FragmentUtils;
+import com.github.overpass.gather.model.commons.base.BackPressFragment;
+import com.github.overpass.gather.model.commons.FragmentUtils;
 import com.github.overpass.gather.R;
-import com.github.overpass.gather.base.BaseActivity;
+import com.github.overpass.gather.model.commons.base.BaseActivity;
 import com.github.overpass.gather.map.detail.MapFragment;
 
 public class MapActivity extends BaseActivity<MapViewModel> {

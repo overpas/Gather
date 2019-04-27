@@ -2,7 +2,7 @@ package com.github.overpass.gather.auth.register.add;
 
 import android.net.Uri;
 
-import com.github.overpass.gather.base.Sealed;
+import com.github.overpass.gather.model.commons.base.Sealed;
 
 public abstract class ImageUploadStatus extends Sealed {
 

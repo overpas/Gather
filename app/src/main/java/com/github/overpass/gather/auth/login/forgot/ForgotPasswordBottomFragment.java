@@ -19,9 +19,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static com.github.overpass.gather.UIUtil.snackbar;
-import static com.github.overpass.gather.UIUtil.textOf;
-import static com.github.overpass.gather.UIUtil.toast;
+import static com.github.overpass.gather.model.commons.UIUtil.snackbar;
+import static com.github.overpass.gather.model.commons.UIUtil.textOf;
+import static com.github.overpass.gather.model.commons.UIUtil.toast;
 
 public class ForgotPasswordBottomFragment extends BottomSheetDialogFragment {
 

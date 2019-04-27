@@ -10,9 +10,9 @@ import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 
-import com.github.overpass.gather.BackPressFragment;
+import com.github.overpass.gather.model.commons.base.BackPressFragment;
 import com.github.overpass.gather.R;
-import com.github.overpass.gather.base.BaseFragment;
+import com.github.overpass.gather.model.commons.base.BaseFragment;
 import com.github.overpass.gather.create.NewMeetingActivity;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -29,7 +29,7 @@ import com.mapbox.mapboxsdk.plugins.annotation.SymbolManager;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-import static com.github.overpass.gather.UIUtil.snackbar;
+import static com.github.overpass.gather.model.commons.UIUtil.snackbar;
 
 public abstract class BaseMapFragment<VM extends BaseMapDetailViewModel> extends BaseFragment<VM>
         implements BackPressFragment, OnMapReadyCallback, MapboxMap.OnMarkerClickListener {

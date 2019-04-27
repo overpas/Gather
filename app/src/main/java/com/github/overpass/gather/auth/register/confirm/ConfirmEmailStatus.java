@@ -1,15 +1,15 @@
 package com.github.overpass.gather.auth.register.confirm;
 
-import com.github.overpass.gather.base.Sealed;
+import com.github.overpass.gather.model.commons.base.Sealed;
 
-abstract class ConfirmEmailStatus extends Sealed {
+public abstract class ConfirmEmailStatus extends Sealed {
 
     public static final String SUCCESS = "ConfirmEmailStatus_SUCCESS";
     public static final String ERROR = "ConfirmEmailStatus_ERROR";
     public static final String FAIL = "ConfirmEmailStatus_FAIL";
     public static final String PROGRESS = "ConfirmEmailStatus_PROGRESS";
 
-    static class Success extends ConfirmEmailStatus {
+    public static class Success extends ConfirmEmailStatus {
 
         @Override
         public String tag() {
@@ -17,7 +17,7 @@ abstract class ConfirmEmailStatus extends Sealed {
         }
     }
 
-    static class Error extends ConfirmEmailStatus {
+    public static class Error extends ConfirmEmailStatus {
 
         private final Throwable throwable;
 
@@ -35,7 +35,7 @@ abstract class ConfirmEmailStatus extends Sealed {
         }
     }
 
-    static class Fail extends ConfirmEmailStatus {
+    public static class Fail extends ConfirmEmailStatus {
 
         private final String message;
 
@@ -53,7 +53,7 @@ abstract class ConfirmEmailStatus extends Sealed {
         }
     }
 
-    static class Progress extends ConfirmEmailStatus {
+    public static class Progress extends ConfirmEmailStatus {
 
         @Override
         public String tag() {

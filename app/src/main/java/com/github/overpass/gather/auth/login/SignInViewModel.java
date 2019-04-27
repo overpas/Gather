@@ -3,7 +3,9 @@ package com.github.overpass.gather.auth.login;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.github.overpass.gather.auth.BaseValidator;
+import com.github.overpass.gather.model.data.validator.BaseValidator;
+import com.github.overpass.gather.model.repo.login.SignInRepo;
+import com.github.overpass.gather.model.usecase.login.SignInUseCase;
 
 public class SignInViewModel extends ViewModel {
 

@@ -12,8 +12,8 @@ import com.google.android.material.textfield.TextInputEditText;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-import static com.github.overpass.gather.UIUtil.snackbar;
-import static com.github.overpass.gather.UIUtil.textOf;
+import static com.github.overpass.gather.model.commons.UIUtil.snackbar;
+import static com.github.overpass.gather.model.commons.UIUtil.textOf;
 
 public class SignUpFragment extends RegistrationFragment<SignUpViewModel> {
 

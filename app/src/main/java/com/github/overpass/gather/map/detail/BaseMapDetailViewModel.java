@@ -9,8 +9,8 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.github.overpass.gather.SingleLiveEvent;
-import com.github.overpass.gather.map.LocationPermissionUseCase;
+import com.github.overpass.gather.model.commons.SingleLiveEvent;
+import com.github.overpass.gather.model.usecase.permission.LocationPermissionUseCase;
 import com.github.overpass.gather.map.PermissionRequestResult;
 import com.mapbox.android.core.location.LocationEngine;
 import com.mapbox.android.core.location.LocationEngineCallback;

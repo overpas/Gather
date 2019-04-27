@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModelProviders;
 import com.github.overpass.gather.R;
 import com.github.overpass.gather.auth.login.forgot.ForgotPasswordBottomFragment;
 import com.github.overpass.gather.auth.register.RegisterActivity;
-import com.github.overpass.gather.base.BaseFragment;
+import com.github.overpass.gather.model.commons.base.BaseFragment;
 import com.github.overpass.gather.dialog.ProgressDialogFragment;
 import com.github.overpass.gather.map.MapActivity;
 import com.google.android.material.textfield.TextInputEditText;
@@ -15,8 +15,8 @@ import com.google.android.material.textfield.TextInputEditText;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-import static com.github.overpass.gather.UIUtil.snackbar;
-import static com.github.overpass.gather.UIUtil.textOf;
+import static com.github.overpass.gather.model.commons.UIUtil.snackbar;
+import static com.github.overpass.gather.model.commons.UIUtil.textOf;
 
 public class SignInFragment extends BaseFragment<SignInViewModel> {
 

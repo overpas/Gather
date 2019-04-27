@@ -6,11 +6,12 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.github.overpass.gather.BackPressFragment;
+import com.github.overpass.gather.model.commons.base.BackPressFragment;
 import com.github.overpass.gather.R;
-import com.github.overpass.gather.map.LocationPermissionUseCase;
+import com.github.overpass.gather.model.usecase.permission.LocationPermissionUseCase;
 import com.github.overpass.gather.map.MapViewModel;
 import com.github.overpass.gather.map.Meeting;
+import com.github.overpass.gather.model.repo.icon.IconRepo;
 import com.mapbox.mapboxsdk.annotations.Marker;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;

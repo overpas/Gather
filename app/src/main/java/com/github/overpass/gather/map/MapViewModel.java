@@ -2,6 +2,8 @@ package com.github.overpass.gather.map;
 
 import androidx.lifecycle.ViewModel;
 
+import com.github.overpass.gather.model.usecase.permission.LocationPermissionUseCase;
+
 public class MapViewModel extends ViewModel {
 
     private final LocationPermissionUseCase locationPermissionUseCase;
