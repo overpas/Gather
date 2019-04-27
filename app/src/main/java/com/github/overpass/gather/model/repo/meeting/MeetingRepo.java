@@ -2,22 +2,33 @@ package com.github.overpass.gather.model.repo.meeting;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Transformations;
 
 import com.annimon.stream.Stream;
-import com.github.overpass.gather.map.AuthUser;
-import com.github.overpass.gather.map.Meeting;
-import com.github.overpass.gather.map.SaveMeetingStatus;
+import com.github.overpass.gather.screen.map.AuthUser;
+import com.github.overpass.gather.screen.map.Meeting;
+import com.github.overpass.gather.screen.map.SaveMeetingStatus;
 import com.github.overpass.gather.model.data.FailedTask;
-import com.github.overpass.gather.create.MeetingType;
-import com.github.overpass.gather.map.detail.Current2MaxPeopleRatio;
+import com.github.overpass.gather.screen.create.MeetingType;
+import com.github.overpass.gather.screen.map.detail.Current2MaxPeopleRatio;
+import com.github.overpass.gather.screen.meeting.MeetingAndRatio;
+import com.github.overpass.gather.screen.meeting.base.LoadMeetingStatus;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Transaction;
 
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
+
+import static com.annimon.stream.Objects.nonNull;
 
 public class MeetingRepo {
 
@@ -111,8 +122,45 @@ public class MeetingRepo {
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     numbers[1] = queryDocumentSnapshots.size();
                     maxPeopleData.setValue(new Current2MaxPeopleRatio(numbers[1], numbers[0]));
+                })
+                .addOnFailureListener(e -> {
+                    maxPeopleData.setValue(Current2MaxPeopleRatio.FAILED);
                 });
         return maxPeopleData;
+    }
+
+    public LiveData<LoadMeetingStatus> getFullMeeting(String meetingId) {
+        MediatorLiveData<LoadMeetingStatus> meetingStatus = new MediatorLiveData<>();
+        meetingStatus.setValue(new LoadMeetingStatus.Progress());
+        LiveData<MeetingAndRatio> meetingAndRatioData = Transformations.switchMap(
+                getMeeting(meetingId),
+                meeting -> Transformations.switchMap(getCurrent2MaxRatio(meetingId), ratio -> {
+                    MutableLiveData<MeetingAndRatio> resultData = new MutableLiveData<>();
+                    resultData.setValue(new MeetingAndRatio(meeting, ratio));
+                    return resultData;
+                })
+        );
+        meetingStatus.addSource(meetingAndRatioData, meetingAndRatio -> {
+            if (!nonNull(meetingAndRatio) || meetingAndRatio.getMeeting().equals(Meeting.EMPTY)
+                    || meetingAndRatio.getRatio().equals(Current2MaxPeopleRatio.FAILED)) {
+                meetingStatus.setValue(new LoadMeetingStatus.Error());
+            } else {
+                meetingStatus.setValue(new LoadMeetingStatus.Success(meetingAndRatio));
+            }
+        });
+        return meetingStatus;
+    }
+
+    public LiveData<Meeting> getMeeting(String meetingId) {
+        MutableLiveData<Meeting> meetingStatus = new MutableLiveData<>();
+        firestore.collection(Meetings.COLLECTION)
+                .document(meetingId)
+                .get()
+                .addOnSuccessListener(doc -> {
+                    meetingStatus.setValue(doc.toObject(Meeting.class));
+                })
+                .addOnFailureListener(e -> meetingStatus.setValue(Meeting.EMPTY));
+        return meetingStatus;
     }
 
     private interface Meetings {

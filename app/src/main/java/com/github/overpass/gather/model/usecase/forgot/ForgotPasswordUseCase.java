@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.github.overpass.gather.model.data.validator.BaseValidator;
-import com.github.overpass.gather.auth.login.forgot.ForgotStatus;
+import com.github.overpass.gather.screen.auth.login.forgot.ForgotStatus;
 import com.github.overpass.gather.model.repo.password.PasswordResetRepo;
 
 public class ForgotPasswordUseCase {

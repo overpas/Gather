@@ -17,21 +17,22 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
         <activity
-            android:name=".auth.register.RegisterActivity"
+            android:name=".screen.auth.register.RegisterActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".map.MapActivity" />
-        <activity android:name=".profile.ProfileActivity" />
-        <activity android:name=".splash.SplashScreenActivity">
+        <activity android:name=".screen.map.MapActivity" />
+        <activity android:name=".screen.profile.ProfileActivity" />
+        <activity android:name=".screen.splash.SplashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".auth.login.LoginActivity" />
+        <activity android:name=".screen.auth.login.LoginActivity" />
         <activity
-            android:name=".create.NewMeetingActivity"
+            android:name=".screen.create.NewMeetingActivity"
             android:theme="@style/AppTheme.WithActionBar" />
+        <activity android:name=".screen.meeting.MeetingActivity" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

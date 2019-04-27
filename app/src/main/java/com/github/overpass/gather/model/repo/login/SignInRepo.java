@@ -3,7 +3,7 @@ package com.github.overpass.gather.model.repo.login;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.github.overpass.gather.auth.login.SignInStatus;
+import com.github.overpass.gather.screen.auth.login.SignInStatus;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class SignInRepo {

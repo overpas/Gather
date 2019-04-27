@@ -12,7 +12,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.github.overpass.gather.model.data.FailedTask;
-import com.github.overpass.gather.auth.register.add.ImageUploadStatus;
+import com.github.overpass.gather.screen.auth.register.add.ImageUploadStatus;
 import com.github.overpass.gather.model.commons.Runners;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;

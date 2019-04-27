@@ -5,9 +5,9 @@ import android.text.TextUtils;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.github.overpass.gather.create.MeetingType;
+import com.github.overpass.gather.screen.create.MeetingType;
 import com.github.overpass.gather.model.repo.meeting.MeetingRepo;
-import com.github.overpass.gather.map.SaveMeetingStatus;
+import com.github.overpass.gather.screen.map.SaveMeetingStatus;
 
 import java.util.Date;
 

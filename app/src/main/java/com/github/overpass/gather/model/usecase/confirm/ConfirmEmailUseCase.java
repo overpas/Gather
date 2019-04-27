@@ -2,7 +2,7 @@ package com.github.overpass.gather.model.usecase.confirm;
 
 import androidx.lifecycle.LiveData;
 
-import com.github.overpass.gather.auth.register.confirm.ConfirmEmailStatus;
+import com.github.overpass.gather.screen.auth.register.confirm.ConfirmEmailStatus;
 import com.github.overpass.gather.model.repo.confirm.ConfirmEmailRepo;
 
 public class ConfirmEmailUseCase {

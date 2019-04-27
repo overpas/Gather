@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.github.overpass.gather.model.data.validator.BaseValidator;
-import com.github.overpass.gather.auth.login.SignInStatus;
+import com.github.overpass.gather.screen.auth.login.SignInStatus;
 import com.github.overpass.gather.model.repo.login.SignInRepo;
 
 public class SignInUseCase {

@@ -2,7 +2,7 @@ package com.github.overpass.gather.model.usecase.image;
 
 import androidx.lifecycle.LiveData;
 
-import com.github.overpass.gather.auth.register.add.ImageSource;
+import com.github.overpass.gather.screen.auth.register.add.ImageSource;
 import com.github.overpass.gather.model.commons.SingleLiveEvent;
 
 public class ImageSourceUseCase {

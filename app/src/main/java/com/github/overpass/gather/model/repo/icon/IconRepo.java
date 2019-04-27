@@ -3,7 +3,7 @@ package com.github.overpass.gather.model.repo.icon;
 import android.content.Context;
 
 import com.github.overpass.gather.R;
-import com.github.overpass.gather.create.MeetingType;
+import com.github.overpass.gather.screen.create.MeetingType;
 import com.mapbox.mapboxsdk.annotations.Icon;
 import com.mapbox.mapboxsdk.annotations.IconFactory;
 

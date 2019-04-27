@@ -3,7 +3,7 @@ package com.github.overpass.gather.model.usecase.register;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.github.overpass.gather.auth.register.signup.SignUpStatus;
+import com.github.overpass.gather.screen.auth.register.signup.SignUpStatus;
 import com.github.overpass.gather.model.data.validator.BaseValidator;
 import com.github.overpass.gather.model.repo.register.SignUpRepo;
 

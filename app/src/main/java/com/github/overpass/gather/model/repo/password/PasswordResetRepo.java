@@ -3,7 +3,7 @@ package com.github.overpass.gather.model.repo.password;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.github.overpass.gather.auth.login.forgot.ForgotStatus;
+import com.github.overpass.gather.screen.auth.login.forgot.ForgotStatus;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class PasswordResetRepo {

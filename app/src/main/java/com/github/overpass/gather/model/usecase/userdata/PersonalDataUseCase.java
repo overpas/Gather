@@ -7,9 +7,9 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 
-import com.github.overpass.gather.auth.register.add.AddDataStatus;
-import com.github.overpass.gather.auth.register.add.ImageUploadStatus;
-import com.github.overpass.gather.auth.register.add.SaveUserStatus;
+import com.github.overpass.gather.screen.auth.register.add.AddDataStatus;
+import com.github.overpass.gather.screen.auth.register.add.ImageUploadStatus;
+import com.github.overpass.gather.screen.auth.register.add.SaveUserStatus;
 import com.github.overpass.gather.model.data.validator.UsernameValidator;
 import com.github.overpass.gather.model.repo.upload.UploadImageRepo;
 import com.github.overpass.gather.model.repo.user.UserRepo;

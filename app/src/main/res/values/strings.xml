@@ -102,4 +102,6 @@
     <string name="this_meeting_is_private">This meeting is private</string>
     <string name="send_password_reset_request">Send Password Reset Request</string>
     <string name="invalid_email">Invalid email</string>
+    <string name="join">Join</string>
+    <string name="meeting_is_private">This meeting is private.\nYou can apply for joining</string>
 </resources>
