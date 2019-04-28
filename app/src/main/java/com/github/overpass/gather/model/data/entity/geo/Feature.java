@@ -23,7 +23,7 @@ public class Feature {
     @SerializedName("bbox")
     private List<Double> bbox = null;
     @SerializedName("center")
-    private List<Integer> center = null;
+    private List<Double> center = null;
     @SerializedName("geometry")
     private Geometry geometry;
     @SerializedName("context")
@@ -50,7 +50,7 @@ public class Feature {
      * @param placeType
      * @param geometry
      */
-    public Feature(String id, String type, List<String> placeType, int relevance, Properties properties, String text, String placeName, List<Double> bbox, List<Integer> center, Geometry geometry, List<GeoContext> context) {
+    public Feature(String id, String type, List<String> placeType, int relevance, Properties properties, String text, String placeName, List<Double> bbox, List<Double> center, Geometry geometry, List<GeoContext> context) {
         super();
         this.id = id;
         this.type = type;
@@ -129,11 +129,11 @@ public class Feature {
         this.bbox = bbox;
     }
 
-    public List<Integer> getCenter() {
+    public List<Double> getCenter() {
         return center;
     }
 
-    public void setCenter(List<Integer> center) {
+    public void setCenter(List<Double> center) {
         this.center = center;
     }
 

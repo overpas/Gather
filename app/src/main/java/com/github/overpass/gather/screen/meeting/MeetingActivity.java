@@ -3,12 +3,14 @@ package com.github.overpass.gather.screen.meeting;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 
 import androidx.lifecycle.ViewModelProviders;
 
 import com.github.overpass.gather.R;
 import com.github.overpass.gather.model.commons.FragmentUtils;
 import com.github.overpass.gather.model.commons.base.BaseActivity;
+import com.github.overpass.gather.screen.meeting.chat.ChatFragment;
 import com.github.overpass.gather.screen.meeting.join.JoinFragment;
 
 public class MeetingActivity extends BaseActivity<MeetingViewModel> {
@@ -29,10 +31,33 @@ public class MeetingActivity extends BaseActivity<MeetingViewModel> {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (savedInstanceState == null) {
-            String meetingId = getIntent().getExtras().getString(MEETING_ID_KEY);
-            FragmentUtils.replace(getSupportFragmentManager(), R.id.flChatContainer,
-                    JoinFragment.newInstance(meetingId), false);
+            viewModel.isAllowed(getMeetingId()).observe(this, this::handleIsAllowed);
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void handleIsAllowed(boolean isAllowed) {
+        if (!isAllowed) {
+            FragmentUtils.replace(getSupportFragmentManager(), R.id.flMeetingContainer,
+                    JoinFragment.newInstance(getMeetingId()), false);
+        } else {
+            FragmentUtils.replace(getSupportFragmentManager(), R.id.flMeetingContainer,
+                    ChatFragment.newInstance(getMeetingId()), false);
+        }
+    }
+
+    private String getMeetingId() {
+        return getIntent().getExtras().getString(MEETING_ID_KEY);
     }
 
     public static void start(Context context, String meetingId) {

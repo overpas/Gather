@@ -37,7 +37,7 @@ public class HttpClient {
         request("GET", finalUrl, null, callback);
     }
 
-    public void request(String method, String url, RequestBody requestBody, Callback callback) {
+    private void request(String method, String url, RequestBody requestBody, Callback callback) {
         Request request = new Request.Builder()
                 .method(method, requestBody)
                 .url(url)

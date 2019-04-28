@@ -25,8 +25,7 @@ public class MapDetailViewModel extends BaseMapDetailViewModel {
 
     public MapDetailViewModel() {
         super();
-        meetingsUseCase = new MeetingsUseCase(new MeetingRepo(FirebaseFirestore.getInstance(),
-                FirebaseAuth.getInstance()));
+        meetingsUseCase = new MeetingsUseCase(new MeetingRepo(FirebaseFirestore.getInstance()));
     }
 
     public LiveData<Map<String, Meeting>> scanArea(Location location) {

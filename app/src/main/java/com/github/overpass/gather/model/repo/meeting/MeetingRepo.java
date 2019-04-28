@@ -2,8 +2,6 @@ package com.github.overpass.gather.model.repo.meeting;
 
 import android.util.Log;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -20,35 +18,34 @@ import com.github.overpass.gather.screen.meeting.MeetingAndRatio;
 import com.github.overpass.gather.screen.meeting.base.LoadMeetingStatus;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.Transaction;
 
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
+
+import javax.annotation.Nullable;
 
 import static com.annimon.stream.Objects.nonNull;
 
-public class MeetingRepo {
+public class MeetingRepo implements MeetingsData {
 
     private static final String TAG = "MeetingRepo";
 
     private final FirebaseFirestore firestore;
-    private final FirebaseAuth firebaseAuth;
 
-    public MeetingRepo(FirebaseFirestore firestore, FirebaseAuth firebaseAuth) {
+    public MeetingRepo(FirebaseFirestore firestore) {
         this.firestore = firestore;
-        this.firebaseAuth = firebaseAuth;
     }
 
-    public LiveData<Map<String, Meeting>> getMeetings(double latitude, double longitude, double radius) {
+    public LiveData<Map<String, Meeting>> getMeetings(double latitude,
+                                                      double longitude,
+                                                      double radius) {
         MutableLiveData<Map<String, Meeting>> meetingData = new MutableLiveData<>();
-        firestore.collection(Meetings.COLLECTION)
-                .whereGreaterThanOrEqualTo(Meetings.FIELD_LATITUDE, latitude - radius)
-                .whereLessThanOrEqualTo(Meetings.FIELD_LATITUDE, latitude + radius)
-//              .whereGreaterThanOrEqualTo(Meetings.FIELD_LONGITUDE, longitude - radius)
-//              .whereLessThanOrEqualTo(Meetings.FIELD_LONGITUDE, longitude + radius)
+        firestore.collection(COLLECTION_MEETING)
+                .whereGreaterThanOrEqualTo(FIELD_LATITUDE, latitude - radius)
+                .whereLessThanOrEqualTo(FIELD_LATITUDE, latitude + radius)
+//              .whereGreaterThanOrEqualTo(FIELD_LONGITUDE, longitude - radius)
+//              .whereLessThanOrEqualTo(FIELD_LONGITUDE, longitude + radius)
 //              FUCK YOU FIREBASE
                 .get()
                 .addOnSuccessListener(docs -> {
@@ -75,10 +72,11 @@ public class MeetingRepo {
                                             String name,
                                             MeetingType type,
                                             int maxPeople,
-                                            boolean isPrivate) {
+                                            boolean isPrivate,
+                                            @Nullable AuthUser authUser) {
         MutableLiveData<SaveMeetingStatus> resultData = new MutableLiveData<>();
         resultData.setValue(new SaveMeetingStatus.Progress());
-        firestore.collection(Meetings.COLLECTION)
+        firestore.collection(COLLECTION_MEETING)
                 .add(new Meeting(name, latitude, longitude, date, type.getType(), maxPeople,
                         isPrivate))
                 .addOnFailureListener(e -> {
@@ -86,11 +84,10 @@ public class MeetingRepo {
                 })
                 .continueWithTask(task -> {
                     if (task.isSuccessful() && task.getResult() != null
-                            && firebaseAuth.getCurrentUser() != null) {
-                        String id = firebaseAuth.getCurrentUser().getUid();
+                            && authUser != null) {
                         return task.getResult()
-                                .collection(Meetings.SUBCOLLECTION_USERS)
-                                .add(new AuthUser(AuthUser.Role.ADMIN.getRole(), id));
+                                .collection(SUBCOLLECTION_USERS)
+                                .add(authUser);
                     }
                     return new FailedTask<>("Something Went Wrong!");
                 })
@@ -106,7 +103,7 @@ public class MeetingRepo {
     public LiveData<Current2MaxPeopleRatio> getCurrent2MaxRatio(String id) {
         MutableLiveData<Current2MaxPeopleRatio> maxPeopleData = new MutableLiveData<>();
         final int[] numbers = new int[2];
-        firestore.collection(Meetings.COLLECTION)
+        firestore.collection(COLLECTION_MEETING)
                 .document(id)
                 .get()
                 .continueWithTask(task -> {
@@ -114,7 +111,7 @@ public class MeetingRepo {
                         numbers[0] = (int) task.getResult().getLong("maxPeople").longValue();
                         return task.getResult()
                                 .getReference()
-                                .collection(Meetings.SUBCOLLECTION_USERS)
+                                .collection(SUBCOLLECTION_USERS)
                                 .get();
                     }
                     return new FailedTask<>("Something went wrong");
@@ -153,7 +150,7 @@ public class MeetingRepo {
 
     public LiveData<Meeting> getMeeting(String meetingId) {
         MutableLiveData<Meeting> meetingStatus = new MutableLiveData<>();
-        firestore.collection(Meetings.COLLECTION)
+        firestore.collection(COLLECTION_MEETING)
                 .document(meetingId)
                 .get()
                 .addOnSuccessListener(doc -> {
@@ -163,11 +160,23 @@ public class MeetingRepo {
         return meetingStatus;
     }
 
-    private interface Meetings {
-
-        String COLLECTION = "Meetings";
-        String SUBCOLLECTION_USERS = "Users";
-        String FIELD_LATITUDE = "latitude";
-        String FIELD_LONGITUDE = "longitude";
+    public LiveData<Boolean> isUserAllowed(@Nullable AuthUser authUser, String meetingId) {
+        MutableLiveData<Boolean> isAllowedData = new MutableLiveData<>();
+        if (authUser == null) {
+            isAllowedData.setValue(false);
+            return isAllowedData;
+        }
+        firestore.collection(COLLECTION_MEETING)
+                .document(meetingId)
+                .collection(SUBCOLLECTION_USERS)
+                .whereEqualTo("id", authUser.getId())
+                .get()
+                .addOnSuccessListener(doc -> {
+                    isAllowedData.setValue(!doc.isEmpty());
+                })
+                .addOnFailureListener(e -> {
+                    isAllowedData.setValue(false);
+                });
+        return isAllowedData;
     }
 }

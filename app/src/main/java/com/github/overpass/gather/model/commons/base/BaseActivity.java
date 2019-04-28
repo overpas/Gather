@@ -16,6 +16,7 @@ public abstract class BaseActivity<VM extends ViewModel> extends AppCompatActivi
         super.onCreate(savedInstanceState);
         setContentView(getLayoutRes());
         ButterKnife.bind(this);
+        setupToolbar();
         viewModel = createViewModel();
         subscribe();
     }
@@ -25,5 +26,12 @@ public abstract class BaseActivity<VM extends ViewModel> extends AppCompatActivi
     protected abstract VM createViewModel();
 
     protected void subscribe() {
+    }
+
+    private void setupToolbar() {
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle("");
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
     }
 }

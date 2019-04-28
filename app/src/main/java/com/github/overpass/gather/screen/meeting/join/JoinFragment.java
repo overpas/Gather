@@ -11,14 +11,20 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.github.overpass.gather.R;
+import com.github.overpass.gather.model.commons.FragmentUtils;
 import com.github.overpass.gather.screen.create.MeetingType;
+import com.github.overpass.gather.screen.dialog.ProgressDialogFragment;
 import com.github.overpass.gather.screen.meeting.base.BaseMeetingFragment;
 import com.github.overpass.gather.screen.meeting.base.LoadMeetingStatus;
+import com.github.overpass.gather.screen.meeting.chat.ChatFragment;
 
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
 import butterknife.BindView;
+import butterknife.OnClick;
+
+import static com.github.overpass.gather.model.commons.UIUtil.snackbar;
 
 public class JoinFragment extends BaseMeetingFragment<JoinViewModel> {
 
@@ -55,6 +61,47 @@ public class JoinFragment extends BaseMeetingFragment<JoinViewModel> {
         flProgress.setVisibility(View.VISIBLE);
     }
 
+    @OnClick(R.id.btnJoin)
+    public void onJoinClick() {
+        viewModel.join(getMeetingId()).observe(getViewLifecycleOwner(), this::handleJoin);
+    }
+
+    private void handleJoin(JoinStatus status) {
+        switch (status.tag()) {
+            case JoinStatus.ENROLLED:
+                handleEnrolled(status.as(JoinStatus.Enrolled.class));
+                break;
+            case JoinStatus.ERROR:
+                handleJoinError(status.as(JoinStatus.Error.class));
+                break;
+            case JoinStatus.JOINED:
+                handleJoined(status.as(JoinStatus.Joined.class));
+                break;
+            case JoinStatus.PROGRESS:
+                handleProgress(status.as(JoinStatus.Progress.class));
+                break;
+        }
+    }
+
+    private void handleProgress(JoinStatus.Progress progress) {
+        ProgressDialogFragment.show(getFragmentManager());
+    }
+
+    private void handleJoined(JoinStatus.Joined joined) {
+        ProgressDialogFragment.show(getFragmentManager());
+        FragmentUtils.replace(getFragmentManager(), R.id.flMeetingContainer,
+                ChatFragment.newInstance(getMeetingId()), false);
+    }
+
+    private void handleJoinError(JoinStatus.Error error) {
+        ProgressDialogFragment.show(getFragmentManager());
+        snackbar(ivMeetingType, error.getThrowable().getLocalizedMessage());
+    }
+
+    private void handleEnrolled(JoinStatus.Enrolled enrolled) {
+        ProgressDialogFragment.show(getFragmentManager());
+    }
+
     private void handleLoadStatus(LoadMeetingStatus loadMeetingStatus) {
         switch (loadMeetingStatus.tag()) {
             case LoadMeetingStatus.ERROR:
@@ -72,8 +119,6 @@ public class JoinFragment extends BaseMeetingFragment<JoinViewModel> {
     private void handleLoadSuccess(LoadMeetingStatus.Success success) {
         flProgress.setVisibility(View.GONE);
         tvName.setText(success.getMeetingAndRatio().getMeeting().getName());
-//        tvAddress.setText(success.getMeetingAndRatio().getMeeting().getLatitude() + ", "
-//                + success.getMeetingAndRatio().getMeeting().getLongitude());
         tvPrivateMeeting.setVisibility(success.getMeetingAndRatio().getMeeting().isPrivate()
                 ? View.VISIBLE : View.INVISIBLE);
         String ratio = String.format(Locale.getDefault(), "%d / %d",
@@ -89,8 +134,8 @@ public class JoinFragment extends BaseMeetingFragment<JoinViewModel> {
         } else {
             ivMeetingType.setImageResource(R.drawable.ic_beer_large);
         }
-        viewModel.getAddress(success.getMeetingAndRatio().getMeeting().getLatitude(),
-                success.getMeetingAndRatio().getMeeting().getLongitude())
+        viewModel.getAddress(success.getMeetingAndRatio().getMeeting().getLongitude(),
+                success.getMeetingAndRatio().getMeeting().getLatitude())
                 .observe(getViewLifecycleOwner(), tvAddress::setText);
     }
 

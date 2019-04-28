@@ -9,7 +9,7 @@ public class Geometry {
     @SerializedName("type")
     private String type;
     @SerializedName("coordinates")
-    private List<Integer> coordinates = null;
+    private List<Double> coordinates = null;
 
     /**
      * No args constructor for use in serialization
@@ -23,7 +23,7 @@ public class Geometry {
      * @param type
      * @param coordinates
      */
-    public Geometry(String type, List<Integer> coordinates) {
+    public Geometry(String type, List<Double> coordinates) {
         super();
         this.type = type;
         this.coordinates = coordinates;
@@ -37,11 +37,11 @@ public class Geometry {
         this.type = type;
     }
 
-    public List<Integer> getCoordinates() {
+    public List<Double> getCoordinates() {
         return coordinates;
     }
 
-    public void setCoordinates(List<Integer> coordinates) {
+    public void setCoordinates(List<Double> coordinates) {
         this.coordinates = coordinates;
     }
 
