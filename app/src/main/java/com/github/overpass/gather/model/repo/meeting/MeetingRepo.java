@@ -76,6 +76,7 @@ public class MeetingRepo implements MeetingsData {
                                             @Nullable AuthUser authUser) {
         MutableLiveData<SaveMeetingStatus> resultData = new MutableLiveData<>();
         resultData.setValue(new SaveMeetingStatus.Progress());
+        final String[] meetingId = new String[1];
         firestore.collection(COLLECTION_MEETING)
                 .add(new Meeting(name, latitude, longitude, date, type.getType(), maxPeople,
                         isPrivate))
@@ -85,6 +86,7 @@ public class MeetingRepo implements MeetingsData {
                 .continueWithTask(task -> {
                     if (task.isSuccessful() && task.getResult() != null
                             && authUser != null) {
+                        meetingId[0] = task.getResult().getId();
                         return task.getResult()
                                 .collection(SUBCOLLECTION_USERS)
                                 .add(authUser);
@@ -92,7 +94,7 @@ public class MeetingRepo implements MeetingsData {
                     return new FailedTask<>("Something Went Wrong!");
                 })
                 .addOnSuccessListener(result -> {
-                    resultData.setValue(new SaveMeetingStatus.Success());
+                    resultData.setValue(new SaveMeetingStatus.Success(meetingId[0]));
                 })
                 .addOnFailureListener(e -> {
                     resultData.setValue(new SaveMeetingStatus.Error(e));

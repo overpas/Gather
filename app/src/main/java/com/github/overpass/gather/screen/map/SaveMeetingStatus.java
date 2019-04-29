@@ -19,6 +19,16 @@ public abstract class SaveMeetingStatus extends Sealed {
 
     public static final class Success extends SaveMeetingStatus {
 
+        private final String meetingId;
+
+        public Success(String meetingId) {
+            this.meetingId = meetingId;
+        }
+
+        public String getMeetingId() {
+            return meetingId;
+        }
+
         @Override
         public String tag() {
             return SUCCESS;

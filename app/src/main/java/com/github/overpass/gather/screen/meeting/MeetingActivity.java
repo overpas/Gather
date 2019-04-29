@@ -4,18 +4,26 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.github.overpass.gather.R;
 import com.github.overpass.gather.model.commons.FragmentUtils;
 import com.github.overpass.gather.model.commons.base.BaseActivity;
 import com.github.overpass.gather.screen.meeting.chat.ChatFragment;
 import com.github.overpass.gather.screen.meeting.join.JoinFragment;
 
+import butterknife.BindView;
+
 public class MeetingActivity extends BaseActivity<MeetingViewModel> {
 
     private static final String MEETING_ID_KEY = "MEETING_ID_KEY";
+
+    @BindView(R.id.lavProgress)
+    LottieAnimationView lavProgress;
 
     @Override
     protected int getLayoutRes() {
@@ -31,6 +39,7 @@ public class MeetingActivity extends BaseActivity<MeetingViewModel> {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (savedInstanceState == null) {
+            lavProgress.setVisibility(View.VISIBLE);
             viewModel.isAllowed(getMeetingId()).observe(this, this::handleIsAllowed);
         }
     }
@@ -47,6 +56,7 @@ public class MeetingActivity extends BaseActivity<MeetingViewModel> {
     }
 
     private void handleIsAllowed(boolean isAllowed) {
+        lavProgress.setVisibility(View.GONE);
         if (!isAllowed) {
             FragmentUtils.replace(getSupportFragmentManager(), R.id.flMeetingContainer,
                     JoinFragment.newInstance(getMeetingId()), false);

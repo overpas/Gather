@@ -4,11 +4,13 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.github.overpass.gather.model.repo.meeting.MeetingRepo;
+import com.github.overpass.gather.model.repo.subscription.SubscriptionRepo;
 import com.github.overpass.gather.model.repo.user.UserRepo;
 import com.github.overpass.gather.screen.map.SaveMeetingStatus;
 import com.github.overpass.gather.model.usecase.meeting.CreateMeetingUseCase;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.Date;
 
@@ -19,8 +21,8 @@ public class NewMeetingViewModel extends ViewModel {
     public NewMeetingViewModel() {
         this.createMeetingUseCase = new CreateMeetingUseCase(
                 new MeetingRepo(FirebaseFirestore.getInstance()),
-                new UserRepo(FirebaseAuth.getInstance())
-        );
+                new UserRepo(FirebaseAuth.getInstance()),
+                new SubscriptionRepo(FirebaseMessaging.getInstance()));
     }
 
     public LiveData<SaveMeetingStatus> createMeeting(double latitude,
