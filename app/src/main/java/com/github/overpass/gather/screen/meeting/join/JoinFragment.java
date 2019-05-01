@@ -1,5 +1,6 @@
 package com.github.overpass.gather.screen.meeting.join;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -17,6 +18,7 @@ import com.github.overpass.gather.screen.dialog.ProgressDialogFragment;
 import com.github.overpass.gather.screen.meeting.base.BaseMeetingFragment;
 import com.github.overpass.gather.screen.meeting.base.LoadMeetingStatus;
 import com.github.overpass.gather.screen.meeting.chat.ChatFragment;
+import com.github.overpass.gather.screen.meeting.enrolled.EnrolledActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.Locale;
@@ -88,18 +90,20 @@ public class JoinFragment extends BaseMeetingFragment<JoinViewModel> {
     }
 
     private void handleJoined(JoinStatus.Joined joined) {
-        ProgressDialogFragment.show(getFragmentManager());
+        ProgressDialogFragment.hide(getFragmentManager());
         FragmentUtils.replace(getFragmentManager(), R.id.flMeetingContainer,
                 ChatFragment.newInstance(getMeetingId()), false);
     }
 
     private void handleJoinError(JoinStatus.Error error) {
-        ProgressDialogFragment.show(getFragmentManager());
+        ProgressDialogFragment.hide(getFragmentManager());
         snackbar(ivMeetingType, error.getThrowable().getLocalizedMessage());
     }
 
     private void handleEnrolled(JoinStatus.Enrolled enrolled) {
-        ProgressDialogFragment.show(getFragmentManager());
+        ProgressDialogFragment.hide(getFragmentManager());
+        startActivity(new Intent(getContext(), EnrolledActivity.class));
+        getActivity().finish();
     }
 
     private void handleLoadStatus(LoadMeetingStatus loadMeetingStatus) {

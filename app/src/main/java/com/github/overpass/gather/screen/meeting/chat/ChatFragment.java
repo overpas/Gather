@@ -30,7 +30,6 @@ public class ChatFragment extends BaseMeetingFragment<ChatViewModel> {
     @Override
     protected void subscribe() {
         super.subscribe();
-
     }
 
     public static ChatFragment newInstance(String meetingId) {
