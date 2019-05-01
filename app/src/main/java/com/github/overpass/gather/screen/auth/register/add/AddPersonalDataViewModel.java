@@ -19,10 +19,11 @@ import com.github.overpass.gather.model.commons.SingleLiveEvent;
 import com.github.overpass.gather.screen.auth.register.RegistrationStepViewModel;
 import com.github.overpass.gather.model.data.validator.UsernameValidator;
 import com.github.overpass.gather.model.repo.upload.UploadImageRepo;
-import com.github.overpass.gather.model.repo.user.UserRepo;
+import com.github.overpass.gather.model.repo.user.UserAuthRepo;
 import com.github.overpass.gather.model.usecase.image.ImageSourceUseCase;
 import com.github.overpass.gather.model.usecase.userdata.PersonalDataUseCase;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 
 import java.io.File;
@@ -44,7 +45,7 @@ public class AddPersonalDataViewModel extends RegistrationStepViewModel {
 
     public AddPersonalDataViewModel() {
         personalDataUseCase = new PersonalDataUseCase(
-                new UserRepo(FirebaseAuth.getInstance()),
+                new UserAuthRepo(FirebaseAuth.getInstance(), FirebaseFirestore.getInstance()),
                 new UploadImageRepo(FirebaseStorage.getInstance()),
                 new UsernameValidator(),
                 FirebaseAuth.getInstance()

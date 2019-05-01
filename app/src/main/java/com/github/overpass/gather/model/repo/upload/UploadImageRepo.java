@@ -46,13 +46,7 @@ public class UploadImageRepo {
                         long percent = temp.getBytesTransferred() / temp.getTotalByteCount();
                         data.postValue(new ImageUploadStatus.Progress(percent));
                     })
-                    .continueWithTask(task -> {
-                        if (task.isSuccessful()) {
-                            return storageReference.getDownloadUrl();
-                        } else {
-                            return new FailedTask<>("Upload Failed");
-                        }
-                    })
+                    .onSuccessTask(docRef -> storageReference.getDownloadUrl())
                     .addOnSuccessListener(uri -> {
                         data.postValue(new ImageUploadStatus.Success(uri));
                     })

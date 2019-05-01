@@ -16,7 +16,6 @@ import com.github.overpass.gather.screen.create.MeetingType;
 import com.github.overpass.gather.screen.map.detail.Current2MaxPeopleRatio;
 import com.github.overpass.gather.screen.meeting.MeetingAndRatio;
 import com.github.overpass.gather.screen.meeting.base.LoadMeetingStatus;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Date;
@@ -83,12 +82,10 @@ public class MeetingRepo implements MeetingsData {
                 .addOnFailureListener(e -> {
                     resultData.setValue(new SaveMeetingStatus.Error(e));
                 })
-                .continueWithTask(task -> {
-                    if (task.isSuccessful() && task.getResult() != null
-                            && authUser != null) {
-                        meetingId[0] = task.getResult().getId();
-                        return task.getResult()
-                                .collection(SUBCOLLECTION_USERS)
+                .onSuccessTask(docRef -> {
+                    if (authUser != null) {
+                        meetingId[0] = docRef.getId();
+                        return docRef.collection(SUBCOLLECTION_USERS)
                                 .add(authUser);
                     }
                     return new FailedTask<>("Something Went Wrong!");
@@ -108,15 +105,11 @@ public class MeetingRepo implements MeetingsData {
         firestore.collection(COLLECTION_MEETING)
                 .document(id)
                 .get()
-                .continueWithTask(task -> {
-                    if (task.isSuccessful()) {
-                        numbers[0] = (int) task.getResult().getLong("maxPeople").longValue();
-                        return task.getResult()
-                                .getReference()
+                .onSuccessTask(docRef -> {
+                        numbers[0] = (int) docRef.getLong("maxPeople").longValue();
+                        return docRef.getReference()
                                 .collection(SUBCOLLECTION_USERS)
                                 .get();
-                    }
-                    return new FailedTask<>("Something went wrong");
                 })
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     numbers[1] = queryDocumentSnapshots.size();

@@ -6,7 +6,7 @@ import androidx.lifecycle.Transformations;
 
 import com.github.overpass.gather.model.repo.meeting.JoinRepo;
 import com.github.overpass.gather.model.repo.meeting.MeetingRepo;
-import com.github.overpass.gather.model.repo.user.UserRepo;
+import com.github.overpass.gather.model.repo.user.UserAuthRepo;
 import com.github.overpass.gather.screen.map.AuthUser;
 import com.github.overpass.gather.screen.meeting.base.LoadMeetingStatus;
 import com.github.overpass.gather.screen.meeting.join.JoinStatus;
@@ -15,12 +15,12 @@ public class MeetingUseCase {
 
     private final MeetingRepo meetingRepo;
     private final JoinRepo joinRepo;
-    private final UserRepo userRepo;
+    private final UserAuthRepo userAuthRepo;
 
-    public MeetingUseCase(MeetingRepo meetingRepo, JoinRepo joinRepo, UserRepo userRepo) {
+    public MeetingUseCase(MeetingRepo meetingRepo, JoinRepo joinRepo, UserAuthRepo userAuthRepo) {
         this.meetingRepo = meetingRepo;
         this.joinRepo = joinRepo;
-        this.userRepo = userRepo;
+        this.userAuthRepo = userAuthRepo;
     }
 
     public LiveData<LoadMeetingStatus> loadMeeting(String meetingId) {
@@ -38,6 +38,6 @@ public class MeetingUseCase {
     }
 
     private LiveData<JoinStatus> joinAsUser(Function<AuthUser, LiveData<JoinStatus>> joining) {
-        return Transformations.switchMap(userRepo.getCurrentUser(AuthUser.Role.USER), joining);
+        return Transformations.switchMap(userAuthRepo.getCurrentUser(AuthUser.Role.USER), joining);
     }
 }

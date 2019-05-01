@@ -8,7 +8,7 @@ import androidx.lifecycle.Transformations;
 
 import com.github.overpass.gather.model.commons.exception.FailedToSubscribe;
 import com.github.overpass.gather.model.repo.subscription.SubscriptionRepo;
-import com.github.overpass.gather.model.repo.user.UserRepo;
+import com.github.overpass.gather.model.repo.user.UserAuthRepo;
 import com.github.overpass.gather.screen.create.MeetingType;
 import com.github.overpass.gather.model.repo.meeting.MeetingRepo;
 import com.github.overpass.gather.screen.map.AuthUser;
@@ -19,12 +19,12 @@ import java.util.Date;
 public class CreateMeetingUseCase {
 
     private final MeetingRepo meetingRepo;
-    private final UserRepo userRepo;
+    private final UserAuthRepo userAuthRepo;
     private final SubscriptionRepo subscriptionRepo;
 
-    public CreateMeetingUseCase(MeetingRepo meetingRepo, UserRepo userRepo, SubscriptionRepo subscriptionRepo) {
+    public CreateMeetingUseCase(MeetingRepo meetingRepo, UserAuthRepo userAuthRepo, SubscriptionRepo subscriptionRepo) {
         this.meetingRepo = meetingRepo;
-        this.userRepo = userRepo;
+        this.userAuthRepo = userAuthRepo;
         this.subscriptionRepo = subscriptionRepo;
     }
 
@@ -41,7 +41,7 @@ public class CreateMeetingUseCase {
             return resultData;
         }
         return Transformations.switchMap(
-                userRepo.getCurrentUser(AuthUser.Role.ADMIN),
+                userAuthRepo.getCurrentUser(AuthUser.Role.ADMIN),
                 user -> subscribeToPendingUsers(
                         meetingRepo.save(latitude, longitude, date, title, type, maxPeople,
                                 isPrivate, user)
@@ -49,7 +49,7 @@ public class CreateMeetingUseCase {
         );
     }
 
-    public LiveData<SaveMeetingStatus> subscribeToPendingUsers(LiveData<SaveMeetingStatus> data) {
+    private LiveData<SaveMeetingStatus> subscribeToPendingUsers(LiveData<SaveMeetingStatus> data) {
         return Transformations.switchMap(data, saveStatus -> {
             MutableLiveData<SaveMeetingStatus> resultData = new MutableLiveData<>();
             resultData.setValue(new SaveMeetingStatus.Progress());

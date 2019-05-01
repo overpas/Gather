@@ -6,7 +6,7 @@ import com.github.overpass.gather.model.data.HttpClient;
 import com.github.overpass.gather.model.repo.geocode.GeocodeRepo;
 import com.github.overpass.gather.model.repo.meeting.JoinRepo;
 import com.github.overpass.gather.model.repo.meeting.MeetingRepo;
-import com.github.overpass.gather.model.repo.user.UserRepo;
+import com.github.overpass.gather.model.repo.user.UserAuthRepo;
 import com.github.overpass.gather.model.usecase.geo.GeoUseCase;
 import com.github.overpass.gather.model.usecase.meeting.MeetingUseCase;
 import com.github.overpass.gather.screen.meeting.base.BaseMeetingViewModel;
@@ -24,7 +24,7 @@ public class JoinViewModel extends BaseMeetingViewModel {
         meetingUseCase = new MeetingUseCase(
                 new MeetingRepo(FirebaseFirestore.getInstance()),
                 new JoinRepo(FirebaseFirestore.getInstance()),
-                new UserRepo(FirebaseAuth.getInstance())
+                new UserAuthRepo(FirebaseAuth.getInstance(), FirebaseFirestore.getInstance())
         );
         geoUseCase = new GeoUseCase(new GeocodeRepo(HttpClient.getInstance(), new Gson()));
     }

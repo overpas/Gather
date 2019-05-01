@@ -2,6 +2,7 @@ package com.github.overpass.gather.screen.meeting.join;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -9,6 +10,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.github.overpass.gather.R;
@@ -44,6 +46,8 @@ public class JoinFragment extends BaseMeetingFragment<JoinViewModel> {
     TextView tvDate;
     @BindView(R.id.ivMeetingType)
     ImageView ivMeetingType;
+    @BindView(R.id.toolbarJoin)
+    Toolbar toolbarJoin;
 
     @Override
     protected JoinViewModel createViewModel() {
@@ -58,6 +62,7 @@ public class JoinFragment extends BaseMeetingFragment<JoinViewModel> {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        toolbarJoin.setNavigationOnClickListener(navIcon -> getActivity().finish());
         viewModel.loadMeeting(getMeetingId())
                 .observe(getViewLifecycleOwner(), this::handleLoadStatus);
         flProgress.setVisibility(View.VISIBLE);
@@ -129,7 +134,8 @@ public class JoinFragment extends BaseMeetingFragment<JoinViewModel> {
                 success.getMeetingAndRatio().getRatio().getCurrent(),
                 success.getMeetingAndRatio().getRatio().getMax());
         tvRatio.setText(ratio);
-        SimpleDateFormat format = new SimpleDateFormat("EEE, MMM d, yyyy", Locale.getDefault());
+        SimpleDateFormat format = new SimpleDateFormat("EEE, MMM d, yyyy",
+                Locale.getDefault());
         tvDate.setText(format.format(success.getMeetingAndRatio().getMeeting().getDate()));
         if (MeetingType.isBusiness(success.getMeetingAndRatio().getMeeting().getType())) {
             ivMeetingType.setImageResource(R.drawable.ic_case_large);

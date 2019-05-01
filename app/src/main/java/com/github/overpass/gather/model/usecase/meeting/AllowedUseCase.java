@@ -4,22 +4,22 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Transformations;
 
 import com.github.overpass.gather.model.repo.meeting.MeetingRepo;
-import com.github.overpass.gather.model.repo.user.UserRepo;
+import com.github.overpass.gather.model.repo.user.UserAuthRepo;
 import com.github.overpass.gather.screen.map.AuthUser;
 
 public class AllowedUseCase {
 
     private final MeetingRepo meetingRepo;
-    private final UserRepo userRepo;
+    private final UserAuthRepo userAuthRepo;
 
-    public AllowedUseCase(MeetingRepo meetingRepo, UserRepo userRepo) {
+    public AllowedUseCase(MeetingRepo meetingRepo, UserAuthRepo userAuthRepo) {
         this.meetingRepo = meetingRepo;
-        this.userRepo = userRepo;
+        this.userAuthRepo = userAuthRepo;
     }
 
     public LiveData<Boolean> isAllowed(String meetingId) {
         return Transformations.switchMap(
-                userRepo.getCurrentUser(AuthUser.Role.USER),
+                userAuthRepo.getCurrentUser(AuthUser.Role.USER),
                 user -> meetingRepo.isUserAllowed(user, meetingId)
         );
     }

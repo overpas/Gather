@@ -6,27 +6,29 @@ import android.net.Uri;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
+import androidx.lifecycle.Transformations;
 
 import com.github.overpass.gather.screen.auth.register.add.AddDataStatus;
 import com.github.overpass.gather.screen.auth.register.add.ImageUploadStatus;
 import com.github.overpass.gather.screen.auth.register.add.SaveUserStatus;
 import com.github.overpass.gather.model.data.validator.UsernameValidator;
 import com.github.overpass.gather.model.repo.upload.UploadImageRepo;
-import com.github.overpass.gather.model.repo.user.UserRepo;
+import com.github.overpass.gather.model.repo.user.UserAuthRepo;
+import com.github.overpass.gather.screen.map.SaveMeetingStatus;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class PersonalDataUseCase {
 
-    private final UserRepo userRepo;
+    private final UserAuthRepo userAuthRepo;
     private final UploadImageRepo uploadImageRepo;
     private final UsernameValidator validator;
     private final FirebaseAuth firebaseAuth;
 
-    public PersonalDataUseCase(UserRepo userRepo,
+    public PersonalDataUseCase(UserAuthRepo userAuthRepo,
                                UploadImageRepo uploadImageRepo,
                                UsernameValidator validator,
                                FirebaseAuth firebaseAuth) {
-        this.userRepo = userRepo;
+        this.userAuthRepo = userAuthRepo;
         this.uploadImageRepo = uploadImageRepo;
         this.validator = validator;
         this.firebaseAuth = firebaseAuth;
@@ -49,7 +51,7 @@ public class PersonalDataUseCase {
                             break;
                         case ImageUploadStatus.SUCCESS:
                             Uri uri = uploadStatus.as(ImageUploadStatus.Success.class).getUri();
-                            userRepo.save(username, uri).observeForever(saveUserStatus -> {
+                            userAuthRepo.save(username, uri).observeForever(saveUserStatus -> {
                                 switch (saveUserStatus.tag()) {
                                     case SaveUserStatus.ERROR:
                                         addDataStatus.setValue(
@@ -70,26 +72,27 @@ public class PersonalDataUseCase {
     }
 
     private LiveData<AddDataStatus> submit(String username) {
-        MediatorLiveData<AddDataStatus> addDataStatus = new MediatorLiveData<>();
-        userRepo.save(username, null).observeForever(saveUserStatus -> {
-            switch (saveUserStatus.tag()) {
+        return Transformations.map(userAuthRepo.save(username, null), status -> {
+            AddDataStatus addDataStatus;
+            switch (status.tag()) {
                 case SaveUserStatus.ERROR:
-                    addDataStatus.setValue(
-                            new AddDataStatus.Error(saveUserStatus.as(SaveUserStatus.Error.class)
-                                    .getThrowable())
-                    );
+                    Throwable throwable = status.as(SaveUserStatus.Error.class).getThrowable();
+                    addDataStatus = new AddDataStatus.Error(throwable);
+                    break;
+                case SaveUserStatus.PROGRESS:
+                    addDataStatus = new AddDataStatus.Progress();
                     break;
                 case SaveUserStatus.SUCCESS:
-                    addDataStatus.setValue(new AddDataStatus.Success());
-                    break;
+                default:
+                    addDataStatus = new AddDataStatus.Success();
             }
+            return addDataStatus;
         });
-        return addDataStatus;
     }
 
     public LiveData<AddDataStatus> submit(ContentResolver resolver,
-                                   String username,
-                                   @Nullable Uri imageUri) {
+                                          String username,
+                                          @Nullable Uri imageUri) {
         MediatorLiveData<AddDataStatus> addDataStatus = new MediatorLiveData<>();
         addDataStatus.setValue(new AddDataStatus.Progress());
         if (!validator.isUsernameValid(username)) {

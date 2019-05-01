@@ -7,6 +7,7 @@ import com.github.overpass.gather.screen.auth.register.RegistrationStepViewModel
 import com.github.overpass.gather.model.repo.register.SignUpRepo;
 import com.github.overpass.gather.model.usecase.register.SignUpUseCase;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class SignUpViewModel extends RegistrationStepViewModel {
 
@@ -14,7 +15,7 @@ public class SignUpViewModel extends RegistrationStepViewModel {
 
     public SignUpViewModel() {
         signUpUseCase = new SignUpUseCase(
-                new SignUpRepo(FirebaseAuth.getInstance()),
+                new SignUpRepo(FirebaseAuth.getInstance(), FirebaseFirestore.getInstance()),
                 new BaseValidator()
         );
     }

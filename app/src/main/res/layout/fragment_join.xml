@@ -6,15 +6,22 @@
     android:layout_height="match_parent"
     android:background="@color/colorPrimary">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbarJoin"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="?attr/homeAsUpIndicator" />
+
     <ImageView
         android:id="@+id/ivMeetingType"
-        tools:src="@drawable/ic_bund_large"
-        android:layout_marginTop="10dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         android:layout_width="100dp"
-        android:layout_height="100dp" />
+        android:layout_height="100dp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@drawable/ic_bund_large" />
 
     <TextView
         android:id="@+id/tvName"
@@ -42,14 +49,15 @@
         android:id="@+id/tvAddress"
         style="@style/TextOnly"
         android:layout_width="0dp"
-        android:textAlignment="viewStart"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="20dp"
+        android:layout_marginEnd="24dp"
+        android:textAlignment="viewStart"
         android:textColor="@color/colorAccent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/ivMarker"
         app:layout_constraintTop_toBottomOf="@id/tvName"
-        app:layout_constraintEnd_toEndOf="parent"
         tools:text="@tools:sample/cities" />
 
     <TextView
@@ -57,13 +65,14 @@
         style="@style/TextOnly"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:textAlignment="viewStart"
         android:layout_marginStart="16dp"
         android:layout_marginTop="20dp"
+        android:layout_marginEnd="24dp"
+        android:textAlignment="viewStart"
         android:textColor="@color/colorAccent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/ivMarker"
         app:layout_constraintTop_toBottomOf="@id/tvAddress"
-        app:layout_constraintEnd_toEndOf="parent"
         tools:text="6 / 10" />
 
     <ImageView
@@ -81,13 +90,14 @@
         style="@style/TextOnly"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:textAlignment="viewStart"
         android:layout_marginStart="16dp"
         android:layout_marginTop="20dp"
+        android:layout_marginEnd="24dp"
+        android:textAlignment="viewStart"
         android:textColor="@color/colorAccent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/ivMarker"
         app:layout_constraintTop_toBottomOf="@id/tvRatio"
-        app:layout_constraintEnd_toEndOf="parent"
         tools:text="@tools:sample/date/ddmmyy" />
 
     <ImageView
@@ -132,21 +142,21 @@
 
     <FrameLayout
         android:id="@+id/flProgress"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorSemitransparent"
         android:translationZ="1dp"
         android:visibility="gone"
-        tools:visibility="visible"
-        android:background="@color/colorSemitransparent"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        tools:visibility="visible">
 
         <com.airbnb.lottie.LottieAnimationView
-            app:lottie_rawRes="@raw/anim_progress_yellow"
-            app:lottie_speed="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
             app:lottie_autoPlay="true"
             app:lottie_loop="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            app:lottie_rawRes="@raw/anim_progress_yellow"
+            app:lottie_speed="1" />
 
     </FrameLayout>
 

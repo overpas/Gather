@@ -1,6 +1,12 @@
 package com.github.overpass.gather.screen.meeting.chat;
 
+import android.os.Bundle;
+import android.view.MenuItem;
+import android.view.View;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.github.overpass.gather.R;
@@ -16,6 +22,8 @@ public class ChatFragment extends BaseMeetingFragment<ChatViewModel> {
     MessageInput messageInput;
     @BindView(R.id.messagesList)
     MessagesList messagesList;
+    @BindView(R.id.toolbarChat)
+    Toolbar toolbarChat;
 
     @Override
     protected ChatViewModel createViewModel() {
@@ -28,8 +36,15 @@ public class ChatFragment extends BaseMeetingFragment<ChatViewModel> {
     }
 
     @Override
-    protected void subscribe() {
-        super.subscribe();
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        setupToolbar();
+    }
+
+    private void setupToolbar() {
+        toolbarChat.setNavigationOnClickListener(navIcon -> getActivity().finish());
+        toolbarChat.inflateMenu(R.menu.menu_chat);
+        toolbarChat.setOnMenuItemClickListener(item -> false);
     }
 
     public static ChatFragment newInstance(String meetingId) {

@@ -35,4 +35,6 @@
     <string name="default_notification_channel_id">defaultChannelId</string>
     <string name="you_have_successfully_applied_for_joining">You have successfully applied for joining</string>
     <string name="ok">OK</string>
+    <string name="attachments">Attachments</string>
+    <string name="pending_users">Pending users</string>
 </resources>
