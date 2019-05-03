@@ -7,4 +7,5 @@
     <color name="colorAccentLight">#FFEB9F</color>
     <color name="colorDarkGrayBg">#303030</color>
     <color name="colorSemitransparent">#4Dffffff</color>
+    <color name="colorScrimDark">#66000000</color>
 </resources>

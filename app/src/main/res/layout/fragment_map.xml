@@ -34,7 +34,7 @@
         app:hideOnScroll="true"
         app:layout_scrollFlags="scroll|enterAlways"
         app:menu="@menu/menu_bottom_app_bar"
-        app:navigationIcon="@drawable/ic_menu" />
+        app:navigationIcon="@drawable/ic_profile" />
 
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

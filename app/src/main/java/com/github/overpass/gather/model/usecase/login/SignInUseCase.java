@@ -5,15 +5,15 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.github.overpass.gather.model.data.validator.BaseValidator;
 import com.github.overpass.gather.screen.auth.login.SignInStatus;
-import com.github.overpass.gather.model.repo.login.SignInRepo;
+import com.github.overpass.gather.model.repo.login.AuthRepo;
 
 public class SignInUseCase {
 
-    private final SignInRepo signInRepo;
+    private final AuthRepo authRepo;
     private final BaseValidator validator;
 
-    public SignInUseCase(SignInRepo signInRepo, BaseValidator credsValidator) {
-        this.signInRepo = signInRepo;
+    public SignInUseCase(AuthRepo authRepo, BaseValidator credsValidator) {
+        this.authRepo = authRepo;
         this.validator = credsValidator;
     }
 
@@ -28,6 +28,6 @@ public class SignInUseCase {
             signInStatus.setValue(new SignInStatus.InvalidPassword("Invalid Password"));
             return signInStatus;
         }
-        return signInRepo.signIn(email, password);
+        return authRepo.signIn(email, password);
     }
 }

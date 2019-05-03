@@ -20,7 +20,8 @@
             android:name=".screen.auth.register.RegisterActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".screen.map.MapActivity" />
-        <activity android:name=".screen.profile.ProfileActivity" />
+        <activity
+            android:name=".screen.profile.ProfileActivity" />
         <activity android:name=".screen.splash.SplashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -51,7 +52,6 @@
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/colorAccent" />
-
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"
             android:value="@string/default_notification_channel_id" />

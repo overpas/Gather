@@ -1,7 +1,10 @@
 package com.github.overpass.gather.screen.map.detail;
 
+import android.content.Intent;
 import android.location.Location;
+import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProviders;
@@ -13,6 +16,7 @@ import com.github.overpass.gather.screen.meeting.MeetingActivity;
 import com.github.overpass.gather.screen.map.MapViewModel;
 import com.github.overpass.gather.screen.map.Meeting;
 import com.github.overpass.gather.model.repo.icon.IconRepo;
+import com.github.overpass.gather.screen.profile.ProfileActivity;
 import com.mapbox.mapboxsdk.annotations.Marker;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
@@ -39,6 +43,14 @@ public class MapFragment extends BaseMapFragment<MapDetailViewModel>
     @Override
     protected int getLayoutRes() {
         return R.layout.fragment_map;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        bottomAppBar.setNavigationOnClickListener(v -> {
+            startActivity(new Intent(getContext(), ProfileActivity.class));
+        });
     }
 
     @Override
