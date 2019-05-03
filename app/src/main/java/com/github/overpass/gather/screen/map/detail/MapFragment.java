@@ -9,7 +9,7 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.github.overpass.gather.model.commons.base.BackPressFragment;
+import com.github.overpass.gather.screen.base.BackPressFragment;
 import com.github.overpass.gather.R;
 import com.github.overpass.gather.model.usecase.permission.LocationPermissionUseCase;
 import com.github.overpass.gather.screen.meeting.MeetingActivity;

@@ -6,13 +6,12 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.github.overpass.gather.R;
 import com.github.overpass.gather.model.commons.FragmentUtils;
-import com.github.overpass.gather.model.commons.base.BaseActivity;
+import com.github.overpass.gather.screen.base.BaseActivity;
 import com.github.overpass.gather.screen.meeting.chat.ChatFragment;
 import com.github.overpass.gather.screen.meeting.join.JoinFragment;
 

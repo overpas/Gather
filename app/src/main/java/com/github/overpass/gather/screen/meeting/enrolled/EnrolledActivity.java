@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.github.overpass.gather.R;
-import com.github.overpass.gather.model.commons.base.BaseActivity;
+import com.github.overpass.gather.screen.base.BaseActivity;
 
 import butterknife.BindView;
 import butterknife.OnClick;

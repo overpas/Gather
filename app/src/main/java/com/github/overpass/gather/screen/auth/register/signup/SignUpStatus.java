@@ -1,6 +1,6 @@
 package com.github.overpass.gather.screen.auth.register.signup;
 
-import com.github.overpass.gather.model.commons.base.Sealed;
+import com.github.overpass.gather.model.commons.Sealed;
 
 public abstract class SignUpStatus extends Sealed {
 

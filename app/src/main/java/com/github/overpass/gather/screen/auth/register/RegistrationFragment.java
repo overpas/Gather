@@ -1,13 +1,16 @@
 package com.github.overpass.gather.screen.auth.register;
 
 import android.content.Context;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 
-import com.github.overpass.gather.model.commons.base.BaseFragment;
+import com.github.overpass.gather.screen.base.BaseFragment;
 
 public abstract class RegistrationFragment<VM extends ViewModel> extends BaseFragment<VM> {
+
+    private static final String TAG = "RegistrationFragment";
 
     protected RegistrationController registrationController;
 
@@ -17,7 +20,7 @@ public abstract class RegistrationFragment<VM extends ViewModel> extends BaseFra
         if (context instanceof RegistrationController) {
             registrationController = (RegistrationController) context;
         } else {
-            throw new RuntimeException(context + " must implement "
+            Log.d(TAG, context + " must implement "
                     + RegistrationController.class.getSimpleName());
         }
     }

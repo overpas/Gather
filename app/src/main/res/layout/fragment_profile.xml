@@ -68,6 +68,6 @@
         app:backgroundTint="@color/colorAccent"
         app:layout_anchor="@id/app_bar"
         app:layout_anchorGravity="bottom|end"
-        app:srcCompat="@drawable/ic_tick" />
+        app:srcCompat="@drawable/ic_pencil" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

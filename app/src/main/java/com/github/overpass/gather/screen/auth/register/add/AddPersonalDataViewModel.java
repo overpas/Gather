@@ -116,7 +116,7 @@ public class AddPersonalDataViewModel extends RegistrationStepViewModel {
         chosenImageData.setValue(chosenImageData.getValue());
     }
 
-    void setImageSourceUseCase(ImageSourceUseCase imageSourceUseCase) {
+    public void setImageSourceUseCase(ImageSourceUseCase imageSourceUseCase) {
         this.imageSourceUseCase = imageSourceUseCase;
     }
 

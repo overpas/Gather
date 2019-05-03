@@ -1,6 +1,6 @@
 package com.github.overpass.gather.screen.meeting.base;
 
-import com.github.overpass.gather.model.commons.base.Sealed;
+import com.github.overpass.gather.model.commons.Sealed;
 import com.github.overpass.gather.screen.meeting.MeetingAndRatio;
 
 public abstract class LoadMeetingStatus extends Sealed {

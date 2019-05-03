@@ -1,6 +1,6 @@
 package com.github.overpass.gather.screen.meeting.join;
 
-import com.github.overpass.gather.model.commons.base.Sealed;
+import com.github.overpass.gather.model.commons.Sealed;
 
 public abstract class JoinStatus extends Sealed {
     

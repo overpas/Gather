@@ -1,4 +1,4 @@
-package com.github.overpass.gather.model.commons.base;
+package com.github.overpass.gather.model.commons;
 
 /**
  * Workaround to do without sealed classes in kotlin

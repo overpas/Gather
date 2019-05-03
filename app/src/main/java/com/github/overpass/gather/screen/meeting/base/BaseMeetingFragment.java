@@ -2,7 +2,7 @@ package com.github.overpass.gather.screen.meeting.base;
 
 import android.os.Bundle;
 
-import com.github.overpass.gather.model.commons.base.BaseFragment;
+import com.github.overpass.gather.screen.base.BaseFragment;
 
 public abstract class BaseMeetingFragment<VM extends BaseMeetingViewModel> extends BaseFragment<VM> {
 

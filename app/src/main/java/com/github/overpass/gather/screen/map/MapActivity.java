@@ -5,14 +5,12 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.annimon.stream.Stream;
-import com.github.overpass.gather.model.commons.base.BackPressFragment;
-import com.github.overpass.gather.model.commons.FragmentUtils;
 import com.github.overpass.gather.R;
-import com.github.overpass.gather.model.commons.base.BaseActivity;
+import com.github.overpass.gather.model.commons.FragmentUtils;
+import com.github.overpass.gather.screen.base.BackPressActivity;
 import com.github.overpass.gather.screen.map.detail.MapFragment;
 
-public class MapActivity extends BaseActivity<MapViewModel> {
+public class MapActivity extends BackPressActivity<MapViewModel> {
 
     @Override
     protected int getLayoutRes() {
@@ -30,16 +28,6 @@ public class MapActivity extends BaseActivity<MapViewModel> {
         if (savedInstanceState == null) {
             FragmentUtils.replace(getSupportFragmentManager(), R.id.flMapFragmentContainer,
                     MapFragment.newInstance(), false);
-        }
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (!Stream.of(getSupportFragmentManager().getFragments())
-                .filter(fragment -> fragment instanceof BackPressFragment)
-                .map(fragment -> (BackPressFragment) fragment)
-                .anyMatch(BackPressFragment::handleBackPress)) {
-            super.onBackPressed();
         }
     }
 

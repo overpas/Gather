@@ -14,7 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.github.overpass.gather.R;
-import com.github.overpass.gather.model.commons.base.BaseFragment;
+import com.github.overpass.gather.screen.base.BaseFragment;
 import com.github.overpass.gather.screen.dialog.ProgressDialogFragment;
 import com.github.overpass.gather.screen.map.SaveMeetingStatus;
 import com.google.android.material.bottomnavigation.BottomNavigationView;

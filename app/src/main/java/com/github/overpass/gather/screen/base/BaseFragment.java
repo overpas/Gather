@@ -1,4 +1,4 @@
-package com.github.overpass.gather.model.commons.base;
+package com.github.overpass.gather.screen.base;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

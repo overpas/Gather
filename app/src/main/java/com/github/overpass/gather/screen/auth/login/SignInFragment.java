@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModelProviders;
 import com.github.overpass.gather.R;
 import com.github.overpass.gather.screen.auth.login.forgot.ForgotPasswordBottomFragment;
 import com.github.overpass.gather.screen.auth.register.RegisterActivity;
-import com.github.overpass.gather.model.commons.base.BaseFragment;
+import com.github.overpass.gather.screen.base.BaseFragment;
 import com.github.overpass.gather.screen.dialog.ProgressDialogFragment;
 import com.github.overpass.gather.screen.map.MapActivity;
 import com.google.android.material.textfield.TextInputEditText;

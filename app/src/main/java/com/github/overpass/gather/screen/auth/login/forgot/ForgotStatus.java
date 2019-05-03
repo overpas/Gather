@@ -1,6 +1,6 @@
 package com.github.overpass.gather.screen.auth.login.forgot;
 
-import com.github.overpass.gather.model.commons.base.Sealed;
+import com.github.overpass.gather.model.commons.Sealed;
 
 public abstract class ForgotStatus extends Sealed {
 

@@ -1,6 +1,6 @@
 package com.github.overpass.gather.screen.auth.register.add;
 
-import com.github.overpass.gather.model.commons.base.Sealed;
+import com.github.overpass.gather.model.commons.Sealed;
 
 public abstract class SaveUserStatus extends Sealed {
 

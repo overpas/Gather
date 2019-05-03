@@ -21,7 +21,7 @@
             android:screenOrientation="portrait" />
         <activity android:name=".screen.map.MapActivity" />
         <activity
-            android:name=".screen.profile.ProfileActivity" />
+            android:name=".screen.profile.ProfileActivity" android:screenOrientation="portrait" />
         <activity android:name=".screen.splash.SplashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

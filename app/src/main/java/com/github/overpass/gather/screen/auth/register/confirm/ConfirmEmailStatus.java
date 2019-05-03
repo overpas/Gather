@@ -1,6 +1,6 @@
 package com.github.overpass.gather.screen.auth.register.confirm;
 
-import com.github.overpass.gather.model.commons.base.Sealed;
+import com.github.overpass.gather.model.commons.Sealed;
 
 public abstract class ConfirmEmailStatus extends Sealed {
 

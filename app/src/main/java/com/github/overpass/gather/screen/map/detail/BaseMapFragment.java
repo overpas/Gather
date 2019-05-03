@@ -10,14 +10,13 @@ import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 
-import com.github.overpass.gather.model.commons.base.BackPressFragment;
+import com.github.overpass.gather.screen.base.BackPressFragment;
 import com.github.overpass.gather.R;
-import com.github.overpass.gather.model.commons.base.BaseFragment;
+import com.github.overpass.gather.screen.base.BaseFragment;
 import com.github.overpass.gather.screen.create.NewMeetingActivity;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.mapbox.mapboxsdk.annotations.Marker;
-import com.mapbox.mapboxsdk.annotations.MarkerOptions;
 import com.mapbox.mapboxsdk.camera.CameraPosition;
 import com.mapbox.mapboxsdk.camera.CameraUpdateFactory;
 import com.mapbox.mapboxsdk.geometry.LatLng;

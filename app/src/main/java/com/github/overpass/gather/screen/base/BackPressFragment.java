@@ -1,4 +1,4 @@
-package com.github.overpass.gather.model.commons.base;
+package com.github.overpass.gather.screen.base;
 
 public interface BackPressFragment {
 
