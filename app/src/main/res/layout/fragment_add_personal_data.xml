@@ -15,73 +15,27 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/tilUsername"
-        android:layout_width="0dp"
+    <FrameLayout
+        android:id="@+id/flPersonalDataContainer"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvAddPersonalDataPrompt">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/tietUsername"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/username"
-            android:inputType="textEmailAddress" />
-    </com.google.android.material.textfield.TextInputLayout>
+        <include layout="@layout/content_personal_data" />
 
-    <ImageView
-        android:id="@+id/ivAvatarPreview"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:scaleType="center"
-        android:scaleX="2"
-        android:scaleY="2"
-        android:src="@drawable/ic_add_pic"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tilUsername" />
-
-    <TextView
-        android:id="@+id/tvAvatarPrompt"
-        style="@style/TextOnly"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="30dp"
-        android:text="@string/choose_your_avatar_optional"
-        android:textStyle="normal"
-        app:layout_constraintStart_toEndOf="@id/ivAvatarPreview"
-        app:layout_constraintTop_toBottomOf="@id/tilUsername" />
-
-    <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/lavTick"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@id/tvAvatarPrompt"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/tvAvatarPrompt"
-        app:layout_constraintTop_toTopOf="@id/tvAvatarPrompt"
-        app:lottie_autoPlay="false"
-        app:lottie_loop="false"
-        app:lottie_rawRes="@raw/anim_tick" />
+    </FrameLayout>
 
     <TextView
         android:id="@+id/tvSubmit"
         style="@style/ButtonNormal"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
         android:layout_marginBottom="16dp"
         android:text="@string/submit"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/tilUsername"
-        app:layout_constraintStart_toStartOf="@+id/ivAvatarPreview" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
