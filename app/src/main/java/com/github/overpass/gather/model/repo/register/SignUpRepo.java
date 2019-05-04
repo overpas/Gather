@@ -44,4 +44,8 @@ public class SignUpRepo implements UsersData {
                 });
         return signUpStatus;
     }
+
+    public boolean isUserNull() {
+        return firebaseAuth.getCurrentUser() == null;
+    }
 }

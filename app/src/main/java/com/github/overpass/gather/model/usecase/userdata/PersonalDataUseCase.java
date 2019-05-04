@@ -39,6 +39,7 @@ public class PersonalDataUseCase {
                                            String userId,
                                            @Nullable Uri imageUri) {
         MediatorLiveData<AddDataStatus> addDataStatus = new MediatorLiveData<>();
+        addDataStatus.setValue(new AddDataStatus.Progress());
         uploadImageRepo
                 .saveImage(contentResolver, imageUri, UploadImageRepo.BUCKET_AVATARS,
                         userId, "avatar")

@@ -29,28 +29,42 @@ public class ConfirmEmailFragment extends RegistrationFragment<ConfirmEmailViewM
     private void handleConfirmation(ConfirmEmailStatus confirmEmailStatus) {
         switch (confirmEmailStatus.tag()) {
             case ConfirmEmailStatus.SUCCESS:
-                ProgressDialogFragment.hide(getFragmentManager());
-                viewModel.moveToNextStep(registrationController);
+                handleSuccess(confirmEmailStatus.as(ConfirmEmailStatus.Success.class));
                 break;
             case ConfirmEmailStatus.ERROR:
-                ProgressDialogFragment.hide(getFragmentManager());
-                String message = confirmEmailStatus.as(ConfirmEmailStatus.Error.class)
-                        .getThrowable()
-                        .getLocalizedMessage();
-                toast(this, message);
+                handleError(confirmEmailStatus.as(ConfirmEmailStatus.Error.class));
                 break;
             case ConfirmEmailStatus.PROGRESS:
-                ProgressDialogFragment.show(getFragmentManager());
+                handleProgress(confirmEmailStatus.as(ConfirmEmailStatus.Progress.class));
                 break;
             default:
-                ProgressDialogFragment.hide(getFragmentManager());
-                toast(this,
-                        confirmEmailStatus.as(ConfirmEmailStatus.Fail.class).getMessage());
+                handleFail(confirmEmailStatus.as(ConfirmEmailStatus.Fail.class));
         }
     }
 
     @OnClick(R.id.tvConfirm)
     public void onConfirmClicked() {
         viewModel.confirm().observe(getViewLifecycleOwner(), this::handleConfirmation);
+    }
+
+    private void handleSuccess(ConfirmEmailStatus.Success success) {
+        ProgressDialogFragment.hide(getFragmentManager());
+        viewModel.setEmailConfirmed();
+        viewModel.moveToNextStep(registrationController);
+    }
+
+    private void handleError(ConfirmEmailStatus.Error error) {
+        ProgressDialogFragment.hide(getFragmentManager());
+        String message = error.getThrowable().getLocalizedMessage();
+        toast(this, message);
+    }
+
+    private void handleProgress(ConfirmEmailStatus.Progress progress) {
+        ProgressDialogFragment.show(getFragmentManager());
+    }
+
+    private void handleFail(ConfirmEmailStatus.Fail fail) {
+        ProgressDialogFragment.hide(getFragmentManager());
+        toast(this, fail.getMessage());
     }
 }

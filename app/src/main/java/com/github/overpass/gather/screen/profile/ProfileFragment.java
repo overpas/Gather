@@ -12,6 +12,7 @@ import com.bumptech.glide.Glide;
 import com.github.overpass.gather.R;
 import com.github.overpass.gather.model.usecase.image.ImageSourceUseCase;
 import com.github.overpass.gather.screen.auth.login.LoginActivity;
+import com.github.overpass.gather.screen.auth.register.add.AddDataStatus;
 import com.github.overpass.gather.screen.base.BackPressFragment;
 import com.github.overpass.gather.screen.base.personal.PersonalDataFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -85,6 +86,12 @@ public class ProfileFragment extends PersonalDataFragment<ProfileViewModel>
     @OnClick(R.id.fabEdit)
     void onProfileModeClick() {
         viewModel.onProfileModeChanged(this::handleEditModeChange);
+    }
+
+    @Override
+    protected void handleSuccess(AddDataStatus.Success success) {
+        super.handleSuccess(success);
+        getActivity().recreate();
     }
 
     private void handleEditModeChange(boolean isEditMode) {

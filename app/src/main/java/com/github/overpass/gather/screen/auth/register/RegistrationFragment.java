@@ -30,4 +30,12 @@ public abstract class RegistrationFragment<VM extends ViewModel> extends BaseFra
         super.onDetach();
         registrationController = null;
     }
+
+    protected int getInitialStep() {
+        int initialStep = 0;
+        if (registrationController != null) {
+            initialStep = registrationController.getInitialStep();
+        }
+        return initialStep;
+    }
 }

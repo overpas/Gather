@@ -1,11 +1,16 @@
 package com.github.overpass.gather.screen.auth.register.add;
 
+import android.content.Intent;
+
 import androidx.lifecycle.ViewModelProviders;
 
 import com.github.overpass.gather.R;
 import com.github.overpass.gather.model.usecase.image.ImageSourceUseCase;
 import com.github.overpass.gather.screen.auth.register.RegisterViewModel;
+import com.github.overpass.gather.screen.auth.register.RegisterViewModelFactory;
 import com.github.overpass.gather.screen.base.personal.PersonalDataFragment;
+import com.github.overpass.gather.screen.dialog.ProgressDialogFragment;
+import com.github.overpass.gather.screen.map.MapActivity;
 
 import butterknife.OnClick;
 
@@ -13,7 +18,8 @@ public class AddPersonalDataFragment extends PersonalDataFragment<AddPersonalDat
 
     @Override
     protected AddPersonalDataViewModel createViewModel() {
-        ImageSourceUseCase imageSourceUseCase = ViewModelProviders.of(getActivity())
+        RegisterViewModelFactory factory = RegisterViewModelFactory.getInstance(getInitialStep());
+        ImageSourceUseCase imageSourceUseCase = ViewModelProviders.of(getActivity(), factory)
                 .get(RegisterViewModel.class)
                 .getImageSourceUseCase();
         AddPersonalDataViewModel viewModel = ViewModelProviders.of(this)
@@ -31,6 +37,16 @@ public class AddPersonalDataFragment extends PersonalDataFragment<AddPersonalDat
     @Override
     public void onSubmitClick() {
         super.onSubmitClick();
+    }
+
+    @Override
+    protected void handleSuccess(AddDataStatus.Success success) {
+        super.handleSuccess(success);
+        viewModel.setSignUpComplete();
+        ProgressDialogFragment.hide(getFragmentManager());
+        Intent intent = new Intent(getContext(), MapActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
 
     public static AddPersonalDataFragment newInstance() {

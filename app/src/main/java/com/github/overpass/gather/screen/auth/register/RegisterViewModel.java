@@ -12,10 +12,10 @@ public class RegisterViewModel extends ViewModel implements IImageSourceViewMode
     private final ImageSourceUseCase imageSourceUseCase;
     private final SingleLiveEvent<Integer> registrationData;
 
-    public RegisterViewModel() {
+    public RegisterViewModel(int initialStep) {
         imageSourceUseCase = new ImageSourceUseCase();
         registrationData = new SingleLiveEvent<>();
-        registrationData.setValue(0);
+        registrationData.setValue(initialStep);
     }
 
     @SuppressWarnings("ConstantConditions")

@@ -71,7 +71,7 @@ public class SignInFragment extends BaseFragment<SignInViewModel> {
 
     @OnClick(R.id.tvSignUp)
     public void onSignUpClicked() {
-        startActivity(new Intent(getContext(), RegisterActivity.class));
+        RegisterActivity.start(getContext(), 0);
     }
 
     @OnClick(R.id.tvForgotPassword)

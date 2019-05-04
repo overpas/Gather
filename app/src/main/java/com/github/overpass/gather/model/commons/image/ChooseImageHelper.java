@@ -1,4 +1,4 @@
-package com.github.overpass.gather.screen.auth.register.add;
+package com.github.overpass.gather.model.commons.image;
 
 import android.content.Context;
 import android.content.Intent;
@@ -25,7 +25,7 @@ public class ChooseImageHelper {
 
     private static final String TAG = "ChooseImageHelper";
 
-    void chooseFromGallery(Fragment fragment, int requestCode) {
+    public void chooseFromGallery(Fragment fragment, int requestCode) {
         // Create an Intent with action as ACTION_PICK
         Intent intent = new Intent(Intent.ACTION_PICK);
         // Sets the type as image/*. This ensures only components of type image are selected
@@ -39,7 +39,7 @@ public class ChooseImageHelper {
     }
 
     @Nullable
-    File chooseFromCamera(Fragment fragment, int requestCode) {
+    public File chooseFromCamera(Fragment fragment, int requestCode) {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         File imageFile = null;
         try {

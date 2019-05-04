@@ -35,37 +35,56 @@ public class SignUpFragment extends RegistrationFragment<SignUpViewModel> {
     public void handleSignUp(SignUpStatus status) {
         switch (status.tag()) {
             case SignUpStatus.ERROR:
-                ProgressDialogFragment.hide(getFragmentManager());
-                String message = status.as(SignUpStatus.Error.class)
-                        .getThrowable()
-                        .getLocalizedMessage();
-                snackbar(tietEmail, message);
+                handleError(status.as(SignUpStatus.Error.class));
                 break;
             case SignUpStatus.SUCCESS:
-                ProgressDialogFragment.hide(getFragmentManager());
-                snackbar(tietEmail, "Success");
-                new Handler().postDelayed(() -> {
-                    viewModel.moveToNextStep(registrationController);
-                }, 200);
+                handleSuccess(status.as(SignUpStatus.Success.class));
                 break;
             case SignUpStatus.PROGRESS:
-                ProgressDialogFragment.show(getFragmentManager());
+                handleProgress(status.as(SignUpStatus.Progress.class));
                 break;
             case SignUpStatus.INVALID_EMAIL:
-                ProgressDialogFragment.hide(getFragmentManager());
-                snackbar(tietEmail, status.as(SignUpStatus.InvalidEmail.class).getMessage());
+                handleInvalidEmail(status.as(SignUpStatus.InvalidEmail.class));
                 break;
             case SignUpStatus.INVALID_PASSWORD:
-                ProgressDialogFragment.hide(getFragmentManager());
-                snackbar(tietEmail, status.as(SignUpStatus.InvalidPassword.class).getMessage());
+                handleInvalidPassword(status.as(SignUpStatus.InvalidPassword.class));
                 break;
         }
     }
 
     @OnClick(R.id.tvSignUp)
     public void onSignUpClicked() {
-        viewModel.signUp2(textOf(tietEmail), textOf(tietPassword))
+        viewModel.signUp(textOf(tietEmail), textOf(tietPassword))
                 .observe(getViewLifecycleOwner(), this::handleSignUp);
+    }
+
+    private void handleError(SignUpStatus.Error error) {
+        ProgressDialogFragment.hide(getFragmentManager());
+        String message = error.getThrowable().getLocalizedMessage();
+        snackbar(tietEmail, message);
+    }
+
+    private void handleSuccess(SignUpStatus.Success success) {
+        ProgressDialogFragment.hide(getFragmentManager());
+        snackbar(tietEmail, "Success");
+        viewModel.setSignUpInProgress();
+        new Handler().postDelayed(() -> {
+            viewModel.moveToNextStep(registrationController);
+        }, 200);
+    }
+
+    private void handleProgress(SignUpStatus.Progress progress) {
+        ProgressDialogFragment.show(getFragmentManager());
+    }
+
+    private void handleInvalidEmail(SignUpStatus.InvalidEmail invalidEmail) {
+        ProgressDialogFragment.hide(getFragmentManager());
+        tietEmail.setError(invalidEmail.getMessage());
+    }
+
+    private void handleInvalidPassword(SignUpStatus.InvalidPassword invalidPassword) {
+        ProgressDialogFragment.hide(getFragmentManager());
+        tietPassword.setError(invalidPassword.getMessage());
     }
 
     public static SignUpFragment newInstance() {

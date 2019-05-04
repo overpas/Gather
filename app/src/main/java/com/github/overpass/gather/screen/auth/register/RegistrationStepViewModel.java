@@ -1,8 +1,15 @@
 package com.github.overpass.gather.screen.auth.register;
 
-import androidx.lifecycle.ViewModel;
+import android.app.Application;
 
-public class RegistrationStepViewModel extends ViewModel {
+import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
+
+public class RegistrationStepViewModel extends AndroidViewModel {
+
+    public RegistrationStepViewModel(@NonNull Application application) {
+        super(application);
+    }
 
     public void moveToNextStep(RegistrationController registrationController) {
         registrationController.moveToNextStep();

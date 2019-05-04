@@ -10,10 +10,8 @@ import androidx.annotation.Nullable;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.github.overpass.gather.R;
-import com.github.overpass.gather.screen.auth.login.LoginActivity;
 import com.github.overpass.gather.screen.auth.register.RegistrationFragment;
 import com.github.overpass.gather.screen.auth.register.add.AddDataStatus;
-import com.github.overpass.gather.screen.auth.register.add.AddPersonalDataViewModel;
 import com.github.overpass.gather.screen.auth.register.add.ImageSource;
 import com.github.overpass.gather.screen.dialog.PickImageDialogFragment;
 import com.github.overpass.gather.screen.dialog.ProgressDialogFragment;
@@ -26,7 +24,7 @@ import butterknife.OnLongClick;
 import static com.github.overpass.gather.model.commons.UIUtil.snackbar;
 import static com.github.overpass.gather.model.commons.UIUtil.textOf;
 
-public abstract class PersonalDataFragment<VM extends AddPersonalDataViewModel>
+public abstract class PersonalDataFragment<VM extends PersonalDataViewModel>
         extends RegistrationFragment<VM> {
 
     @BindView(R.id.tietUsername)
@@ -96,26 +94,37 @@ public abstract class PersonalDataFragment<VM extends AddPersonalDataViewModel>
     private void handleAddDataStatus(AddDataStatus addDataStatus) {
         switch (addDataStatus.tag()) {
             case AddDataStatus.PROGRESS:
-                ProgressDialogFragment.show(getFragmentManager());
+                handleProgress(addDataStatus.as(AddDataStatus.Progress.class));
                 break;
             case AddDataStatus.INVALID_USERNAME:
-                ProgressDialogFragment.hide(getFragmentManager());
-                tietUsername.setError("Invalid username");
+                handleInvalidUsername(addDataStatus.as(AddDataStatus.InvalidUsername.class));
                 break;
             case AddDataStatus.ERROR:
-                ProgressDialogFragment.hide(getFragmentManager());
-                String message = addDataStatus.as(AddDataStatus.Error.class)
-                        .getThrowable()
-                        .getLocalizedMessage();
-                snackbar(ivAvatarPreview, message);
+                handleError(addDataStatus.as(AddDataStatus.Error.class));
                 break;
             case AddDataStatus.SUCCESS:
-                ProgressDialogFragment.hide(getFragmentManager());
-                Intent intent = new Intent(getContext(), LoginActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
+                handleSuccess(addDataStatus.as(AddDataStatus.Success.class));
                 break;
         }
+    }
+
+    protected void handleProgress(AddDataStatus.Progress progress) {
+        ProgressDialogFragment.show(getFragmentManager());
+    }
+
+    protected void handleInvalidUsername(AddDataStatus.InvalidUsername invalidUsername) {
+        ProgressDialogFragment.hide(getFragmentManager());
+        tietUsername.setError("Invalid username");
+    }
+
+    protected void handleError(AddDataStatus.Error error) {
+        ProgressDialogFragment.hide(getFragmentManager());
+        String message = error.getThrowable().getLocalizedMessage();
+        snackbar(ivAvatarPreview, message);
+    }
+
+    protected void handleSuccess(AddDataStatus.Success success) {
+        ProgressDialogFragment.hide(getFragmentManager());
     }
 
     @Override

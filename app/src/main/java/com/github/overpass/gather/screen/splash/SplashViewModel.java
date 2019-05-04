@@ -1,23 +1,25 @@
-package com.github.overpass.gather.screen.auth.register.add;
+package com.github.overpass.gather.screen.splash;
 
 import android.app.Application;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
+import com.github.overpass.gather.model.commons.Runners;
 import com.github.overpass.gather.model.data.validator.BaseValidator;
 import com.github.overpass.gather.model.repo.pref.PreferenceRepo;
 import com.github.overpass.gather.model.repo.register.SignUpRepo;
 import com.github.overpass.gather.model.usecase.register.SignUpUseCase;
-import com.github.overpass.gather.screen.base.personal.PersonalDataViewModel;
-import com.github.overpass.gather.screen.splash.StartStatus;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-public class AddPersonalDataViewModel extends PersonalDataViewModel {
+public class SplashViewModel extends AndroidViewModel {
 
     private final SignUpUseCase signUpUseCase;
 
-    public AddPersonalDataViewModel(@NonNull Application application) {
+    public SplashViewModel(@NonNull Application application) {
         super(application);
         signUpUseCase = new SignUpUseCase(
                 new SignUpRepo(FirebaseAuth.getInstance(), FirebaseFirestore.getInstance()),
@@ -26,7 +28,12 @@ public class AddPersonalDataViewModel extends PersonalDataViewModel {
         );
     }
 
-    public void setSignUpComplete() {
-        signUpUseCase.setStartStatus(StartStatus.AUTHORIZED);
+    public LiveData<StartStatus> onSplashAnimationComplete() {
+        MutableLiveData<StartStatus> startStatusData = new MutableLiveData<>();
+        Runners.io().execute(() -> {
+            StartStatus startStatus = signUpUseCase.getStartStatus();
+            startStatusData.postValue(startStatus);
+        });
+        return startStatusData;
     }
 }
