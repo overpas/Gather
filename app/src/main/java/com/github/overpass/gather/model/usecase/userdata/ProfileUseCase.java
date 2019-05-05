@@ -17,7 +17,7 @@ public class ProfileUseCase {
     }
 
     public void getUserData(Consumer<FirebaseUser> onSuccess, Runnable onError) {
-        userDataRepo.getUserData(onSuccess, onError);
+        userDataRepo.getCurrentUserData(onSuccess, onError);
     }
 
     public void signOut(Runnable onSuccess) {

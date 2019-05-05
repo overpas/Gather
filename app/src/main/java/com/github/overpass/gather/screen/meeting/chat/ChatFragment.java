@@ -1,5 +1,6 @@
 package com.github.overpass.gather.screen.meeting.chat;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -11,6 +12,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.github.overpass.gather.R;
 import com.github.overpass.gather.screen.meeting.base.BaseMeetingFragment;
+import com.github.overpass.gather.screen.meeting.chat.users.UsersActivity;
 import com.stfalcon.chatkit.messages.MessageInput;
 import com.stfalcon.chatkit.messages.MessagesList;
 
@@ -39,6 +41,17 @@ public class ChatFragment extends BaseMeetingFragment<ChatViewModel> {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setupToolbar();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_users:
+                UsersActivity.start(getContext(), getMeetingId());
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     private void setupToolbar() {

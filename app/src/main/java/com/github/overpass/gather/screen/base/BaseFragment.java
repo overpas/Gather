@@ -10,6 +10,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModel;
 
+import java.util.Map;
+
 import butterknife.ButterKnife;
 
 public abstract class BaseFragment<VM extends ViewModel> extends Fragment {
@@ -38,5 +40,14 @@ public abstract class BaseFragment<VM extends ViewModel> extends Fragment {
     protected abstract int getLayoutRes();
 
     protected void subscribe() {
+    }
+
+    public static <F extends Fragment> F newInstance(F fragment, Map<String, String> stringArgs) {
+        Bundle arguments = new Bundle();
+        for (Map.Entry<String, String> entry : stringArgs.entrySet()) {
+            arguments.putString(entry.getKey(), entry.getValue());
+        }
+        fragment.setArguments(arguments);
+        return fragment;
     }
 }

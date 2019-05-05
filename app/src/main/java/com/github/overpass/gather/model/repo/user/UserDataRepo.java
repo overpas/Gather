@@ -1,6 +1,7 @@
 package com.github.overpass.gather.model.repo.user;
 
 import androidx.core.util.Consumer;
+import androidx.lifecycle.LiveData;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -13,7 +14,7 @@ public class UserDataRepo {
         this.auth = auth;
     }
 
-    public void getUserData(Consumer<FirebaseUser> onSuccess, Runnable onError) {
+    public void getCurrentUserData(Consumer<FirebaseUser> onSuccess, Runnable onError) {
         FirebaseUser user = auth.getCurrentUser();
         if (user != null) {
             onSuccess.accept(user);

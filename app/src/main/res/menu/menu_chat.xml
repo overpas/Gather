@@ -8,7 +8,7 @@
         app:showAsAction="never" />
 
     <item
-        android:id="@+id/action_pending_users"
+        android:id="@+id/action_users"
         android:icon="@drawable/ic_people"
         android:title="@string/pending_users"
         app:showAsAction="never" />
