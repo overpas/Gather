@@ -32,6 +32,7 @@ public class MeetingRepo implements MeetingsData {
     private static final String TAG = "MeetingRepo";
 
     private final FirebaseFirestore firestore;
+    private MediatorLiveData<LoadMeetingStatus> meetingStatus = new MediatorLiveData<>();
 
     public MeetingRepo(FirebaseFirestore firestore) {
         this.firestore = firestore;
@@ -123,7 +124,10 @@ public class MeetingRepo implements MeetingsData {
     }
 
     public LiveData<LoadMeetingStatus> getFullMeeting(String meetingId) {
-        MediatorLiveData<LoadMeetingStatus> meetingStatus = new MediatorLiveData<>();
+        if (meetingStatus.getValue() != null
+                && meetingStatus.getValue() instanceof LoadMeetingStatus.Success) {
+            return meetingStatus;
+        }
         meetingStatus.setValue(new LoadMeetingStatus.Progress());
         LiveData<MeetingAndRatio> meetingAndRatioData = Transformations.switchMap(
                 getMeeting(meetingId),

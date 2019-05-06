@@ -14,6 +14,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.github.overpass.gather.R;
+import com.github.overpass.gather.model.commons.DateFormatting;
 import com.github.overpass.gather.model.commons.FragmentUtils;
 import com.github.overpass.gather.screen.create.MeetingType;
 import com.github.overpass.gather.screen.dialog.ProgressDialogFragment;
@@ -63,8 +64,6 @@ public class JoinFragment extends BaseMeetingFragment<JoinViewModel> {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         toolbarJoin.setNavigationOnClickListener(navIcon -> getActivity().finish());
-        viewModel.loadMeeting(getMeetingId())
-                .observe(getViewLifecycleOwner(), this::handleLoadStatus);
         flProgress.setVisibility(View.VISIBLE);
     }
 
@@ -111,21 +110,8 @@ public class JoinFragment extends BaseMeetingFragment<JoinViewModel> {
         getActivity().finish();
     }
 
-    private void handleLoadStatus(LoadMeetingStatus loadMeetingStatus) {
-        switch (loadMeetingStatus.tag()) {
-            case LoadMeetingStatus.ERROR:
-                handleLoadError(loadMeetingStatus.as(LoadMeetingStatus.Error.class));
-                break;
-            case LoadMeetingStatus.PROGRESS:
-                handleProgress(loadMeetingStatus.as(LoadMeetingStatus.Progress.class));
-                break;
-            case LoadMeetingStatus.SUCCESS:
-                handleLoadSuccess(loadMeetingStatus.as(LoadMeetingStatus.Success.class));
-                break;
-        }
-    }
-
-    private void handleLoadSuccess(LoadMeetingStatus.Success success) {
+    @Override
+    protected void handleLoadSuccess(LoadMeetingStatus.Success success) {
         flProgress.setVisibility(View.GONE);
         tvName.setText(success.getMeetingAndRatio().getMeeting().getName());
         tvPrivateMeeting.setVisibility(success.getMeetingAndRatio().getMeeting().isPrivate()
@@ -134,8 +120,7 @@ public class JoinFragment extends BaseMeetingFragment<JoinViewModel> {
                 success.getMeetingAndRatio().getRatio().getCurrent(),
                 success.getMeetingAndRatio().getRatio().getMax());
         tvRatio.setText(ratio);
-        SimpleDateFormat format = new SimpleDateFormat("EEE, MMM d, yyyy",
-                Locale.getDefault());
+        SimpleDateFormat format = DateFormatting.getMeetingDateFormat();
         tvDate.setText(format.format(success.getMeetingAndRatio().getMeeting().getDate()));
         if (MeetingType.isBusiness(success.getMeetingAndRatio().getMeeting().getType())) {
             ivMeetingType.setImageResource(R.drawable.ic_case_large);
@@ -149,11 +134,13 @@ public class JoinFragment extends BaseMeetingFragment<JoinViewModel> {
                 .observe(getViewLifecycleOwner(), tvAddress::setText);
     }
 
-    private void handleProgress(LoadMeetingStatus.Progress progress) {
+    @Override
+    protected void handleProgress(LoadMeetingStatus.Progress progress) {
         flProgress.setVisibility(View.VISIBLE);
     }
 
-    private void handleLoadError(LoadMeetingStatus.Error error) {
+    @Override
+    protected void handleLoadError(LoadMeetingStatus.Error error) {
         flProgress.setVisibility(View.GONE);
     }
 

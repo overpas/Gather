@@ -2,10 +2,13 @@ package com.github.overpass.gather.screen.create;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.github.overpass.gather.model.commons.FragmentUtils;
 import com.github.overpass.gather.R;
@@ -29,11 +32,22 @@ public class NewMeetingActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_meeting);
+        setupToolbar();
         if (savedInstanceState == null) {
             double latitude = getIntent().getExtras().getDouble(KEY_LATITUDE);
             double longitude = getIntent().getExtras().getDouble(KEY_LONGITUDE);
             FragmentUtils.replace(getSupportFragmentManager(), R.id.flNewMeetingContainer,
                     NewMeetingFragment.newInstance(latitude, longitude), false);
+        }
+    }
+
+    private void setupToolbar() {
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setTitle(getString(R.string.new_meeting));
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            int primaryColor = ContextCompat.getColor(this, R.color.colorPrimary);
+            actionBar.setBackgroundDrawable(new ColorDrawable(primaryColor));
         }
     }
 }

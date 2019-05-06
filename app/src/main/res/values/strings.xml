@@ -46,4 +46,16 @@
     <string name="new_meeting">New Meeting</string>
     <string name="accept">Accept</string>
     <string name="couldnt_accept">Couldn\'t accept user</string>
+    <string name="details">Details</string>
+    <string name="couldnt_load_data">Couldn\'t load data</string>
+    <string name="couldnt_export">Couldn\'t export</string>
+    <string name="export_entertainment">entertainment</string>
+    <string name="export_protest">protest</string>
+    <string name="export_business">business</string>
+    <string name="export_indefinite_article">A&#160;</string>
+    <string name="export_private">private</string>
+    <string name="export_public">public</string>
+    <string name="export_meeting">&#160;meeting</string>
+    <string name="export_including">&#160;including&#160;</string>
+    <string name="export_maximum">&#160;people maximum</string>
 </resources>

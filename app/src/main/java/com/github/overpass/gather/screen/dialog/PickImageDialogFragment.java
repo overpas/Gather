@@ -14,8 +14,9 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.github.overpass.gather.R;
+import com.github.overpass.gather.screen.base.BaseDialogFragment;
 
-public class PickImageDialogFragment extends DialogFragment {
+public class PickImageDialogFragment extends BaseDialogFragment {
 
     private static final String TAG = "PickImageDialogFragment";
 
@@ -57,30 +58,15 @@ public class PickImageDialogFragment extends DialogFragment {
     }
 
     public static void show(@Nullable FragmentManager fragmentManager) {
-        if (fragmentManager == null) {
-            Log.e(TAG, "Passed FragmentManager is null");
-            return;
-        }
-        Fragment previous = fragmentManager.findFragmentByTag(TAG);
-        if (previous != null) {
-            fragmentManager.beginTransaction().remove(previous).commitNow();
-        }
-        PickImageDialogFragment fragment = new PickImageDialogFragment();
-        fragment.showNow(fragmentManager, TAG);
+        show(TAG, fragmentManager, true, PickImageDialogFragment::new);
     }
 
     public static void hide(@Nullable FragmentManager fragmentManager) {
-        if (fragmentManager == null) {
-            Log.e(TAG, "Passed FragmentManager is null");
-            return;
-        }
-        Fragment progressFragment = fragmentManager.findFragmentByTag(TAG);
-        if (progressFragment instanceof PickImageDialogFragment) {
-            ((PickImageDialogFragment) progressFragment).dismiss();
-        }
+        hide(TAG, fragmentManager, PickImageDialogFragment.class);
     }
 
     public interface OnClickListener {
+
         void onGallery();
 
         void onCamera();
