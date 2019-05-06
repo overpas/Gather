@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 
 import com.annimon.stream.Stream;
+import com.github.overpass.gather.model.commons.Runners;
 import com.github.overpass.gather.screen.map.AuthUser;
 import com.github.overpass.gather.screen.map.Meeting;
 import com.github.overpass.gather.screen.map.SaveMeetingStatus;
@@ -40,7 +41,7 @@ public class MeetingRepo implements MeetingsData {
                                                       double longitude,
                                                       double radius) {
         MutableLiveData<Map<String, Meeting>> meetingData = new MutableLiveData<>();
-        firestore.collection(COLLECTION_MEETING)
+        firestore.collection(COLLECTION_MEETINGS)
                 .whereGreaterThanOrEqualTo(FIELD_LATITUDE, latitude - radius)
                 .whereLessThanOrEqualTo(FIELD_LATITUDE, latitude + radius)
 //              .whereGreaterThanOrEqualTo(FIELD_LONGITUDE, longitude - radius)
@@ -76,16 +77,16 @@ public class MeetingRepo implements MeetingsData {
         MutableLiveData<SaveMeetingStatus> resultData = new MutableLiveData<>();
         resultData.setValue(new SaveMeetingStatus.Progress());
         final String[] meetingId = new String[1];
-        firestore.collection(COLLECTION_MEETING)
+        firestore.collection(COLLECTION_MEETINGS)
                 .add(new Meeting(name, latitude, longitude, date, type.getType(), maxPeople,
                         isPrivate))
                 .addOnFailureListener(e -> {
                     resultData.setValue(new SaveMeetingStatus.Error(e));
                 })
-                .onSuccessTask(docRef -> {
+                .onSuccessTask(Runners.io(), docRef -> {
                     if (authUser != null) {
                         meetingId[0] = docRef.getId();
-                        return docRef.collection(SUBCOLLECTION_USERS)
+                        return docRef.collection(MeetingsData.Users.COLLECTION)
                                 .add(authUser);
                     }
                     return new FailedTask<>("Something Went Wrong!");
@@ -102,13 +103,13 @@ public class MeetingRepo implements MeetingsData {
     public LiveData<Current2MaxPeopleRatio> getCurrent2MaxRatio(String id) {
         MutableLiveData<Current2MaxPeopleRatio> maxPeopleData = new MutableLiveData<>();
         final int[] numbers = new int[2];
-        firestore.collection(COLLECTION_MEETING)
+        firestore.collection(COLLECTION_MEETINGS)
                 .document(id)
                 .get()
-                .onSuccessTask(docRef -> {
+                .onSuccessTask(Runners.io(), docRef -> {
                         numbers[0] = (int) docRef.getLong("maxPeople").longValue();
                         return docRef.getReference()
-                                .collection(SUBCOLLECTION_USERS)
+                                .collection(MeetingsData.Users.COLLECTION)
                                 .get();
                 })
                 .addOnSuccessListener(queryDocumentSnapshots -> {
@@ -145,7 +146,7 @@ public class MeetingRepo implements MeetingsData {
 
     public LiveData<Meeting> getMeeting(String meetingId) {
         MutableLiveData<Meeting> meetingStatus = new MutableLiveData<>();
-        firestore.collection(COLLECTION_MEETING)
+        firestore.collection(COLLECTION_MEETINGS)
                 .document(meetingId)
                 .get()
                 .addOnSuccessListener(doc -> {
@@ -161,9 +162,9 @@ public class MeetingRepo implements MeetingsData {
             isAllowedData.setValue(false);
             return isAllowedData;
         }
-        firestore.collection(COLLECTION_MEETING)
+        firestore.collection(COLLECTION_MEETINGS)
                 .document(meetingId)
-                .collection(SUBCOLLECTION_USERS)
+                .collection(MeetingsData.Users.COLLECTION)
                 .whereEqualTo("id", authUser.getId())
                 .get()
                 .addOnSuccessListener(doc -> {

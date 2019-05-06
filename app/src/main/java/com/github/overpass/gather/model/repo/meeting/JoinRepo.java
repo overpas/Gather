@@ -19,11 +19,11 @@ public class JoinRepo implements MeetingsData {
     }
 
     public LiveData<JoinStatus> joinPublic(String meetingId, @Nullable AuthUser authUser) {
-        return join(SUBCOLLECTION_USERS, new JoinStatus.Joined(), meetingId, authUser);
+        return join(MeetingsData.Users.COLLECTION, new JoinStatus.Joined(), meetingId, authUser);
     }
 
     public LiveData<JoinStatus> enrollPrivate(String meetingId, @Nullable AuthUser authUser) {
-        return join(SUBCOLLECTION_PENDING_USERS, new JoinStatus.Enrolled(), meetingId, authUser);
+        return join(MeetingsData.PendingUsers.COLLECTION, new JoinStatus.Enrolled(), meetingId, authUser);
     }
 
     private LiveData<JoinStatus> join(String subcollection,
@@ -36,7 +36,7 @@ public class JoinRepo implements MeetingsData {
             return joinData;
         }
         joinData.setValue(new JoinStatus.Progress());
-        firestore.collection(COLLECTION_MEETING)
+        firestore.collection(COLLECTION_MEETINGS)
                 .document(meetingId)
                 .collection(subcollection)
                 .add(authUser)

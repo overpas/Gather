@@ -11,6 +11,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.overpass.gather.R;
 import com.github.overpass.gather.screen.base.BaseFragment;
+import com.github.overpass.gather.screen.dialog.ProgressDialogFragment;
+import com.github.overpass.gather.screen.meeting.chat.users.list.PendingUsersAdapter;
+import com.github.overpass.gather.screen.meeting.chat.users.list.UsersAdapter;
+import com.github.overpass.gather.screen.meeting.chat.users.model.Acceptance;
+import com.github.overpass.gather.screen.meeting.chat.users.model.LoadUsersStatus;
 
 import java.util.Collections;
 
@@ -28,7 +33,7 @@ public class UsersFragment extends BaseFragment<UsersViewModel> {
     RecyclerView rvPendingUsers;
 
     private UsersAdapter membersAdapter;
-    private UsersAdapter pendingUsersAdapter;
+    private PendingUsersAdapter pendingUsersAdapter;
 
     @Override
     protected UsersViewModel createViewModel() {
@@ -62,8 +67,11 @@ public class UsersFragment extends BaseFragment<UsersViewModel> {
             case LoadUsersStatus.PROGRESS:
                 handleProgress(status.as(LoadUsersStatus.Progress.class));
                 break;
-            case LoadUsersStatus.SUCCESS:
-                handleSuccess(status.as(LoadUsersStatus.Success.class));
+            case LoadUsersStatus.MEMBERS_SUCCESS:
+                handleMembersSuccess(status.as(LoadUsersStatus.MembersSuccess.class));
+                break;
+            case LoadUsersStatus.PENDING_SUCCESS:
+                handlePendingUsersSuccess(status.as(LoadUsersStatus.PendingSuccess.class));
                 break;
         }
     }
@@ -73,31 +81,66 @@ public class UsersFragment extends BaseFragment<UsersViewModel> {
     }
 
     private void handleProgress(LoadUsersStatus.Progress progress) {
-
+        membersAdapter.setProgress();
+        pendingUsersAdapter.setProgress();
     }
 
-    private void handleSuccess(LoadUsersStatus.Success success) {
-        if (success.tag().equals(LoadUsersStatus.MEMBERS_SUCCESS)) {
-            membersAdapter.setUsers(success.getMembers());
-        } else {
-            pendingUsersAdapter.setUsers(success.getMembers());
-        }
+    private void handleMembersSuccess(LoadUsersStatus.MembersSuccess success) {
+        membersAdapter.setUsers(success.getUsers());
+    }
+
+    private void handlePendingUsersSuccess(LoadUsersStatus.PendingSuccess success) {
+        pendingUsersAdapter.setUsers(success.getUsers());
     }
 
     private void setupList() {
-        membersAdapter = new UsersAdapter((id) -> {});
+        membersAdapter = new UsersAdapter((id) -> {
+        });
         rvMembers.setLayoutManager(new LinearLayoutManager(getContext()));
         rvMembers.setAdapter(membersAdapter);
-        pendingUsersAdapter = new UsersAdapter((id) -> {});
+        pendingUsersAdapter = new PendingUsersAdapter(this::handleAcceptPendingUser);
         rvPendingUsers.setLayoutManager(new LinearLayoutManager(getContext()));
         rvPendingUsers.setAdapter(pendingUsersAdapter);
+    }
+
+    private void handleAcceptPendingUser(String id) {
+        viewModel.acceptUser(getMeetingId(), id)
+                .observe(getViewLifecycleOwner(), this::handleAcceptance);
+    }
+
+    private void handleAcceptance(Acceptance acceptance) {
+        switch (acceptance) {
+            case ERROR:
+                handleAcceptanceError();
+                break;
+            case SUCCESS:
+                handleAcceptanceSuccess();
+                break;
+            case PROGRESS:
+                handleAcceptanceProgress();
+                break;
+        }
+    }
+
+    private void handleAcceptanceProgress() {
+        ProgressDialogFragment.show(getFragmentManager());
+    }
+
+    private void handleAcceptanceSuccess() {
+        ProgressDialogFragment.hide(getFragmentManager());
+        getActivity().recreate();
+    }
+
+    private void handleAcceptanceError() {
+        ProgressDialogFragment.hide(getFragmentManager());
+        snackbar(rvMembers, getString(R.string.couldnt_accept));
     }
 
     @NonNull
     private String getMeetingId() {
         Bundle arguments = getArguments();
         String meetingId = "-1";
-        if (arguments != null)  {
+        if (arguments != null) {
             meetingId = arguments.getString(MEETING_ID_KEY, "-1");
         }
         return meetingId;

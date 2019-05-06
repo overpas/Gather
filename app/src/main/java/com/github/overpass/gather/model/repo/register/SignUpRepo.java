@@ -3,6 +3,7 @@ package com.github.overpass.gather.model.repo.register;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.github.overpass.gather.model.commons.Runners;
 import com.github.overpass.gather.model.repo.user.UsersData;
 import com.github.overpass.gather.screen.auth.register.signup.SignUpStatus;
 import com.github.overpass.gather.screen.auth.register.signup.User;
@@ -28,14 +29,14 @@ public class SignUpRepo implements UsersData {
                 .addOnFailureListener(e -> {
                     signUpStatus.setValue(new SignUpStatus.Error(e));
                 })
-                .onSuccessTask(authResult -> {
+                .onSuccessTask(Runners.io(), authResult -> {
                     user[0] = authResult.getUser();
                     String email1 = authResult.getUser().getEmail();
                     return firestore.collection(COLLECTION_USERS)
                             .document(user[0].getUid())
                             .set(new User(email1, null, null));
                 })
-                .onSuccessTask(docRef -> user[0].sendEmailVerification())
+                .onSuccessTask(Runners.io(), docRef -> user[0].sendEmailVerification())
                 .addOnSuccessListener(__ -> {
                     signUpStatus.setValue(new SignUpStatus.Success());
                 })

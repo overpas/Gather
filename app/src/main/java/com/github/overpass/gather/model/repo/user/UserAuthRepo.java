@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.github.overpass.gather.model.commons.Runners;
 import com.github.overpass.gather.screen.auth.register.add.SaveUserStatus;
 import com.github.overpass.gather.screen.map.AuthUser;
 import com.google.firebase.auth.FirebaseAuth;
@@ -46,7 +47,7 @@ public class UserAuthRepo implements UsersData {
                 .setPhotoUri(imageUri)
                 .build();
         user.updateProfile(profileChangeRequest)
-                .onSuccessTask(__ -> firestore.collection(COLLECTION_USERS)
+                .onSuccessTask(Runners.io(), __ -> firestore.collection(COLLECTION_USERS)
                         .document(user.getUid())
                         .update(FIELD_USERNAME, username, FIELD_PHOTO_URL,
                                 imageUri == null ? null : imageUri.toString()))

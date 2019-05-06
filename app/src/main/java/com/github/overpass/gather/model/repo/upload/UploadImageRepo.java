@@ -46,7 +46,7 @@ public class UploadImageRepo {
                         long percent = temp.getBytesTransferred() / temp.getTotalByteCount();
                         data.postValue(new ImageUploadStatus.Progress(percent));
                     })
-                    .onSuccessTask(docRef -> storageReference.getDownloadUrl())
+                    .onSuccessTask(Runners.io(), docRef -> storageReference.getDownloadUrl())
                     .addOnSuccessListener(uri -> {
                         data.postValue(new ImageUploadStatus.Success(uri));
                     })

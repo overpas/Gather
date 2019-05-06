@@ -62,7 +62,7 @@ public class NewMeetingFragment extends BaseFragment<NewMeetingViewModel> {
         super.onViewCreated(view, savedInstanceState);
         ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
         if (actionBar != null) {
-            actionBar.setTitle("New Meeting");
+            actionBar.setTitle(getString(R.string.new_meeting));
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
     }

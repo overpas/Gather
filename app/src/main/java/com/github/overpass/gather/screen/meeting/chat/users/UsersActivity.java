@@ -2,11 +2,14 @@ package com.github.overpass.gather.screen.meeting.chat.users;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.MenuItem;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.github.overpass.gather.R;
 import com.github.overpass.gather.model.commons.FragmentUtils;
@@ -26,6 +29,15 @@ public class UsersActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     private void showUsersFragment(@Nullable String meetingId) {
         if (meetingId != null) {
             FragmentUtils.replace(getSupportFragmentManager(), R.id.flUsersContainer,
@@ -38,6 +50,8 @@ public class UsersActivity extends AppCompatActivity {
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setTitle(R.string.members);
+            int primaryColor = ContextCompat.getColor(this, R.color.colorPrimary);
+            actionBar.setBackgroundDrawable(new ColorDrawable(primaryColor));
         }
     }
 

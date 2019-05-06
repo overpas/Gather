@@ -1,8 +1,6 @@
 package com.github.overpass.gather.screen.meeting.chat;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.MenuItem;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -17,6 +15,8 @@ import com.stfalcon.chatkit.messages.MessageInput;
 import com.stfalcon.chatkit.messages.MessagesList;
 
 import butterknife.BindView;
+
+import static com.github.overpass.gather.model.commons.UIUtil.toast;
 
 public class ChatFragment extends BaseMeetingFragment<ChatViewModel> {
 
@@ -43,21 +43,20 @@ public class ChatFragment extends BaseMeetingFragment<ChatViewModel> {
         setupToolbar();
     }
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_users:
-                UsersActivity.start(getContext(), getMeetingId());
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
     private void setupToolbar() {
         toolbarChat.setNavigationOnClickListener(navIcon -> getActivity().finish());
         toolbarChat.inflateMenu(R.menu.menu_chat);
         toolbarChat.setOnMenuItemClickListener(item -> false);
+        toolbarChat.setOnMenuItemClickListener(item -> {
+            if (item.getItemId() == R.id.action_users) {
+                UsersActivity.start(getContext(), getMeetingId());
+                return true;
+            } else if (item.getItemId() == R.id.action_attachments) {
+                toast(ChatFragment.this, "Attachments");
+                return true;
+            }
+            return false;
+        });
     }
 
     public static ChatFragment newInstance(String meetingId) {

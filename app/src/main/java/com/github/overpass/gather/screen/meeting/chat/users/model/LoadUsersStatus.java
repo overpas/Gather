@@ -1,7 +1,11 @@
-package com.github.overpass.gather.screen.meeting.chat.users;
+package com.github.overpass.gather.screen.meeting.chat.users.model;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.github.overpass.gather.model.commons.Sealed;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class LoadUsersStatus extends Sealed {
@@ -42,12 +46,13 @@ public abstract class LoadUsersStatus extends Sealed {
 
         private final List<UserModel> members;
 
-        public Success(List<UserModel> members) {
+        public Success(@Nullable List<UserModel> members) {
             this.members = members;
         }
 
-        public List<UserModel> getMembers() {
-            return members;
+        @NonNull
+        public List<UserModel> getUsers() {
+            return members == null ? new ArrayList<>() : members;
         }
 
         @Override

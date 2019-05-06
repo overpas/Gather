@@ -1,10 +1,22 @@
 package com.github.overpass.gather.model.repo.meeting;
 
-interface MeetingsData {
+import com.github.overpass.gather.screen.auth.register.signup.User;
 
-    String COLLECTION_MEETING = "Meetings";
-    String SUBCOLLECTION_USERS = "Users";
-    String SUBCOLLECTION_PENDING_USERS = "PendingUsers";
+public interface MeetingsData {
+
+    String COLLECTION_MEETINGS = "Meetings";
     String FIELD_LATITUDE = "latitude";
     String FIELD_LONGITUDE = "longitude";
+
+    interface Users {
+        String COLLECTION = "Users";
+        String FIELD_ID = "id";
+        String FIELD_ROLE = "role";
+    }
+
+    interface PendingUsers {
+        String COLLECTION = "PendingUsers";
+        String FIELD_ID = Users.FIELD_ID;
+        String FIELD_ROLE = Users.FIELD_ROLE;
+    }
 }

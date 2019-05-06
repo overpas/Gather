@@ -11,6 +11,7 @@ import com.github.overpass.gather.model.usecase.userdata.ProfileUseCase;
 import com.github.overpass.gather.screen.base.personal.PersonalDataViewModel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class ProfileViewModel extends PersonalDataViewModel {
 
@@ -21,7 +22,7 @@ public class ProfileViewModel extends PersonalDataViewModel {
     public ProfileViewModel(@NonNull Application application) {
         super(application);
         profileUseCase = new ProfileUseCase(
-                new UserDataRepo(FirebaseAuth.getInstance()),
+                new UserDataRepo(FirebaseAuth.getInstance(), FirebaseFirestore.getInstance()),
                 new AuthRepo(FirebaseAuth.getInstance())
         );
     }

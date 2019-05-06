@@ -1,10 +1,13 @@
 package com.github.overpass.gather.screen.profile;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -59,6 +62,12 @@ public class ProfileFragment extends PersonalDataFragment<ProfileViewModel>
     }
 
     @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        changeUIMode(false);
+    }
+
+    @Override
     protected void subscribe() {
         super.subscribe();
         toolbar.setNavigationOnClickListener(navIcon -> getActivity().finish());
@@ -108,6 +117,7 @@ public class ProfileFragment extends PersonalDataFragment<ProfileViewModel>
         tilUsername.setVisibility(isEditMode ? View.VISIBLE : View.GONE);
         lavTick.setVisibility(isEditMode ? View.VISIBLE : View.GONE);
         tvAvatarPrompt.setVisibility(isEditMode ? View.VISIBLE : View.GONE);
+        tietUsername.setError(null);
     }
 
     private void onUserDataLoaded(FirebaseUser firebaseUser) {

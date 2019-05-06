@@ -2,8 +2,11 @@ package com.github.overpass.gather.screen.map;
 
 public class AuthUser {
 
-    private final int role;
-    private final String id;
+    private int role;
+    private String id;
+
+    public AuthUser() {
+    }
 
     public AuthUser(int role, String id) {
         this.role = role;
@@ -16,6 +19,14 @@ public class AuthUser {
 
     public String getId() {
         return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setRole(int role) {
+        this.role = role;
     }
 
     public enum Role {
