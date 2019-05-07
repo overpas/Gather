@@ -9,6 +9,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.github.overpass.gather.model.commons.Runners;
 import com.github.overpass.gather.screen.auth.register.add.SaveUserStatus;
+import com.github.overpass.gather.screen.auth.register.signup.User;
 import com.github.overpass.gather.screen.map.AuthUser;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -70,5 +71,22 @@ public class UserAuthRepo implements UsersData {
             authUserData.setValue(new AuthUser(role.getRole(), currentUser.getUid()));
         }
         return authUserData;
+    }
+
+    public LiveData<UserData> getCurrentUser() {
+        MutableLiveData<UserData> userData = new MutableLiveData<>();
+        Runners.io().execute(() -> {
+            FirebaseUser currentUser = firebaseAuth.getCurrentUser();
+            if (currentUser != null) {
+                String photoUrl = currentUser.getPhotoUrl() == null ? null
+                        : currentUser.getPhotoUrl().toString();
+                String id = currentUser.getUid();
+                String name = currentUser.getDisplayName();
+                userData.postValue(new UserData(id, name, photoUrl));
+            } else {
+                userData.postValue(null);
+            }
+        });
+        return userData;
     }
 }

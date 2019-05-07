@@ -1,6 +1,7 @@
 package com.github.overpass.gather.screen.meeting.chat;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -10,8 +11,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.bumptech.glide.Glide;
 import com.github.overpass.gather.R;
-import com.github.overpass.gather.screen.auth.register.add.ImageSource;
 import com.github.overpass.gather.screen.create.MeetingType;
 import com.github.overpass.gather.screen.dialog.details.MeetingDetailsDialogFragment;
 import com.github.overpass.gather.screen.meeting.base.BaseMeetingFragment;
@@ -19,6 +20,9 @@ import com.github.overpass.gather.screen.meeting.base.LoadMeetingStatus;
 import com.github.overpass.gather.screen.meeting.chat.users.UsersActivity;
 import com.stfalcon.chatkit.messages.MessageInput;
 import com.stfalcon.chatkit.messages.MessagesList;
+import com.stfalcon.chatkit.messages.MessagesListAdapter;
+
+import java.util.List;
 
 import butterknife.BindView;
 
@@ -38,6 +42,8 @@ public class ChatFragment extends BaseMeetingFragment<ChatViewModel> {
     @BindView(R.id.tvMeetingName)
     TextView tvMeetingName;
 
+    MessagesListAdapter<IMessageImpl> adapter;
+
     @Override
     protected ChatViewModel createViewModel() {
         return ViewModelProviders.of(getActivity()).get(ChatViewModel.class);
@@ -52,6 +58,15 @@ public class ChatFragment extends BaseMeetingFragment<ChatViewModel> {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setupToolbar();
+        setupList();
+        viewModel.messages(getMeetingId()).observe(getViewLifecycleOwner(), this::handleMessages);
+        messageInput.setInputListener(input -> {
+            if (TextUtils.isEmpty(input)) {
+                return false;
+            }
+            viewModel.send(getMeetingId(), input.toString());
+            return true;
+        });
     }
 
     @Override
@@ -68,6 +83,21 @@ public class ChatFragment extends BaseMeetingFragment<ChatViewModel> {
     @Override
     protected void handleLoadError(LoadMeetingStatus.Error error) {
         snackbar(ivMeetingType, getString(R.string.couldnt_load_data));
+    }
+
+    private void setupList() {
+        viewModel.getCurrentUser().observe(getViewLifecycleOwner(), user -> {
+            if (user != null) {
+                adapter = new MessagesListAdapter<>(
+                        user.getId(),
+                        (imageView, url, payload) ->
+                                Glide.with(ChatFragment.this)
+                                        .load(url)
+                                        .into(imageView)
+                );
+                messagesList.setAdapter(adapter);
+            }
+        });
     }
 
     private void setMeetingTypeIcon(int type) {
@@ -91,7 +121,7 @@ public class ChatFragment extends BaseMeetingFragment<ChatViewModel> {
                 UsersActivity.start(getContext(), getMeetingId());
                 return true;
             } else if (item.getItemId() == R.id.action_attachments) {
-                toast(ChatFragment.this, "Attachments");
+                toast(ChatFragment.this, getString(R.string.attachments));
                 return true;
             } else if (item.getItemId() == R.id.action_details) {
                 MeetingDetailsDialogFragment.show(getMeetingId(), getFragmentManager());
@@ -99,6 +129,31 @@ public class ChatFragment extends BaseMeetingFragment<ChatViewModel> {
             }
             return false;
         });
+    }
+
+    private void handleMessages(MessageModel messageModel) {
+        switch (messageModel.tag()) {
+            case MessageModel.SUCCESS:
+                handleMessagesSuccess(messageModel.as(MessageModel.Success.class));
+                break;
+            case MessageModel.ERROR:
+                handleMessagesError(messageModel.as(MessageModel.Error.class));
+                break;
+        }
+    }
+
+    private void handleMessagesError(MessageModel.Error error) {
+        snackbar(tvMeetingName, error.getThrowable().getLocalizedMessage());
+    }
+
+    private void handleMessagesSuccess(MessageModel.Success success) {
+        setMessages(success.getMessages());
+    }
+
+    private void setMessages(List<IMessageImpl> messages) {
+        if (adapter != null) {
+            adapter.replace(messages);
+        }
     }
 
     public static ChatFragment newInstance(String meetingId) {

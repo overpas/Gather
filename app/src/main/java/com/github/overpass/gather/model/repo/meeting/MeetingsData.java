@@ -19,4 +19,13 @@ public interface MeetingsData {
         String FIELD_ID = Users.FIELD_ID;
         String FIELD_ROLE = Users.FIELD_ROLE;
     }
+
+    interface Messages {
+        String COLLECTION = "Messages";
+        String FIELD_TEXT = "text";
+        String FIELD_DATE = "date";
+        String FIELD_AUTHOR_ID = "authorId";
+        String FIELD_AUTHOR_NAME = "authorName";
+        String FIELD_AUTHOR_PHOTO_URL = "authorPhotoUrl";
+    }
 }
