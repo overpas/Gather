@@ -23,7 +23,8 @@ public class JoinRepo implements MeetingsData {
     }
 
     public LiveData<JoinStatus> enrollPrivate(String meetingId, @Nullable AuthUser authUser) {
-        return join(MeetingsData.PendingUsers.COLLECTION, new JoinStatus.Enrolled(), meetingId, authUser);
+        return join(MeetingsData.PendingUsers.COLLECTION, new JoinStatus.Enrolled(), meetingId,
+                authUser);
     }
 
     private LiveData<JoinStatus> join(String subcollection,

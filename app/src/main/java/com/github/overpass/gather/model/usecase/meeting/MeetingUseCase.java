@@ -4,8 +4,10 @@ import androidx.arch.core.util.Function;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Transformations;
 
+import com.github.overpass.gather.model.commons.exception.SubscriptionException;
 import com.github.overpass.gather.model.repo.meeting.JoinRepo;
 import com.github.overpass.gather.model.repo.meeting.MeetingRepo;
+import com.github.overpass.gather.model.repo.subscription.SubscriptionRepo;
 import com.github.overpass.gather.model.repo.user.UserAuthRepo;
 import com.github.overpass.gather.screen.map.AuthUser;
 import com.github.overpass.gather.screen.meeting.base.LoadMeetingStatus;
@@ -16,11 +18,16 @@ public class MeetingUseCase {
     private final MeetingRepo meetingRepo;
     private final JoinRepo joinRepo;
     private final UserAuthRepo userAuthRepo;
+    private final SubscriptionRepo subscriptionRepo;
 
-    public MeetingUseCase(MeetingRepo meetingRepo, JoinRepo joinRepo, UserAuthRepo userAuthRepo) {
+    public MeetingUseCase(MeetingRepo meetingRepo,
+                          JoinRepo joinRepo,
+                          UserAuthRepo userAuthRepo,
+                          SubscriptionRepo subscriptionRepo) {
         this.meetingRepo = meetingRepo;
         this.joinRepo = joinRepo;
         this.userAuthRepo = userAuthRepo;
+        this.subscriptionRepo = subscriptionRepo;
     }
 
     public LiveData<LoadMeetingStatus> loadMeeting(String meetingId) {
@@ -30,7 +37,23 @@ public class MeetingUseCase {
     public LiveData<JoinStatus> join(String meetingId) {
         return Transformations.switchMap(meetingRepo.getMeeting(meetingId), meeting -> {
             if (meeting.isPrivate()) {
-                return joinAsUser(user -> joinRepo.enrollPrivate(meetingId, user));
+                final AuthUser[] authUser = new AuthUser[1];
+                return Transformations.switchMap(
+                        joinAsUser(user -> {
+                            authUser[0] = user;
+                            return joinRepo.enrollPrivate(meetingId, user);
+                        }),
+                        status -> Transformations.map(
+                                subscriptionRepo.subscribeToAccepted(authUser[0], meetingId),
+                                subscribed -> {
+                                    if (subscribed) {
+                                        return status;
+                                    } else {
+                                        return new JoinStatus.Error(new SubscriptionException());
+                                    }
+                                }
+                        )
+                );
             } else {
                 return joinAsUser(user -> joinRepo.joinPublic(meetingId, user));
             }

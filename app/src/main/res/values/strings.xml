@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Gather</string>
+    <string name="gather_app_name">Gather</string>
     <string name="mapbox_token">pk.eyJ1Ijoib3ZlcnBhc3MiLCJhIjoiY2p0Y3VpYTYxMGR4YjN6cGIyMmRybGo2YyJ9.ffJfo6Yun6qUpIRR9MQ6XQ</string>
     <string name="search">Search</string>
     <string name="email">Email</string>
@@ -58,4 +58,9 @@
     <string name="export_meeting">&#160;meeting</string>
     <string name="export_including">&#160;including&#160;</string>
     <string name="export_maximum">&#160;people maximum</string>
+    <string name="channel_name">Gather channel</string>
+    <string name="channel_description">Notifications on different in-app events</string>
+    <string name="channel_id">gather_channel_id</string>
+    <string name="notification_user_enrolled">A user wants to join you. Accept one</string>
+    <string name="notification_user_accepted">You have been accepted to a meeting. View it</string>
 </resources>
