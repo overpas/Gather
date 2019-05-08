@@ -13,7 +13,8 @@ import com.github.overpass.gather.screen.create.MeetingType;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
-public abstract class BaseMeetingFragment<VM extends BaseMeetingViewModel> extends BaseFragment<VM> {
+public abstract class BaseMeetingFragment<VM extends BaseMeetingViewModel>
+        extends BaseFragment<VM> {
 
     private static final String MEETING_ID_KEY = "MEETING_ID_KEY";
 
@@ -31,6 +32,10 @@ public abstract class BaseMeetingFragment<VM extends BaseMeetingViewModel> exten
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        onLoadMeetingData();
+    }
+
+    protected void onLoadMeetingData() {
         viewModel.loadMeeting(getMeetingId())
                 .observe(getViewLifecycleOwner(), this::handleLoadStatus);
     }
@@ -49,11 +54,11 @@ public abstract class BaseMeetingFragment<VM extends BaseMeetingViewModel> exten
         }
     }
 
-    protected abstract void handleLoadSuccess(LoadMeetingStatus.Success success);
+    protected void handleLoadSuccess(LoadMeetingStatus.Success success) {}
 
-    protected abstract void handleProgress(LoadMeetingStatus.Progress progress);
+    protected void handleProgress(LoadMeetingStatus.Progress progress) {}
 
-    protected abstract void handleLoadError(LoadMeetingStatus.Error error);
+    protected void handleLoadError(LoadMeetingStatus.Error error) {}
 
     protected static <F extends BaseMeetingFragment> F newInstance(String meetingId, F fragment) {
         Bundle args = new Bundle();

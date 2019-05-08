@@ -76,11 +76,6 @@ public class ChatFragment extends BaseMeetingFragment<ChatViewModel> {
     }
 
     @Override
-    protected void handleProgress(LoadMeetingStatus.Progress progress) {
-
-    }
-
-    @Override
     protected void handleLoadError(LoadMeetingStatus.Error error) {
         snackbar(ivMeetingType, getString(R.string.couldnt_load_data));
     }

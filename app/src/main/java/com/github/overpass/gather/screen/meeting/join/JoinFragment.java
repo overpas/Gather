@@ -49,6 +49,8 @@ public class JoinFragment extends BaseMeetingFragment<JoinViewModel> {
     ImageView ivMeetingType;
     @BindView(R.id.toolbarJoin)
     Toolbar toolbarJoin;
+    @BindView(R.id.btnJoin)
+    TextView btnJoin;
 
     @Override
     protected JoinViewModel createViewModel() {
@@ -65,6 +67,12 @@ public class JoinFragment extends BaseMeetingFragment<JoinViewModel> {
         super.onViewCreated(view, savedInstanceState);
         toolbarJoin.setNavigationOnClickListener(navIcon -> getActivity().finish());
         flProgress.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    protected void onLoadMeetingData() {
+        viewModel.loadMeetingCheckEnrolled(getMeetingId())
+                .observe(getViewLifecycleOwner(), this::handleLoadStatus);
     }
 
     @OnClick(R.id.btnJoin)
@@ -111,11 +119,29 @@ public class JoinFragment extends BaseMeetingFragment<JoinViewModel> {
     }
 
     @Override
-    protected void handleLoadSuccess(LoadMeetingStatus.Success success) {
+    protected void handleLoadStatus(LoadMeetingStatus loadMeetingStatus) {
+        switch (loadMeetingStatus.tag()) {
+            case LoadPrivateMeetingStatus.ERROR:
+                handleLoadError(loadMeetingStatus.as(LoadPrivateMeetingStatus.Error.class));
+                break;
+            case LoadPrivateMeetingStatus.SUCCESS:
+                handleLoadSuccess(loadMeetingStatus.as(LoadPrivateMeetingStatus.Success.class));
+                break;
+            case LoadPrivateMeetingStatus.PROGRESS:
+                handleProgress(loadMeetingStatus.as(LoadPrivateMeetingStatus.Progress.class));
+                break;
+        }
+    }
+
+    protected void handleLoadSuccess(LoadPrivateMeetingStatus.Success success) {
         flProgress.setVisibility(View.GONE);
         tvName.setText(success.getMeetingAndRatio().getMeeting().getName());
         tvPrivateMeeting.setVisibility(success.getMeetingAndRatio().getMeeting().isPrivate()
                 ? View.VISIBLE : View.INVISIBLE);
+        if (success.isAlreadyEnrolled()) {
+            tvPrivateMeeting.setText(R.string.you_have_already_enrolled);
+            btnJoin.setVisibility(View.GONE);
+        }
         String ratio = String.format(Locale.getDefault(), "%d / %d",
                 success.getMeetingAndRatio().getRatio().getCurrent(),
                 success.getMeetingAndRatio().getRatio().getMax());
@@ -134,13 +160,11 @@ public class JoinFragment extends BaseMeetingFragment<JoinViewModel> {
                 .observe(getViewLifecycleOwner(), tvAddress::setText);
     }
 
-    @Override
-    protected void handleProgress(LoadMeetingStatus.Progress progress) {
+    protected void handleProgress(LoadPrivateMeetingStatus.Progress progress) {
         flProgress.setVisibility(View.VISIBLE);
     }
 
-    @Override
-    protected void handleLoadError(LoadMeetingStatus.Error error) {
+    protected void handleLoadError(LoadPrivateMeetingStatus.Error error) {
         flProgress.setVisibility(View.GONE);
     }
 

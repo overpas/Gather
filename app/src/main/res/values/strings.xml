@@ -63,4 +63,5 @@
     <string name="channel_id">gather_channel_id</string>
     <string name="notification_user_enrolled">A user wants to join you. Accept one</string>
     <string name="notification_user_accepted">You have been accepted to a meeting. View it</string>
+    <string name="you_have_already_enrolled">You have already enrolled</string>
 </resources>

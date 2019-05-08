@@ -10,8 +10,10 @@ import com.github.overpass.gather.model.repo.meeting.MeetingRepo;
 import com.github.overpass.gather.model.repo.subscription.SubscriptionRepo;
 import com.github.overpass.gather.model.repo.user.UserAuthRepo;
 import com.github.overpass.gather.screen.map.AuthUser;
+import com.github.overpass.gather.screen.meeting.MeetingAndRatio;
 import com.github.overpass.gather.screen.meeting.base.LoadMeetingStatus;
 import com.github.overpass.gather.screen.meeting.join.JoinStatus;
+import com.github.overpass.gather.screen.meeting.join.LoadPrivateMeetingStatus;
 
 public class MeetingUseCase {
 
@@ -62,5 +64,38 @@ public class MeetingUseCase {
 
     private LiveData<JoinStatus> joinAsUser(Function<AuthUser, LiveData<JoinStatus>> joining) {
         return Transformations.switchMap(userAuthRepo.getCurrentUser(AuthUser.Role.USER), joining);
+    }
+
+    public LiveData<LoadPrivateMeetingStatus> loadMeetingCheckEnrolled(String meetingId) {
+        return Transformations.switchMap(
+                userAuthRepo.getCurrentUser(AuthUser.Role.USER),
+                user -> Transformations.switchMap(
+                        meetingRepo.isAlreadyEnrolled(user, meetingId),
+                        isEnrolled -> Transformations.map(
+                                meetingRepo.getFullMeeting(meetingId),
+                                status -> {
+                                    LoadPrivateMeetingStatus result;
+                                    switch (status.tag()) {
+                                        case LoadMeetingStatus.ERROR:
+                                            result = new LoadPrivateMeetingStatus.Error();
+                                            break;
+                                        case LoadMeetingStatus.SUCCESS:
+                                            MeetingAndRatio meetingAndRatio
+                                                    = status.as(LoadMeetingStatus.Success.class)
+                                                    .getMeetingAndRatio();
+                                            result = new LoadPrivateMeetingStatus.Success(
+                                                    meetingAndRatio,
+                                                    isEnrolled
+                                            );
+                                            break;
+                                        default:
+                                        case LoadMeetingStatus.PROGRESS:
+                                            result = new LoadPrivateMeetingStatus.Progress();
+                                    }
+                                    return result;
+                                }
+                        )
+                )
+        );
     }
 }

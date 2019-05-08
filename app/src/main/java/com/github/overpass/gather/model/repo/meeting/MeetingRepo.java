@@ -108,10 +108,10 @@ public class MeetingRepo implements MeetingsData {
                 .document(id)
                 .get()
                 .onSuccessTask(Runners.io(), docRef -> {
-                        numbers[0] = (int) docRef.getLong("maxPeople").longValue();
-                        return docRef.getReference()
-                                .collection(MeetingsData.Users.COLLECTION)
-                                .get();
+                    numbers[0] = (int) docRef.getLong("maxPeople").longValue();
+                    return docRef.getReference()
+                            .collection(MeetingsData.Users.COLLECTION)
+                            .get();
                 })
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     numbers[1] = queryDocumentSnapshots.size();
@@ -161,6 +161,16 @@ public class MeetingRepo implements MeetingsData {
     }
 
     public LiveData<Boolean> isUserAllowed(@Nullable AuthUser authUser, String meetingId) {
+        return isUserListed(Users.COLLECTION, authUser, meetingId);
+    }
+
+    public LiveData<Boolean> isAlreadyEnrolled(@Nullable AuthUser authUser, String meetingId) {
+        return isUserListed(PendingUsers.COLLECTION, authUser, meetingId);
+    }
+
+    public LiveData<Boolean> isUserListed(String subcollection,
+                                          @Nullable AuthUser authUser,
+                                          String meetingId) {
         MutableLiveData<Boolean> isAllowedData = new MutableLiveData<>();
         if (authUser == null) {
             isAllowedData.setValue(false);
@@ -168,8 +178,8 @@ public class MeetingRepo implements MeetingsData {
         }
         firestore.collection(COLLECTION_MEETINGS)
                 .document(meetingId)
-                .collection(MeetingsData.Users.COLLECTION)
-                .whereEqualTo("id", authUser.getId())
+                .collection(subcollection)
+                .whereEqualTo(Users.FIELD_ID, authUser.getId())
                 .get()
                 .addOnSuccessListener(doc -> {
                     isAllowedData.setValue(!doc.isEmpty());
