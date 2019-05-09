@@ -17,6 +17,7 @@ import com.github.overpass.gather.screen.map.MapViewModel;
 import com.github.overpass.gather.screen.map.Meeting;
 import com.github.overpass.gather.model.repo.icon.IconRepo;
 import com.github.overpass.gather.screen.profile.ProfileActivity;
+import com.github.overpass.gather.screen.search.SearchBottomFragment;
 import com.mapbox.mapboxsdk.annotations.Marker;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
@@ -50,6 +51,13 @@ public class MapFragment extends BaseMapFragment<MapDetailViewModel>
         super.onViewCreated(view, savedInstanceState);
         bottomAppBar.setNavigationOnClickListener(v -> {
             startActivity(new Intent(getContext(), ProfileActivity.class));
+        });
+        bottomAppBar.setOnMenuItemClickListener(item -> {
+            if (item.getItemId() == R.id.action_search) {
+                SearchBottomFragment.open(getFragmentManager());
+                return true;
+            }
+            return false;
         });
     }
 

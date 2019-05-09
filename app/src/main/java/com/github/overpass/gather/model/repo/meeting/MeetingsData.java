@@ -7,6 +7,7 @@ public interface MeetingsData {
     String COLLECTION_MEETINGS = "Meetings";
     String FIELD_LATITUDE = "latitude";
     String FIELD_LONGITUDE = "longitude";
+    String FIELD_NAME = "name";
 
     interface Users {
         String COLLECTION = "Users";

@@ -17,10 +17,14 @@ import com.github.overpass.gather.screen.create.MeetingType;
 import com.github.overpass.gather.screen.map.detail.Current2MaxPeopleRatio;
 import com.github.overpass.gather.screen.meeting.MeetingAndRatio;
 import com.github.overpass.gather.screen.meeting.base.LoadMeetingStatus;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Nullable;
@@ -188,5 +192,26 @@ public class MeetingRepo implements MeetingsData {
                     isAllowedData.setValue(false);
                 });
         return isAllowedData;
+    }
+
+    public LiveData<List<MeetingWithId>> searchByName(String text) {
+        MutableLiveData<List<MeetingWithId>> meetingData = new MutableLiveData<>();
+        firestore.collection(COLLECTION_MEETINGS)
+                .whereEqualTo(FIELD_NAME, text)
+                .addSnapshotListener((docs, e) -> {
+                    if (e != null || docs == null || docs.isEmpty()) {
+                        meetingData.setValue(null);
+                    } else {
+                        List<MeetingWithId> meetings = Stream.of(docs.getDocuments())
+                                .map(doc -> new MeetingWithId(
+                                                doc.toObject(Meeting.class),
+                                                doc.getId()
+                                        )
+                                )
+                                .toList();
+                        meetingData.setValue(meetings);
+                    }
+                });
+        return meetingData;
     }
 }
