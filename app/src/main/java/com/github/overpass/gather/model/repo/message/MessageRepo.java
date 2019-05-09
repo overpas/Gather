@@ -1,12 +1,16 @@
 package com.github.overpass.gather.model.repo.message;
 
 import androidx.annotation.NonNull;
+import androidx.arch.core.util.Function;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Transformations;
 
 import com.annimon.stream.Stream;
+import com.github.overpass.gather.model.commons.LiveDataUtils;
 import com.github.overpass.gather.model.repo.meeting.MeetingsData;
 import com.github.overpass.gather.model.repo.user.UserData;
+import com.github.overpass.gather.screen.meeting.chat.DeleteStatus;
 import com.github.overpass.gather.screen.meeting.chat.MessageStatus;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -59,6 +63,45 @@ public class MessageRepo implements MeetingsData {
                         userData.getName(),
                         userData.getPhotoUrl()
                 ));
+    }
+
+    public LiveData<DeleteStatus> delete(String meetingId, List<String> ids) {
+        List<LiveData<DeleteStatus>> separateDeletions = Stream.of(ids)
+                .map(id -> delete(meetingId, id))
+                .toList();
+        LiveData<List<DeleteStatus>> deletionsData = LiveDataUtils.zip(separateDeletions);
+        return Transformations.map(deletionsData, input -> {
+            DeleteStatus deleteStatus = new DeleteStatus.Progress();
+            int successCount = 0;
+            for (DeleteStatus status : input) {
+                if (status instanceof DeleteStatus.Error
+                        || status instanceof DeleteStatus.Progress) {
+                    deleteStatus = status;
+                    break;
+                } else {
+                    successCount++;
+                }
+            }
+            if (successCount == input.size()) {
+                deleteStatus = new DeleteStatus.Success();
+            }
+            return deleteStatus;
+        });
+    }
+
+    private LiveData<DeleteStatus> delete(String meetingId, String messageId) {
+        MutableLiveData<DeleteStatus> deleteData = new MutableLiveData<>();
+        deleteData.setValue(new DeleteStatus.Progress());
+        firestore.collection(COLLECTION_MEETINGS)
+                .document(meetingId)
+                .collection(Messages.COLLECTION)
+                .document(messageId)
+                .delete()
+                .addOnSuccessListener(__ -> {
+                    deleteData.setValue(new DeleteStatus.Success());
+                })
+                .addOnFailureListener(e -> deleteData.setValue(new DeleteStatus.Error(e)));
+        return deleteData;
     }
 
     private static abstract class MessageMapper implements EventListener<QuerySnapshot> {

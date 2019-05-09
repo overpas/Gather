@@ -2,6 +2,7 @@ package com.github.overpass.gather.model.commons;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,10 +12,6 @@ import java.util.List;
 import java.util.Map;
 
 public class LiveDataUtils {
-
-    public static <T> LiveData<List<T>> zip(LiveData<T>... liveDatas) {
-        return zip(Arrays.asList(liveDatas));
-    }
 
     public static <T> LiveData<List<T>> zip(List<LiveData<T>> liveDatas) {
         MediatorLiveData<List<T>> mediatorLiveData = new MediatorLiveData<>();
@@ -33,6 +30,7 @@ public class LiveDataUtils {
                 buffer.add(t);
                 if (areSameVersions(liveDataVersions) && allStarted(liveDataVersions, liveDatas)) {
                     mediatorLiveData.setValue(buffer);
+                    buffer.clear();
                 }
             });
         }
@@ -49,5 +47,11 @@ public class LiveDataUtils {
             set.add(entry.getValue());
         }
         return set.size() < 2;
+    }
+
+    public static <T> LiveData<T> just(T t) {
+        MutableLiveData<T> data = new MutableLiveData<>();
+        data.setValue(t);
+        return data;
     }
 }

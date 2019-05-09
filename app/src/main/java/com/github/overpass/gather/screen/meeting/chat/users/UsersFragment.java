@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.github.overpass.gather.R;
 import com.github.overpass.gather.screen.base.BaseFragment;
 import com.github.overpass.gather.screen.dialog.ProgressDialogFragment;
+import com.github.overpass.gather.screen.map.AuthUser;
 import com.github.overpass.gather.screen.meeting.chat.users.list.PendingUsersAdapter;
 import com.github.overpass.gather.screen.meeting.chat.users.list.UsersAdapter;
 import com.github.overpass.gather.screen.meeting.chat.users.model.Acceptance;
@@ -22,6 +23,7 @@ import java.util.Collections;
 import butterknife.BindView;
 
 import static com.github.overpass.gather.model.commons.UIUtil.snackbar;
+import static com.github.overpass.gather.model.commons.UIUtil.toast;
 
 public class UsersFragment extends BaseFragment<UsersViewModel> {
 
@@ -57,6 +59,16 @@ public class UsersFragment extends BaseFragment<UsersViewModel> {
         viewModel.getMembers(getMeetingId()).observe(getViewLifecycleOwner(), this::handleUsers);
         viewModel.getPendingUsers(getMeetingId())
                 .observe(getViewLifecycleOwner(), this::handleUsers);
+        viewModel.checkUserRole(getMeetingId()).observe(getViewLifecycleOwner(), this::handleRole);
+    }
+
+    private void handleRole(AuthUser.Role role) {
+        if (role == AuthUser.Role.USER) {
+            pendingUsersAdapter.setSwipeLocked(true);
+        } else if (role == AuthUser.Role.NOBODY) {
+            toast(this, getString(R.string.not_allowed));
+            getActivity().finish();
+        }
     }
 
     private void handleUsers(LoadUsersStatus status) {

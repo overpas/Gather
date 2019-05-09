@@ -31,7 +31,7 @@ public class AuthUser {
 
     public enum Role {
 
-        ADMIN(0), MODER(1), USER(2);
+        ADMIN(0), MODER(1), USER(2), NOBODY(3);
 
         private final int role;
 

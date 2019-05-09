@@ -11,10 +11,14 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.annimon.stream.Stream;
 import com.bumptech.glide.Glide;
 import com.github.overpass.gather.R;
 import com.github.overpass.gather.screen.create.MeetingType;
+import com.github.overpass.gather.screen.dialog.ProgressDialogFragment;
+import com.github.overpass.gather.screen.dialog.delete.DeleteDialogFragment;
 import com.github.overpass.gather.screen.dialog.details.MeetingDetailsDialogFragment;
+import com.github.overpass.gather.screen.map.AuthUser;
 import com.github.overpass.gather.screen.meeting.base.BaseMeetingFragment;
 import com.github.overpass.gather.screen.meeting.base.LoadMeetingStatus;
 import com.github.overpass.gather.screen.meeting.chat.users.UsersActivity;
@@ -67,6 +71,8 @@ public class ChatFragment extends BaseMeetingFragment<ChatViewModel> {
             viewModel.send(getMeetingId(), input.toString());
             return true;
         });
+        viewModel.checkUserRole(getMeetingId()).observe(getViewLifecycleOwner(), this::handleRole);
+        viewModel.selectedItems().observe(getViewLifecycleOwner(), this::handleSelection);
     }
 
     @Override
@@ -91,6 +97,15 @@ public class ChatFragment extends BaseMeetingFragment<ChatViewModel> {
                                         .into(imageView)
                 );
                 messagesList.setAdapter(adapter);
+                adapter.setOnMessageLongClickListener(ChatFragment.this::handleOnLongClick);
+            }
+        });
+    }
+
+    private void handleOnLongClick(IMessageImpl message) {
+        viewModel.getCurrentUser().observe(getViewLifecycleOwner(), user -> {
+            if (user != null && message.getUser().getId().equals(user.getId())) {
+                DeleteDialogFragment.show(getMeetingId(), message.getId(), getFragmentManager());
             }
         });
     }
@@ -121,6 +136,8 @@ public class ChatFragment extends BaseMeetingFragment<ChatViewModel> {
             } else if (item.getItemId() == R.id.action_details) {
                 MeetingDetailsDialogFragment.show(getMeetingId(), getFragmentManager());
                 return true;
+            } else if (item.getItemId() == R.id.action_delete) {
+                deleteMessages();
             }
             return false;
         });
@@ -149,6 +166,65 @@ public class ChatFragment extends BaseMeetingFragment<ChatViewModel> {
         if (adapter != null) {
             adapter.replace(messages);
         }
+    }
+
+    private void handleRole(AuthUser.Role role) {
+        if (role == AuthUser.Role.ADMIN || role == AuthUser.Role.MODER) {
+            adapter.enableSelectionMode(viewModel::setSelection);
+        }
+    }
+
+    private void handleSelection(int count) {
+        toolbarChat.getMenu().clear();
+        if (count > 0) {
+            toolbarChat.inflateMenu(R.menu.menu_chat_delete);
+        } else {
+            toolbarChat.inflateMenu(R.menu.menu_chat);
+        }
+    }
+
+    private void deleteMessages() {
+        if (adapter != null) {
+            List<String> ids = Stream.of(adapter.getSelectedMessages())
+                    .map(IMessageImpl::getId)
+                    .toList();
+            viewModel.delete(getMeetingId(), ids)
+                    .observe(getViewLifecycleOwner(), this::handleDeletion);
+        }
+    }
+
+    private void handleDeletion(DeleteStatus deleteStatus) {
+        switch (deleteStatus.tag()) {
+            case DeleteStatus.ERROR:
+                handleDeletionError(deleteStatus.as(DeleteStatus.Error.class));
+                break;
+            case DeleteStatus.PROGRESS:
+                handleDeletionProgress(deleteStatus.as(DeleteStatus.Progress.class));
+                break;
+            case DeleteStatus.SUCCESS:
+                handleDeletionSuccess(deleteStatus.as(DeleteStatus.Success.class));
+                break;
+        }
+    }
+
+    private void handleDeletionSuccess(DeleteStatus.Success success) {
+        ProgressDialogFragment.hide(getFragmentManager());
+        setDefaultToolbar();
+    }
+
+    private void setDefaultToolbar() {
+        toolbarChat.getMenu().clear();
+        toolbarChat.inflateMenu(R.menu.menu_chat);
+    }
+
+    private void handleDeletionProgress(DeleteStatus.Progress progress) {
+        ProgressDialogFragment.show(getFragmentManager());
+    }
+
+    private void handleDeletionError(DeleteStatus.Error error) {
+        ProgressDialogFragment.hide(getFragmentManager());
+        snackbar(tvMeetingName, error.getThrowable().getLocalizedMessage());
+        setDefaultToolbar();
     }
 
     public static ChatFragment newInstance(String meetingId) {

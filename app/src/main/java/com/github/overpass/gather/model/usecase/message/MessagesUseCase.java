@@ -6,7 +6,10 @@ import androidx.lifecycle.Transformations;
 import com.github.overpass.gather.model.repo.message.MessageRepo;
 import com.github.overpass.gather.model.repo.user.UserAuthRepo;
 import com.github.overpass.gather.screen.map.AuthUser;
+import com.github.overpass.gather.screen.meeting.chat.DeleteStatus;
 import com.github.overpass.gather.screen.meeting.chat.MessageStatus;
+
+import java.util.List;
 
 public class MessagesUseCase {
 
@@ -32,5 +35,9 @@ public class MessagesUseCase {
                 messageRepo.send(meetingId, input, userData);
             }
         });
+    }
+
+    public LiveData<DeleteStatus> delete(String meetingId, List<String> ids) {
+        return messageRepo.delete(meetingId, ids);
     }
 }

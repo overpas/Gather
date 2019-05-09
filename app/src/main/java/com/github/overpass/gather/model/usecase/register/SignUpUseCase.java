@@ -3,6 +3,7 @@ package com.github.overpass.gather.model.usecase.register;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.github.overpass.gather.model.commons.LiveDataUtils;
 import com.github.overpass.gather.model.repo.pref.PreferenceRepo;
 import com.github.overpass.gather.screen.auth.register.signup.SignUpStatus;
 import com.github.overpass.gather.model.data.validator.BaseValidator;
@@ -23,14 +24,10 @@ public class SignUpUseCase {
 
     public LiveData<SignUpStatus> signUp(String email, String password) {
         if (!validator.isEmailValid(email)) {
-            MutableLiveData<SignUpStatus> signUpStatus = new MutableLiveData<>();
-            signUpStatus.setValue(new SignUpStatus.InvalidEmail("Invalid Email"));
-            return signUpStatus;
+            return LiveDataUtils.just(new SignUpStatus.InvalidEmail("Invalid Email"));
         }
         if (!validator.isPasswordValid(password)) {
-            MutableLiveData<SignUpStatus> signUpStatus = new MutableLiveData<>();
-            signUpStatus.setValue(new SignUpStatus.InvalidPassword("Invalid Password"));
-            return signUpStatus;
+            return LiveDataUtils.just(new SignUpStatus.InvalidPassword("Invalid Password"));
         }
         return signUpRepo.signUp(email, password);
     }

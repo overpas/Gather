@@ -240,7 +240,9 @@ public abstract class BaseMapFragment<VM extends BaseMapDetailViewModel> extends
         switch (fabAction) {
             case ADD_NEW:
                 switchMarker(false);
-                NewMeetingActivity.start(map.getCameraPosition().target, getContext());
+                if (map != null) {
+                    NewMeetingActivity.start(map.getCameraPosition().target, getContext());
+                }
                 break;
             case CONFIRM_MARKER:
                 switchMarker(true);

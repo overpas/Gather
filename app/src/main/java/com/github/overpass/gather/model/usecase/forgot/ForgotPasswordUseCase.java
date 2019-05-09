@@ -1,11 +1,11 @@
 package com.github.overpass.gather.model.usecase.forgot;
 
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 
+import com.github.overpass.gather.model.commons.LiveDataUtils;
 import com.github.overpass.gather.model.data.validator.BaseValidator;
-import com.github.overpass.gather.screen.auth.login.forgot.ForgotStatus;
 import com.github.overpass.gather.model.repo.password.PasswordResetRepo;
+import com.github.overpass.gather.screen.auth.login.forgot.ForgotStatus;
 
 public class ForgotPasswordUseCase {
 
@@ -21,9 +21,7 @@ public class ForgotPasswordUseCase {
         if (validator.isEmailValid(email)) {
             return passwordResetRepo.sendForgotPassword(email);
         } else {
-            MutableLiveData<ForgotStatus> result = new MutableLiveData<>();
-            result.setValue(new ForgotStatus.InvalidEmail());
-            return result;
+            return LiveDataUtils.just(new ForgotStatus.InvalidEmail());
         }
     }
 }

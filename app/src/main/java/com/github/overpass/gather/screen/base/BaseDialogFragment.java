@@ -11,6 +11,17 @@ import androidx.fragment.app.FragmentManager;
 
 public abstract class BaseDialogFragment extends DialogFragment {
 
+    protected String getIdFromArgs(String key) {
+        String defaultId = "-1";
+        if (getArguments() != null) {
+            String id = getArguments().getString(key, defaultId);
+            if (id != null) {
+                return id;
+            }
+        }
+        return defaultId;
+    }
+
     public static <F extends BaseDialogFragment> void show(String tag,
                                                            @Nullable FragmentManager manager,
                                                            boolean cancelable,

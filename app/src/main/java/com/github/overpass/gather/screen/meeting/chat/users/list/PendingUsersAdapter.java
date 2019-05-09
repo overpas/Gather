@@ -5,12 +5,16 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 
+import com.annimon.stream.Stream;
+import com.annimon.stream.function.IntFunction;
 import com.chauthai.swipereveallayout.SwipeRevealLayout;
 import com.chauthai.swipereveallayout.ViewBinderHelper;
 import com.github.overpass.gather.R;
+import com.github.overpass.gather.screen.auth.register.signup.User;
 import com.github.overpass.gather.screen.meeting.chat.users.list.viewholder.BaseViewHolder;
 import com.github.overpass.gather.screen.meeting.chat.users.list.viewholder.PendingUserViewHolder;
 import com.github.overpass.gather.screen.meeting.chat.users.list.viewholder.UserViewHolder;
+import com.github.overpass.gather.screen.meeting.chat.users.model.UserModel;
 
 public class PendingUsersAdapter extends UsersAdapter {
 
@@ -29,6 +33,18 @@ public class PendingUsersAdapter extends UsersAdapter {
     @Override
     protected UserViewHolder createUserViewHolder(@NonNull ViewGroup parent) {
         return createViewHolder(parent, R.layout.item_pending_user, PendingUserViewHolder::new);
+    }
+
+    public void setSwipeLocked(boolean locked) {
+        String[] ids = Stream.of(users)
+                .map(UserModel::getId)
+                .toList()
+                .toArray(new String[users.size()]);
+        if (locked) {
+            viewBinderHelper.lockSwipe(ids);
+        } else {
+            viewBinderHelper.unlockSwipe(ids);
+        }
     }
 
     private void bindIfNeeded(BaseViewHolder holder, int position) {
