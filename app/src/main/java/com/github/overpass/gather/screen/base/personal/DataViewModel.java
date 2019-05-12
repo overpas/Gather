@@ -199,12 +199,17 @@ public abstract class DataViewModel extends RegistrationStepViewModel {
     }
 
     public LiveData<AddDataStatus> submit(ContentResolver contentResolver, String username) {
+        return personalDataUseCase.submit(contentResolver, username, getSelectedUri());
+    }
+
+    @Nullable
+    protected Uri getSelectedUri() {
         Uri imageUri;
         if (contentUriFromCamera != null) {
             imageUri = contentUriFromCamera;
         } else {
             imageUri = chosenImageData.getValue();
         }
-        return personalDataUseCase.submit(contentResolver, username, imageUri);
+        return imageUri;
     }
 }

@@ -45,6 +45,9 @@
         <activity
             android:name=".screen.meeting.chat.attachments.PhotosActivity"
             android:theme="@style/AppTheme.WithActionBar" />
+        <activity
+            android:name=".screen.meeting.chat.attachments.closeup.CloseupActivity"
+            android:theme="@style/AppTheme.Fullscreen" />
 
         <service
             android:name=".model.data.messaging.MyFirebaseMessagingService"

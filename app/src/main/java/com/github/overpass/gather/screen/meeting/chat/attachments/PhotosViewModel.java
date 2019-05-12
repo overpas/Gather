@@ -46,7 +46,7 @@ public class PhotosViewModel extends DataViewModel {
     }
 
     public void doAction(String meetingId) {
-        Uri imageUri = chosenImageData.getValue();
+        Uri imageUri = getSelectedUri();
         if (imageUri != null) {
             ContentResolver contentResolver = getApplication().getContentResolver();
             final boolean[] progressStarted = new boolean[1];

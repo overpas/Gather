@@ -16,6 +16,7 @@ import com.github.overpass.gather.model.usecase.image.ImageSourceUseCase;
 import com.github.overpass.gather.screen.base.personal.DataFragment;
 import com.github.overpass.gather.screen.dialog.ProgressDialogFragment;
 import com.github.overpass.gather.screen.map.Meeting;
+import com.github.overpass.gather.screen.meeting.chat.attachments.closeup.CloseupActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
@@ -124,6 +125,7 @@ public class PhotosFragment extends DataFragment<PhotosViewModel> {
                 RecyclerView.VERTICAL);
         rvAttachments.setLayoutManager(layoutManager);
         adapter = new PhotosAdapter(photoUrl -> {
+            CloseupActivity.start(getContext(), photoUrl);
         });
         rvAttachments.setAdapter(adapter);
     }

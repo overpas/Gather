@@ -4,7 +4,6 @@ import android.content.ContentResolver;
 import android.net.Uri;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Transformations;
 
@@ -12,7 +11,6 @@ import com.github.overpass.gather.model.commons.LiveDataUtils;
 import com.github.overpass.gather.model.commons.exception.PhotoUploadException;
 import com.github.overpass.gather.model.repo.meeting.MeetingRepo;
 import com.github.overpass.gather.model.repo.upload.UploadImageRepo;
-import com.github.overpass.gather.screen.auth.register.add.AddDataStatus;
 import com.github.overpass.gather.screen.auth.register.add.ImageUploadStatus;
 import com.github.overpass.gather.screen.map.Meeting;
 import com.github.overpass.gather.screen.meeting.chat.attachments.PhotoUploadStatus;
