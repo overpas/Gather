@@ -67,28 +67,27 @@ public class UserDataRepo implements MeetingsData, UsersData {
                             .collection(Users.COLLECTION)
                             .add(authUser);
                 })
-                .onSuccessTask(Runners.io(), documentReference -> {
-                    return firestore.collection(COLLECTION_MEETINGS)
-                            .document(meetingId)
-                            .collection(PendingUsers.COLLECTION)
-                            .whereEqualTo(PendingUsers.FIELD_ID, userId)
-                            .get()
-                            .onSuccessTask(Runners.io(), snapshot -> {
-                                String docId = snapshot.getDocuments().get(0).getId();
-                                return firestore.collection(COLLECTION_MEETINGS)
-                                        .document(meetingId)
-                                        .collection(PendingUsers.COLLECTION)
-                                        .document(docId)
-                                        .delete();
-                            });
-
-                })
+                .onSuccessTask(Runners.io(), documentReference ->
+                        firestore.collection(COLLECTION_MEETINGS)
+                                .document(meetingId)
+                                .collection(PendingUsers.COLLECTION)
+                                .whereEqualTo(PendingUsers.FIELD_ID, userId)
+                                .get()
+                                .onSuccessTask(Runners.io(), snapshot -> {
+                                    String docId = snapshot.getDocuments().get(0).getId();
+                                    return firestore.collection(COLLECTION_MEETINGS)
+                                            .document(meetingId)
+                                            .collection(PendingUsers.COLLECTION)
+                                            .document(docId)
+                                            .delete();
+                                }))
                 .addOnSuccessListener(__ -> {
                     acceptanceData.setValue(Acceptance.SUCCESS);
                 })
                 .addOnFailureListener(e -> {
                     acceptanceData.setValue(Acceptance.ERROR);
-                });;
+                });
+        ;
         return acceptanceData;
     }
 

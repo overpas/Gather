@@ -17,7 +17,7 @@ import com.github.overpass.gather.model.usecase.image.ImageSourceUseCase;
 import com.github.overpass.gather.screen.auth.login.LoginActivity;
 import com.github.overpass.gather.screen.auth.register.add.AddDataStatus;
 import com.github.overpass.gather.screen.base.BackPressFragment;
-import com.github.overpass.gather.screen.base.personal.PersonalDataFragment;
+import com.github.overpass.gather.screen.base.personal.DataFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseUser;
@@ -27,7 +27,7 @@ import butterknife.OnClick;
 
 import static com.github.overpass.gather.model.commons.UIUtil.snackbar;
 
-public class ProfileFragment extends PersonalDataFragment<ProfileViewModel>
+public class ProfileFragment extends DataFragment<ProfileViewModel>
         implements BackPressFragment {
 
     private static final String TAG = "ProfileFragment";
@@ -92,6 +92,12 @@ public class ProfileFragment extends PersonalDataFragment<ProfileViewModel>
         });
     }
 
+    @OnClick(R.id.ivPhotoPreview)
+    @Override
+    protected void onChooseImageClick() {
+        super.onChooseImageClick();
+    }
+
     @OnClick(R.id.fabEdit)
     void onProfileModeClick() {
         viewModel.onProfileModeChanged(this::handleEditModeChange);
@@ -113,7 +119,7 @@ public class ProfileFragment extends PersonalDataFragment<ProfileViewModel>
     private void changeUIMode(boolean isEditMode) {
         fabEdit.setImageResource(isEditMode ? R.drawable.ic_tick : R.drawable.ic_pencil);
         tvSignOut.setVisibility(isEditMode ? View.GONE : View.VISIBLE);
-        ivAvatarPreview.setVisibility(isEditMode ? View.VISIBLE : View.GONE);
+        ivPhotoPreview.setVisibility(isEditMode ? View.VISIBLE : View.GONE);
         tilUsername.setVisibility(isEditMode ? View.VISIBLE : View.GONE);
         lavTick.setVisibility(isEditMode ? View.VISIBLE : View.GONE);
         tvAvatarPrompt.setVisibility(isEditMode ? View.VISIBLE : View.GONE);

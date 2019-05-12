@@ -8,13 +8,13 @@ import com.github.overpass.gather.R;
 import com.github.overpass.gather.model.usecase.image.ImageSourceUseCase;
 import com.github.overpass.gather.screen.auth.register.RegisterViewModel;
 import com.github.overpass.gather.screen.auth.register.RegisterViewModelFactory;
-import com.github.overpass.gather.screen.base.personal.PersonalDataFragment;
+import com.github.overpass.gather.screen.base.personal.DataFragment;
 import com.github.overpass.gather.screen.dialog.ProgressDialogFragment;
 import com.github.overpass.gather.screen.map.MapActivity;
 
 import butterknife.OnClick;
 
-public class AddPersonalDataFragment extends PersonalDataFragment<AddPersonalDataViewModel> {
+public class AddPersonalDataFragment extends DataFragment<AddPersonalDataViewModel> {
 
     @Override
     protected AddPersonalDataViewModel createViewModel() {
@@ -37,6 +37,12 @@ public class AddPersonalDataFragment extends PersonalDataFragment<AddPersonalDat
     @Override
     public void onSubmitClick() {
         super.onSubmitClick();
+    }
+
+    @OnClick(R.id.ivPhotoPreview)
+    @Override
+    protected void onChooseImageClick() {
+        super.onChooseImageClick();
     }
 
     @Override

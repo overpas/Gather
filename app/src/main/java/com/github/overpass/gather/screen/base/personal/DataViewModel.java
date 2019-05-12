@@ -33,7 +33,9 @@ import com.google.firebase.storage.FirebaseStorage;
 
 import java.io.File;
 
-public abstract class PersonalDataViewModel extends RegistrationStepViewModel {
+// TODO: It shouldn't be a subclass of RegistrationStepViewModel, but there's no time to refactor
+//  the whole hierarchy
+public abstract class DataViewModel extends RegistrationStepViewModel {
 
     private static final String TAG = "AddPersonalDataViewMode";
     private static final int REQUEST_CODE_FROM_GALLERY = 12;
@@ -41,14 +43,14 @@ public abstract class PersonalDataViewModel extends RegistrationStepViewModel {
 
     private final ChooseImageHelper chooseImageHelper;
     private final PersonalDataUseCase personalDataUseCase;
-    private final MutableLiveData<Uri> chosenImageData;
+    protected final MutableLiveData<Uri> chosenImageData;
     private final SingleLiveEvent<Boolean> writePermissionDeniedData;
     private final SingleLiveEvent<Boolean> readPermissionDeniedData;
     private ImageSourceUseCase imageSourceUseCase;
 
     private Uri contentUriFromCamera;
 
-    public PersonalDataViewModel(@NonNull Application application) {
+    public DataViewModel(@NonNull Application application) {
         super(application);
         personalDataUseCase = new PersonalDataUseCase(
                 new UserAuthRepo(FirebaseAuth.getInstance(), FirebaseFirestore.getInstance()),

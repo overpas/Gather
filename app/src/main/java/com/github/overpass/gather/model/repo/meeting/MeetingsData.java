@@ -1,13 +1,12 @@
 package com.github.overpass.gather.model.repo.meeting;
 
-import com.github.overpass.gather.screen.auth.register.signup.User;
-
 public interface MeetingsData {
 
     String COLLECTION_MEETINGS = "Meetings";
     String FIELD_LATITUDE = "latitude";
     String FIELD_LONGITUDE = "longitude";
     String FIELD_NAME = "name";
+    String FIELD_PHOTOS = "photos";
 
     interface Users {
         String COLLECTION = "Users";

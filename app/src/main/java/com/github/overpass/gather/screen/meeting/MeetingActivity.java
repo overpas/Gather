@@ -17,9 +17,9 @@ import com.github.overpass.gather.screen.meeting.join.JoinFragment;
 
 import butterknife.BindView;
 
-public class MeetingActivity extends BaseActivity<MeetingViewModel> {
+import static com.github.overpass.gather.model.commons.Constants.MEETING_ID_KEY;
 
-    private static final String MEETING_ID_KEY = "MEETING_ID_KEY";
+public class MeetingActivity extends BaseActivity<MeetingViewModel> {
 
     @BindView(R.id.lavProgress)
     LottieAnimationView lavProgress;
@@ -68,8 +68,6 @@ public class MeetingActivity extends BaseActivity<MeetingViewModel> {
     }
 
     public static void start(Context context, String meetingId) {
-        Intent intent = new Intent(context, MeetingActivity.class);
-        intent.putExtra(MEETING_ID_KEY, meetingId);
-        context.startActivity(intent);
+        start(context, MeetingActivity.class, MEETING_ID_KEY, meetingId);
     }
 }

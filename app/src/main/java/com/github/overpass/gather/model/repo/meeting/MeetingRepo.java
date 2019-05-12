@@ -17,10 +17,12 @@ import com.github.overpass.gather.screen.create.MeetingType;
 import com.github.overpass.gather.screen.map.detail.Current2MaxPeopleRatio;
 import com.github.overpass.gather.screen.meeting.MeetingAndRatio;
 import com.github.overpass.gather.screen.meeting.base.LoadMeetingStatus;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.Source;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -164,6 +166,19 @@ public class MeetingRepo implements MeetingsData {
         return meetingStatus;
     }
 
+    public LiveData<Meeting> getLiveMeeting(String meetingId) {
+        MutableLiveData<Meeting> meetingStatus = new MutableLiveData<>();
+        firestore.collection(COLLECTION_MEETINGS)
+                .document(meetingId)
+                .addSnapshotListener((doc, e) -> {
+                    if (doc != null && e == null) {
+                        Meeting meeting = doc.toObject(Meeting.class);
+                        meetingStatus.setValue(meeting);
+                    }
+                });
+        return meetingStatus;
+    }
+
     public LiveData<Boolean> isUserAllowed(@Nullable AuthUser authUser, String meetingId) {
         return isUserListed(Users.COLLECTION, authUser, meetingId);
     }
@@ -213,5 +228,27 @@ public class MeetingRepo implements MeetingsData {
                     }
                 });
         return meetingData;
+    }
+
+    public LiveData<Boolean> addPhoto(String meetingId, String photoUrl) {
+        MutableLiveData<Boolean> photoAddedData = new MutableLiveData<>();
+        firestore.collection(COLLECTION_MEETINGS)
+                .document(meetingId)
+                .get()
+                .onSuccessTask(Runners.io(), doc -> {
+                    if (doc == null) {
+                        return new FailedTask<>("Something went wrong");
+                    } else {
+                        Meeting meeting = doc.toObject(Meeting.class);
+                        List<String> photos = meeting.getPhotos();
+                        photos.add(photoUrl);
+                        return firestore.collection(COLLECTION_MEETINGS)
+                                .document(meetingId)
+                                .update(MeetingsData.FIELD_PHOTOS, photos);
+                    }
+                })
+                .addOnSuccessListener(__ -> photoAddedData.setValue(true))
+                .addOnFailureListener(e -> photoAddedData.setValue(false));
+        return photoAddedData;
     }
 }

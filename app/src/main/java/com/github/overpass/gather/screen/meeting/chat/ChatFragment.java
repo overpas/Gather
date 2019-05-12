@@ -21,6 +21,7 @@ import com.github.overpass.gather.screen.dialog.details.MeetingDetailsDialogFrag
 import com.github.overpass.gather.screen.map.AuthUser;
 import com.github.overpass.gather.screen.meeting.base.BaseMeetingFragment;
 import com.github.overpass.gather.screen.meeting.base.LoadMeetingStatus;
+import com.github.overpass.gather.screen.meeting.chat.attachments.PhotosActivity;
 import com.github.overpass.gather.screen.meeting.chat.users.UsersActivity;
 import com.stfalcon.chatkit.messages.MessageInput;
 import com.stfalcon.chatkit.messages.MessagesList;
@@ -131,7 +132,7 @@ public class ChatFragment extends BaseMeetingFragment<ChatViewModel> {
                 UsersActivity.start(getContext(), getMeetingId());
                 return true;
             } else if (item.getItemId() == R.id.action_attachments) {
-                toast(ChatFragment.this, getString(R.string.attachments));
+                PhotosActivity.start(getContext(), getMeetingId());
                 return true;
             } else if (item.getItemId() == R.id.action_details) {
                 MeetingDetailsDialogFragment.show(getMeetingId(), getFragmentManager());

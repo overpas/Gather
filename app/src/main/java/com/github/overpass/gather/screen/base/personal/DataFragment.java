@@ -18,19 +18,22 @@ import com.github.overpass.gather.screen.dialog.ProgressDialogFragment;
 import com.google.android.material.textfield.TextInputEditText;
 
 import butterknife.BindView;
-import butterknife.OnClick;
 import butterknife.OnLongClick;
+import butterknife.Optional;
 
 import static com.github.overpass.gather.model.commons.UIUtil.snackbar;
 import static com.github.overpass.gather.model.commons.UIUtil.textOf;
 
-public abstract class PersonalDataFragment<VM extends PersonalDataViewModel>
+// TODO: The hierarchy is messed up
+public abstract class DataFragment<VM extends DataViewModel>
         extends RegistrationFragment<VM> {
 
+    @Nullable
     @BindView(R.id.tietUsername)
     protected TextInputEditText tietUsername;
-    @BindView(R.id.ivAvatarPreview)
-    protected ImageView ivAvatarPreview;
+    @BindView(R.id.ivPhotoPreview)
+    protected ImageView ivPhotoPreview;
+    @Nullable
     @BindView(R.id.lavTick)
     protected LottieAnimationView lavTick;
 
@@ -45,13 +48,13 @@ public abstract class PersonalDataFragment<VM extends PersonalDataViewModel>
                 .observe(getViewLifecycleOwner(), this::onPermissionChanged);
     }
 
-    private void onPermissionChanged(boolean denied) {
+    protected void onPermissionChanged(boolean denied) {
         if (denied) {
-            snackbar(ivAvatarPreview, "Sorry, you can't choose photo without permissions");
+            snackbar(ivPhotoPreview, "Sorry, you can't choose photo without permissions");
         }
     }
 
-    private void handleImageSource(ImageSource imageSource) {
+    protected void handleImageSource(ImageSource imageSource) {
         if (imageSource == ImageSource.GALLERY) {
             viewModel.chooseFromGallery(getActivity(), this);
         } else if (imageSource == ImageSource.CAMERA) {
@@ -59,29 +62,28 @@ public abstract class PersonalDataFragment<VM extends PersonalDataViewModel>
         }
     }
 
-    private void handleChosenImageUri(Uri uri) {
+    protected void handleChosenImageUri(@Nullable Uri uri) {
         if (uri != null) {
-            ivAvatarPreview.setScaleX(1);
-            ivAvatarPreview.setScaleY(1);
-            ivAvatarPreview.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            ivAvatarPreview.setImageURI(uri);
+            ivPhotoPreview.setScaleX(1);
+            ivPhotoPreview.setScaleY(1);
+            ivPhotoPreview.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            ivPhotoPreview.setImageURI(uri);
             lavTick.setVisibility(View.VISIBLE);
             lavTick.playAnimation();
         } else { // reset
-            ivAvatarPreview.setScaleY(2);
-            ivAvatarPreview.setScaleX(2);
-            ivAvatarPreview.setScaleType(ImageView.ScaleType.CENTER);
-            ivAvatarPreview.setImageResource(R.drawable.ic_add_pic);
+            ivPhotoPreview.setScaleY(2);
+            ivPhotoPreview.setScaleX(2);
+            ivPhotoPreview.setScaleType(ImageView.ScaleType.CENTER);
+            ivPhotoPreview.setImageResource(R.drawable.ic_add_pic);
             lavTick.setVisibility(View.GONE);
         }
     }
 
-    @OnClick(R.id.ivAvatarPreview)
     protected void onChooseImageClick() {
         PickImageDialogFragment.show(getFragmentManager());
     }
 
-    @OnLongClick(R.id.ivAvatarPreview)
+    @OnLongClick(R.id.ivPhotoPreview)
     protected void resetImage() {
         viewModel.resetChosenImage();
     }
@@ -120,7 +122,7 @@ public abstract class PersonalDataFragment<VM extends PersonalDataViewModel>
     protected void handleError(AddDataStatus.Error error) {
         ProgressDialogFragment.hide(getFragmentManager());
         String message = error.getThrowable().getLocalizedMessage();
-        snackbar(ivAvatarPreview, message);
+        snackbar(ivPhotoPreview, message);
     }
 
     protected void handleSuccess(AddDataStatus.Success success) {

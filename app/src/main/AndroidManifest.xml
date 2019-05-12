@@ -42,6 +42,9 @@
             android:name=".screen.meeting.chat.users.UsersActivity"
             android:parentActivityName=".screen.meeting.MeetingActivity"
             android:theme="@style/AppTheme.WithActionBar" />
+        <activity
+            android:name=".screen.meeting.chat.attachments.PhotosActivity"
+            android:theme="@style/AppTheme.WithActionBar" />
 
         <service
             android:name=".model.data.messaging.MyFirebaseMessagingService"

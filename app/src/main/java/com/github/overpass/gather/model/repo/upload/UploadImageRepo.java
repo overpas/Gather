@@ -33,12 +33,12 @@ public class UploadImageRepo {
     public LiveData<ImageUploadStatus> saveImage(ContentResolver contentResolver,
                                                  Uri imageUri,
                                                  String bucket,
-                                                 String userId,
+                                                 String folder,
                                                  String imageName) {
         MutableLiveData<ImageUploadStatus> data = new MutableLiveData<>();
         data.setValue(new ImageUploadStatus.Progress(0));
         Runners.io().execute(() -> {
-            String path = bucket + "/" + userId + "/" + imageName + ".jpg";
+            String path = bucket + "/" + folder + "/" + imageName + ".jpg";
             StorageReference storageReference = storage.getReference().child(path);
             storageReference.putBytes(uriToBytes(contentResolver, imageUri))
                     .addOnFailureListener(e -> data.postValue(new ImageUploadStatus.Error(e)))

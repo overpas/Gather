@@ -6,14 +6,15 @@ import androidx.annotation.NonNull;
 import androidx.core.util.Consumer;
 
 import com.github.overpass.gather.model.repo.login.AuthRepo;
+import com.github.overpass.gather.model.repo.pref.PreferenceRepo;
 import com.github.overpass.gather.model.repo.user.UserDataRepo;
 import com.github.overpass.gather.model.usecase.userdata.ProfileUseCase;
-import com.github.overpass.gather.screen.base.personal.PersonalDataViewModel;
+import com.github.overpass.gather.screen.base.personal.DataViewModel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-public class ProfileViewModel extends PersonalDataViewModel {
+public class ProfileViewModel extends DataViewModel {
 
     private final ProfileUseCase profileUseCase;
 
@@ -23,7 +24,8 @@ public class ProfileViewModel extends PersonalDataViewModel {
         super(application);
         profileUseCase = new ProfileUseCase(
                 new UserDataRepo(FirebaseAuth.getInstance(), FirebaseFirestore.getInstance()),
-                new AuthRepo(FirebaseAuth.getInstance())
+                new AuthRepo(FirebaseAuth.getInstance()),
+                new PreferenceRepo(application)
         );
     }
 
