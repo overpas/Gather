@@ -1,9 +1,12 @@
 package com.github.overpass.gather.screen.map;
 
+import androidx.annotation.Keep;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+@Keep
 public class Meeting {
 
     public static final Meeting EMPTY = new Meeting();

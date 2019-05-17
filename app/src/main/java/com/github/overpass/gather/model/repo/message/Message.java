@@ -1,7 +1,10 @@
 package com.github.overpass.gather.model.repo.message;
 
+import androidx.annotation.Keep;
+
 import java.util.Date;
 
+@Keep
 public class Message extends BaseMessage {
 
     private String id;

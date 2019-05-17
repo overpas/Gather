@@ -10,7 +10,21 @@ android {
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
+    signingConfigs {
+        stage {
+            storeFile file("stage.keystore")
+            storePassword 'gatherppa'
+            keyAlias 'gather_app'
+            keyPassword 'gatherppa'
+        }
+    }
     buildTypes {
+        stage {
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.stage
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
