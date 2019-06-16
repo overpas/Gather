@@ -37,8 +37,8 @@ public class CloseupActivity extends BaseActivity<CloseUpViewModel> {
     }
 
     @Override
-    protected void subscribe() {
-        super.subscribe();
+    protected void onBind() {
+        super.onBind();
         Glide.with(this)
                 .load(getPhotoUrl())
                 .into(pvPhoto);

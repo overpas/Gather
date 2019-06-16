@@ -56,7 +56,7 @@ public class GeocodeRepo {
                 }
             }
         };
-        httpClient.get(url, callback, "access_token",
+        httpClient.get(url, callback, null, "access_token",
                 App.getAppContext().getString(R.string.mapbox_token));
         return resultData;
     }

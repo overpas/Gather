@@ -25,7 +25,7 @@ public class EnrolledActivity extends BaseActivity<EnrolledViewModel> {
     }
 
     @Override
-    protected void subscribe() {
+    protected void onBind() {
         if (viewModel.shouldAnimate()) {
             lavLargeTick.playAnimation();
         }

@@ -43,7 +43,7 @@ public class RegisterActivity extends BaseActivity<RegisterViewModel>
     }
 
     @Override
-    protected void subscribe() {
+    protected void onBind() {
         viewModel.getRegistrationProgressData().observe(this, this::moveToNextStep);
     }
 

@@ -22,7 +22,7 @@ public abstract class BaseActivity<VM extends ViewModel> extends AppCompatActivi
         ButterKnife.bind(this);
         setupToolbar();
         viewModel = createViewModel();
-        subscribe();
+        onBind();
     }
 
     protected abstract int getLayoutRes();
@@ -32,7 +32,7 @@ public abstract class BaseActivity<VM extends ViewModel> extends AppCompatActivi
     protected void onActionBar(@NonNull ActionBar actionBar) {
     }
 
-    protected void subscribe() {
+    protected void onBind() {
     }
 
     protected void setupToolbar() {
