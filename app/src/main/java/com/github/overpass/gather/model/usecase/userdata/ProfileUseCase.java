@@ -5,7 +5,7 @@ import androidx.core.util.Consumer;
 import com.github.overpass.gather.model.repo.login.AuthRepo;
 import com.github.overpass.gather.model.repo.pref.PreferenceRepo;
 import com.github.overpass.gather.model.repo.user.UserDataRepo;
-import com.github.overpass.gather.screen.splash.StartStatus;
+import com.github.overpass.gather.model.data.entity.splash.StartStatus;
 import com.google.firebase.auth.FirebaseUser;
 
 public class ProfileUseCase {

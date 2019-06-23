@@ -86,7 +86,7 @@ public class NewMeetingFragment extends BaseFragment<NewMeetingViewModel> {
         Date date = dateOf(datePicker);
         int maxPeople = npMaxPeople.getValue();
         boolean isPrivate = switchPrivate.isChecked();
-        viewModel.createMeeting(latitude, longitude, title, date, meetingType, maxPeople, isPrivate)
+        getViewModel().createMeeting(latitude, longitude, title, date, meetingType, maxPeople, isPrivate)
                 .observe(getViewLifecycleOwner(), this::handleSaveMeetingStatus);
     }
 

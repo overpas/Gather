@@ -58,9 +58,9 @@ public class PhotosFragment extends DataFragment<PhotosViewModel> {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setupList();
-        viewModel.getMeeting(getMeetingId()).observe(getViewLifecycleOwner(), this::handleMeeting);
-        viewModel.getSuggestToChooseData().observe(getViewLifecycleOwner(), this::handleChoose);
-        viewModel.getPhotoUploadData().observe(getViewLifecycleOwner(), this::handleUpload);
+        getViewModel().getMeeting(getMeetingId()).observe(getViewLifecycleOwner(), this::handleMeeting);
+        getViewModel().getSuggestToChooseData().observe(getViewLifecycleOwner(), this::handleChoose);
+        getViewModel().getPhotoUploadData().observe(getViewLifecycleOwner(), this::handleUpload);
     }
 
     private void handleUpload(PhotoUploadStatus uploadStatus) {
@@ -89,7 +89,7 @@ public class PhotosFragment extends DataFragment<PhotosViewModel> {
     private void handleUploadSuccess(PhotoUploadStatus.Success success) {
         ProgressDialogFragment.hide(getFragmentManager());
         snackbar(ivPhotoPreview, getString(R.string.success));
-        viewModel.resetChosenImage();
+        getViewModel().resetChosenImage();
     }
 
     private void handleChoose(Boolean shouldSuggestToChoose) {
@@ -100,7 +100,7 @@ public class PhotosFragment extends DataFragment<PhotosViewModel> {
 
     @OnClick(R.id.fabAttach)
     public void doAction() {
-        viewModel.doAction(getMeetingId());
+        getViewModel().doAction(getMeetingId());
     }
 
     @Override

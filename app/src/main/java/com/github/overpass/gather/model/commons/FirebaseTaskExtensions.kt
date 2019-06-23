@@ -22,3 +22,13 @@ inline fun <T, R> Task<T>.toLiveData(
     addOnFailureListener { liveData.value = onFailureMap(it) }
     return liveData
 }
+
+inline fun <T, R> Task<T>.toLiveData(
+        crossinline onSuccessMap: (value: T?) -> R?,
+        crossinline onFailureMap: (exception: Exception) -> R?
+): LiveData<R> {
+    val liveData = MutableLiveData<R>()
+    addOnSuccessListener { liveData.value = onSuccessMap(it) }
+    addOnFailureListener { liveData.value = onFailureMap(it) }
+    return liveData
+}

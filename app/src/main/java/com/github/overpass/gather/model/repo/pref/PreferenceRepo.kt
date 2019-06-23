@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
 
-import com.github.overpass.gather.screen.splash.StartStatus
+import com.github.overpass.gather.model.data.entity.splash.StartStatus
 
 class PreferenceRepo(context: Context) {
 

@@ -48,7 +48,7 @@ public class AddPersonalDataFragment extends DataFragment<AddPersonalDataViewMod
     @Override
     protected void handleSuccess(AddDataStatus.Success success) {
         super.handleSuccess(success);
-        viewModel.setSignUpComplete();
+        getViewModel().setSignUpComplete();
         ProgressDialogFragment.hide(getFragmentManager());
         Intent intent = new Intent(getContext(), MapActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

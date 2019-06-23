@@ -2,7 +2,7 @@ package com.github.overpass.gather.model.usecase.login
 
 import com.github.overpass.gather.model.repo.pref.PreferenceRepo
 import com.github.overpass.gather.model.repo.register.SignUpRepo
-import com.github.overpass.gather.screen.splash.StartStatus
+import com.github.overpass.gather.model.data.entity.splash.StartStatus
 
 class StartStatusUseCase(
         private val preferenceRepo: PreferenceRepo,

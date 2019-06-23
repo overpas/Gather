@@ -36,7 +36,7 @@ public abstract class BaseMeetingFragment<VM extends BaseMeetingViewModel>
     }
 
     protected void onLoadMeetingData() {
-        viewModel.loadMeeting(getMeetingId())
+        getViewModel().loadMeeting(getMeetingId())
                 .observe(getViewLifecycleOwner(), this::handleLoadStatus);
     }
 

@@ -5,6 +5,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 
 import com.github.overpass.gather.model.commons.SingleLiveEvent
+import com.github.overpass.gather.model.data.entity.signin.SignInStatus
 import com.github.overpass.gather.model.data.validator.BaseValidator
 import com.github.overpass.gather.model.repo.login.AuthRepo
 import com.github.overpass.gather.model.repo.pref.PreferenceRepo

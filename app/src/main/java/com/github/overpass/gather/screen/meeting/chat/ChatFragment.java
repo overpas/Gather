@@ -64,16 +64,16 @@ public class ChatFragment extends BaseMeetingFragment<ChatViewModel> {
         super.onViewCreated(view, savedInstanceState);
         setupToolbar();
         setupList();
-        viewModel.messages(getMeetingId()).observe(getViewLifecycleOwner(), this::handleMessages);
+        getViewModel().messages(getMeetingId()).observe(getViewLifecycleOwner(), this::handleMessages);
         messageInput.setInputListener(input -> {
             if (TextUtils.isEmpty(input)) {
                 return false;
             }
-            viewModel.send(getMeetingId(), input.toString());
+            getViewModel().send(getMeetingId(), input.toString());
             return true;
         });
-        viewModel.checkUserRole(getMeetingId()).observe(getViewLifecycleOwner(), this::handleRole);
-        viewModel.selectedItems().observe(getViewLifecycleOwner(), this::handleSelection);
+        getViewModel().checkUserRole(getMeetingId()).observe(getViewLifecycleOwner(), this::handleRole);
+        getViewModel().selectedItems().observe(getViewLifecycleOwner(), this::handleSelection);
     }
 
     @Override
@@ -88,7 +88,7 @@ public class ChatFragment extends BaseMeetingFragment<ChatViewModel> {
     }
 
     private void setupList() {
-        viewModel.getCurrentUser().observe(getViewLifecycleOwner(), user -> {
+        getViewModel().getCurrentUser().observe(getViewLifecycleOwner(), user -> {
             if (user != null) {
                 adapter = new MessagesListAdapter<>(
                         user.getId(),
@@ -104,7 +104,7 @@ public class ChatFragment extends BaseMeetingFragment<ChatViewModel> {
     }
 
     private void handleOnLongClick(IMessageImpl message) {
-        viewModel.getCurrentUser().observe(getViewLifecycleOwner(), user -> {
+        getViewModel().getCurrentUser().observe(getViewLifecycleOwner(), user -> {
             if (user != null && message.getUser().getId().equals(user.getId())) {
                 DeleteDialogFragment.show(getMeetingId(), message.getId(), getFragmentManager());
             }
@@ -171,7 +171,7 @@ public class ChatFragment extends BaseMeetingFragment<ChatViewModel> {
 
     private void handleRole(AuthUser.Role role) {
         if (role == AuthUser.Role.ADMIN || role == AuthUser.Role.MODER) {
-            adapter.enableSelectionMode(viewModel::setSelection);
+            adapter.enableSelectionMode(getViewModel()::setSelection);
         }
     }
 
@@ -189,7 +189,7 @@ public class ChatFragment extends BaseMeetingFragment<ChatViewModel> {
             List<String> ids = Stream.of(adapter.getSelectedMessages())
                     .map(IMessageImpl::getId)
                     .toList();
-            viewModel.delete(getMeetingId(), ids)
+            getViewModel().delete(getMeetingId(), ids)
                     .observe(getViewLifecycleOwner(), this::handleDeletion);
         }
     }

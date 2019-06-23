@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import com.github.overpass.gather.model.commons.SingleLiveEvent
+import com.github.overpass.gather.model.data.entity.splash.StartStatus
 import com.github.overpass.gather.model.repo.pref.PreferenceRepo
 import com.github.overpass.gather.model.repo.register.SignUpRepo
 import com.github.overpass.gather.model.usecase.login.StartStatusUseCase

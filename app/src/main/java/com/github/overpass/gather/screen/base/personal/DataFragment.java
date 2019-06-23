@@ -19,7 +19,6 @@ import com.google.android.material.textfield.TextInputEditText;
 
 import butterknife.BindView;
 import butterknife.OnLongClick;
-import butterknife.Optional;
 
 import static com.github.overpass.gather.model.commons.UIUtil.snackbar;
 import static com.github.overpass.gather.model.commons.UIUtil.textOf;
@@ -38,13 +37,13 @@ public abstract class DataFragment<VM extends DataViewModel>
     protected LottieAnimationView lavTick;
 
     @Override
-    protected void subscribe() {
-        super.subscribe();
-        viewModel.getChosenImageData().observe(getViewLifecycleOwner(), this::handleChosenImageUri);
-        viewModel.getImageSourceData().observe(getViewLifecycleOwner(), this::handleImageSource);
-        viewModel.getWritePermissionDeniedData()
+    protected void onBind() {
+        super.onBind();
+        getViewModel().getChosenImageData().observe(getViewLifecycleOwner(), this::handleChosenImageUri);
+        getViewModel().getImageSourceData().observe(getViewLifecycleOwner(), this::handleImageSource);
+        getViewModel().getWritePermissionDeniedData()
                 .observe(getViewLifecycleOwner(), this::onPermissionChanged);
-        viewModel.getReadPermissionDeniedData()
+        getViewModel().getReadPermissionDeniedData()
                 .observe(getViewLifecycleOwner(), this::onPermissionChanged);
     }
 
@@ -56,9 +55,9 @@ public abstract class DataFragment<VM extends DataViewModel>
 
     protected void handleImageSource(ImageSource imageSource) {
         if (imageSource == ImageSource.GALLERY) {
-            viewModel.chooseFromGallery(getActivity(), this);
+            getViewModel().chooseFromGallery(getActivity(), this);
         } else if (imageSource == ImageSource.CAMERA) {
-            viewModel.chooseFromCamera(getActivity(), this);
+            getViewModel().chooseFromCamera(getActivity(), this);
         }
     }
 
@@ -85,11 +84,11 @@ public abstract class DataFragment<VM extends DataViewModel>
 
     @OnLongClick(R.id.ivPhotoPreview)
     protected void resetImage() {
-        viewModel.resetChosenImage();
+        getViewModel().resetChosenImage();
     }
 
     public void onSubmitClick() {
-        viewModel.submit(getContext().getContentResolver(), textOf(tietUsername))
+        getViewModel().submit(getContext().getContentResolver(), textOf(tietUsername))
                 .observe(getViewLifecycleOwner(), this::handleAddDataStatus);
     }
 
@@ -131,13 +130,13 @@ public abstract class DataFragment<VM extends DataViewModel>
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        viewModel.onImageChosen(requestCode, resultCode, data);
+        getViewModel().onImageChosen(requestCode, resultCode, data);
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
-        viewModel.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+        getViewModel().onRequestPermissionsResult(requestCode, permissions, grantResults, this);
     }
 }

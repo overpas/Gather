@@ -1,13 +1,12 @@
 package com.github.overpass.gather.model.repo.register
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.github.overpass.gather.model.commons.Runners
 import com.github.overpass.gather.model.commons.map
 import com.github.overpass.gather.model.commons.toLiveData
 import com.github.overpass.gather.model.repo.user.UsersData
 import com.github.overpass.gather.screen.auth.register.signup.SignUpStatus
-import com.github.overpass.gather.screen.auth.register.signup.User
+import com.github.overpass.gather.model.data.entity.user.User
 import com.google.android.gms.tasks.SuccessContinuation
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -34,8 +33,8 @@ class SignUpRepo(
                     it!!.sendEmailVerification()
                 })
                 .toLiveData(
-                        onStart = { SignUpStatus.Progress() },
-                        onSuccessMap = { SignUpStatus.Success() },
+                        onStart = { SignUpStatus.Progress },
+                        onSuccessMap = { SignUpStatus.Success },
                         onFailureMap = { SignUpStatus.Error(it) }
                 )
     }

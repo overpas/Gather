@@ -1,4 +1,4 @@
-package com.github.overpass.gather.screen.splash
+package com.github.overpass.gather.model.data.entity.splash
 
 enum class StartStatus {
 

@@ -64,13 +64,13 @@ public class MapFragment extends BaseMapFragment<MapDetailViewModel>
     @Override
     protected void onLocationUpdated(Location location, boolean forceCameraMove) {
         super.onLocationUpdated(location, forceCameraMove);
-        viewModel.scanArea(location)
+        getViewModel().scanArea(location)
                 .observe(getViewLifecycleOwner(), this::onMeetingsLoaded);
     }
 
     @Override
     public boolean onMarkerClick(@NonNull Marker marker) {
-        viewModel.getCurrent2MaxPeopleRatio(marker, getViewLifecycleOwner(), ratio -> {
+        getViewModel().getCurrent2MaxPeopleRatio(marker, getViewLifecycleOwner(), ratio -> {
             onRatioReceived(ratio, marker);
         });
         return super.onMarkerClick(marker);
@@ -78,25 +78,25 @@ public class MapFragment extends BaseMapFragment<MapDetailViewModel>
 
     @Override
     protected boolean onInfoWindowClick(Marker marker) {
-        viewModel.openMeeting(marker, id -> MeetingActivity.start(getContext(), id));
+        getViewModel().openMeeting(marker, id -> MeetingActivity.start(getContext(), id));
         return super.onInfoWindowClick(marker);
     }
 
     @Override
     protected void onStyleLoaded(Style style, MapboxMap mapboxMap) {
         super.onStyleLoaded(style, mapboxMap);
-        viewModel.setMarkersHelper(new MarkersHelper(map, new IconRepo(getContext())));
+        getViewModel().setMarkersHelper(new MarkersHelper(map, new IconRepo(getContext())));
     }
 
     private void onRatioReceived(Current2MaxPeopleRatio ratio, Marker marker) {
-        viewModel.updateSnippet(marker, ratio).observe(getViewLifecycleOwner(), updated -> {
+        getViewModel().updateSnippet(marker, ratio).observe(getViewLifecycleOwner(), updated -> {
             // probably do smth
         });
     }
 
     private void onMeetingsLoaded(Map<String, Meeting> meetings) {
         Log.d(TAG, "onMeetingsLoaded: " + meetings.toString());
-        viewModel.replace(meetings);
+        getViewModel().replace(meetings);
     }
 
     public static MapFragment newInstance() {

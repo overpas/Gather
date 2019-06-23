@@ -1,15 +1,14 @@
 package com.github.overpass.gather.model.usecase.login
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.Transformations
 
 import com.github.overpass.gather.model.commons.LiveDataUtils
 import com.github.overpass.gather.model.commons.then
 import com.github.overpass.gather.model.data.validator.BaseValidator
 import com.github.overpass.gather.model.repo.pref.PreferenceRepo
-import com.github.overpass.gather.screen.auth.login.SignInStatus
+import com.github.overpass.gather.model.data.entity.signin.SignInStatus
 import com.github.overpass.gather.model.repo.login.AuthRepo
-import com.github.overpass.gather.screen.splash.StartStatus
+import com.github.overpass.gather.model.data.entity.splash.StartStatus
 
 class SignInUseCase(
         private val authRepo: AuthRepo,

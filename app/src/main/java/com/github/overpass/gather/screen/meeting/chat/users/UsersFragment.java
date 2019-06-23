@@ -54,12 +54,12 @@ public class UsersFragment extends BaseFragment<UsersViewModel> {
     }
 
     @Override
-    protected void subscribe() {
-        super.subscribe();
-        viewModel.getMembers(getMeetingId()).observe(getViewLifecycleOwner(), this::handleUsers);
-        viewModel.getPendingUsers(getMeetingId())
+    protected void onBind() {
+        super.onBind();
+        getViewModel().getMembers(getMeetingId()).observe(getViewLifecycleOwner(), this::handleUsers);
+        getViewModel().getPendingUsers(getMeetingId())
                 .observe(getViewLifecycleOwner(), this::handleUsers);
-        viewModel.checkUserRole(getMeetingId()).observe(getViewLifecycleOwner(), this::handleRole);
+        getViewModel().checkUserRole(getMeetingId()).observe(getViewLifecycleOwner(), this::handleRole);
     }
 
     private void handleRole(AuthUser.Role role) {
@@ -116,7 +116,7 @@ public class UsersFragment extends BaseFragment<UsersViewModel> {
     }
 
     private void handleAcceptPendingUser(String id) {
-        viewModel.acceptUser(getMeetingId(), id)
+        getViewModel().acceptUser(getMeetingId(), id)
                 .observe(getViewLifecycleOwner(), this::handleAcceptance);
     }
 
@@ -159,6 +159,6 @@ public class UsersFragment extends BaseFragment<UsersViewModel> {
     }
 
     public static UsersFragment newInstance(String id) {
-        return newInstance(new UsersFragment(), Collections.singletonMap(MEETING_ID_KEY, id));
+        return Companion.newInstance(new UsersFragment(), Collections.singletonMap(MEETING_ID_KEY, id));
     }
 }

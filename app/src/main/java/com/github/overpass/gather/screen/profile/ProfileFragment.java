@@ -68,15 +68,15 @@ public class ProfileFragment extends DataFragment<ProfileViewModel>
     }
 
     @Override
-    protected void subscribe() {
-        super.subscribe();
+    protected void onBind() {
+        super.onBind();
         toolbar.setNavigationOnClickListener(navIcon -> getActivity().finish());
-        viewModel.getUserData(this::onUserDataLoaded, this::onUserNotFound);
+        getViewModel().getUserData(this::onUserDataLoaded, this::onUserNotFound);
     }
 
     @Override
     public boolean handleBackPress() {
-        if (viewModel.checkIfIsEditMode()) {
+        if (getViewModel().checkIfIsEditMode()) {
             changeUIMode(false);
             return true;
         }
@@ -85,7 +85,7 @@ public class ProfileFragment extends DataFragment<ProfileViewModel>
 
     @OnClick(R.id.tvSignOut)
     public void onSignOutClick() {
-        viewModel.signOut(() -> {
+        getViewModel().signOut(() -> {
             Intent intent = new Intent(getContext(), LoginActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
@@ -100,7 +100,7 @@ public class ProfileFragment extends DataFragment<ProfileViewModel>
 
     @OnClick(R.id.fabEdit)
     void onProfileModeClick() {
-        viewModel.onProfileModeChanged(this::handleEditModeChange);
+        getViewModel().onProfileModeChanged(this::handleEditModeChange);
     }
 
     @Override

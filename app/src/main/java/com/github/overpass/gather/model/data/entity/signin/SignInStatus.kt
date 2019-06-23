@@ -1,4 +1,4 @@
-package com.github.overpass.gather.screen.auth.login
+package com.github.overpass.gather.model.data.entity.signin
 
 sealed class SignInStatus {
 

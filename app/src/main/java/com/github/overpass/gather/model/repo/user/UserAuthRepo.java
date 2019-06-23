@@ -9,14 +9,11 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.github.overpass.gather.model.commons.Runners;
 import com.github.overpass.gather.screen.auth.register.add.SaveUserStatus;
-import com.github.overpass.gather.screen.auth.register.signup.User;
 import com.github.overpass.gather.screen.map.AuthUser;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.FirebaseFirestore;
-
-import java.net.URL;
 
 public class UserAuthRepo implements UsersData {
 

@@ -56,11 +56,11 @@ public abstract class BaseMapFragment<VM extends BaseMapDetailViewModel> extends
         super.onViewCreated(view, savedInstanceState);
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
-        viewModel.getPermissionGrantedData()
+        getViewModel().getPermissionGrantedData()
                 .observe(getViewLifecycleOwner(), this::onPermissionResponse);
-        viewModel.getLocationData()
+        getViewModel().getLocationData()
                 .observe(getViewLifecycleOwner(), this::onLocationUpdated);
-        viewModel.getFabActionData()
+        getViewModel().getFabActionData()
                 .observe(getViewLifecycleOwner(), this::onFabActionChanged);
     }
 
@@ -68,19 +68,19 @@ public abstract class BaseMapFragment<VM extends BaseMapDetailViewModel> extends
         if (!granted) {
             snackbar(getView(), getString(R.string.no_location_permissions));
         } else {
-            viewModel.doEnableLocation(getActivity(), style, map);
+            getViewModel().doEnableLocation(getActivity(), style, map);
         }
     }
 
     @OnClick(R.id.fab)
     public void onFabClick() {
-        viewModel.onFabClick();
+        getViewModel().onFabClick();
     }
 
     @OnClick(R.id.fabMyLocation)
     public void onMyLocationClick() {
-        if (viewModel.getLocationData().getValue() != null) {
-            onLocationUpdated(viewModel.getLocationData().getValue(), true);
+        if (getViewModel().getLocationData().getValue() != null) {
+            onLocationUpdated(getViewModel().getLocationData().getValue(), true);
         }
     }
 
@@ -98,9 +98,9 @@ public abstract class BaseMapFragment<VM extends BaseMapDetailViewModel> extends
                 .bearing(180) // Rotate the camera
                 .build(); // Creates a CameraPosition from the builder
 
-        if (!viewModel.hasShownLocationOnce() || forceCameraMove) {
+        if (!getViewModel().hasShownLocationOnce() || forceCameraMove) {
             map.moveCamera(CameraUpdateFactory.newCameraPosition(position));
-            viewModel.setHasShownLocationOnce(true);
+            getViewModel().setHasShownLocationOnce(true);
         }
     }
 
@@ -192,7 +192,7 @@ public abstract class BaseMapFragment<VM extends BaseMapDetailViewModel> extends
                 hideBottomAppBar();
             }
         });
-        viewModel.enableLocation(style, mapboxMap, getActivity());
+        getViewModel().enableLocation(style, mapboxMap, getActivity());
     }
 
     protected boolean onInfoWindowClick(Marker marker) {
@@ -201,12 +201,12 @@ public abstract class BaseMapFragment<VM extends BaseMapDetailViewModel> extends
 
     @OnClick(R.id.ibBack)
     public void onBackClick() {
-        viewModel.resetFabAction();
+        getViewModel().resetFabAction();
     }
 
     @Override
     public boolean handleBackPress() {
-        if (viewModel.getFabActionData().getValue()
+        if (getViewModel().getFabActionData().getValue()
                 == MapDetailViewModel.FabAction.CONFIRM_MARKER) {
             onBackClick();
             return true;

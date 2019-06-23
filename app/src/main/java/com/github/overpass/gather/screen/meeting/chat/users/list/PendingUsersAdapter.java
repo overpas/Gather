@@ -6,11 +6,9 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 
 import com.annimon.stream.Stream;
-import com.annimon.stream.function.IntFunction;
 import com.chauthai.swipereveallayout.SwipeRevealLayout;
 import com.chauthai.swipereveallayout.ViewBinderHelper;
 import com.github.overpass.gather.R;
-import com.github.overpass.gather.screen.auth.register.signup.User;
 import com.github.overpass.gather.screen.meeting.chat.users.list.viewholder.BaseViewHolder;
 import com.github.overpass.gather.screen.meeting.chat.users.list.viewholder.PendingUserViewHolder;
 import com.github.overpass.gather.screen.meeting.chat.users.list.viewholder.UserViewHolder;

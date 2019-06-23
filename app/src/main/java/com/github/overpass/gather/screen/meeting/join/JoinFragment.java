@@ -71,13 +71,13 @@ public class JoinFragment extends BaseMeetingFragment<JoinViewModel> {
 
     @Override
     protected void onLoadMeetingData() {
-        viewModel.loadMeetingCheckEnrolled(getMeetingId())
+        getViewModel().loadMeetingCheckEnrolled(getMeetingId())
                 .observe(getViewLifecycleOwner(), this::handleLoadStatus);
     }
 
     @OnClick(R.id.btnJoin)
     public void onJoinClick() {
-        viewModel.join(getMeetingId()).observe(getViewLifecycleOwner(), this::handleJoin);
+        getViewModel().join(getMeetingId()).observe(getViewLifecycleOwner(), this::handleJoin);
     }
 
     private void handleJoin(JoinStatus status) {
@@ -155,7 +155,7 @@ public class JoinFragment extends BaseMeetingFragment<JoinViewModel> {
         } else {
             ivMeetingType.setImageResource(R.drawable.ic_beer_large);
         }
-        viewModel.getAddress(success.getMeetingAndRatio().getMeeting().getLongitude(),
+        getViewModel().getAddress(success.getMeetingAndRatio().getMeeting().getLongitude(),
                 success.getMeetingAndRatio().getMeeting().getLatitude())
                 .observe(getViewLifecycleOwner(), tvAddress::setText);
     }
