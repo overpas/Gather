@@ -36,10 +36,11 @@ public abstract class BaseActivity<VM extends ViewModel> extends AppCompatActivi
     }
 
     protected void setupToolbar() {
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle("");
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            onActionBar(getSupportActionBar());
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setTitle("");
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            onActionBar(actionBar);
         }
     }
 

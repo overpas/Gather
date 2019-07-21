@@ -1,20 +1,20 @@
 package com.github.overpass.gather.model.usecase.forgot
 
-import androidx.lifecycle.LiveData
-
-import com.github.overpass.gather.model.commons.LiveDataUtils
-import com.github.overpass.gather.model.data.validator.BaseValidator
+import com.github.overpass.gather.model.commons.exception.InvalidCredentialsException
+import com.github.overpass.gather.model.data.validator.EmailValidator
+import com.github.overpass.gather.model.data.validator.Validator
 import com.github.overpass.gather.model.repo.password.PasswordResetRepo
-import com.github.overpass.gather.model.data.entity.forgot.ForgotStatus
+import com.google.android.gms.tasks.Task
+import com.google.android.gms.tasks.Tasks
 
 class ForgotPasswordUseCase(
         private val passwordResetRepo: PasswordResetRepo,
-        private val validator: BaseValidator
+        private val validator: Validator<String>
 ) {
 
-    fun sendForgotPassword(email: String): LiveData<out ForgotStatus> {
-        return email.takeIf { validator.isEmailValid(it) }
+    fun sendForgotPassword(email: String): Task<Void> {
+        return email.takeIf { validator.isValid(it) }
                 ?.let { passwordResetRepo.sendForgotPassword(it) }
-                ?: LiveDataUtils.just(ForgotStatus.InvalidEmail)
+                ?: Tasks.forException(InvalidCredentialsException("Invalid Email"))
     }
 }

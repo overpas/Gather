@@ -1,29 +1,31 @@
 package com.github.overpass.gather.model.usecase.login
 
-import androidx.lifecycle.LiveData
-
-import com.github.overpass.gather.model.commons.LiveDataUtils
-import com.github.overpass.gather.model.commons.then
-import com.github.overpass.gather.model.data.validator.BaseValidator
-import com.github.overpass.gather.model.repo.pref.PreferenceRepo
 import com.github.overpass.gather.model.data.entity.signin.SignInStatus
-import com.github.overpass.gather.model.repo.login.AuthRepo
 import com.github.overpass.gather.model.data.entity.splash.StartStatus
+import com.github.overpass.gather.model.data.validator.Validator
+import com.github.overpass.gather.model.repo.login.AuthRepo
+import com.github.overpass.gather.model.repo.pref.PreferenceRepo
+import com.google.android.gms.tasks.Task
+import com.google.android.gms.tasks.Tasks
 
 class SignInUseCase(
         private val authRepo: AuthRepo,
-        private val validator: BaseValidator,
+        private val emailValidator: Validator<String>,
+        private val passwordValidator: Validator<String>,
         private val preferenceRepo: PreferenceRepo
 ) {
 
-    fun signIn(email: String, password: String): LiveData<SignInStatus> {
-        if (!validator.isEmailValid(email)) {
-            return LiveDataUtils.just(SignInStatus.InvalidEmail("Invalid Email"))
+    fun signIn(email: String, password: String): Task<SignInStatus> {
+        if (!emailValidator.isValid(email)) {
+            return Tasks.forResult(SignInStatus.InvalidEmail("Invalid Email"))
         }
-        if (!validator.isPasswordValid(password)) {
-            return LiveDataUtils.just(SignInStatus.InvalidPassword("Invalid Password"))
+        if (!passwordValidator.isValid(password)) {
+            return Tasks.forResult(SignInStatus.InvalidPassword("Invalid Password"))
         }
         return authRepo.signIn(email, password)
-                .then { preferenceRepo.startStatus = StartStatus.AUTHORIZED }
+                .onSuccessTask {
+                    preferenceRepo.startStatus = StartStatus.AUTHORIZED
+                    Tasks.forResult(it!!)
+                }
     }
 }

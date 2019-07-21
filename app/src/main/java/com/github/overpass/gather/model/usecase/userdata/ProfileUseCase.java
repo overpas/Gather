@@ -27,9 +27,8 @@ public class ProfileUseCase {
     }
 
     public void signOut(Runnable onSuccess) {
-        authRepo.signOut(() -> {
-            preferenceRepo.setStartStatus(StartStatus.UNAUTHORIZED);
-            onSuccess.run();
-        });
+        authRepo.signOut();
+        preferenceRepo.setStartStatus(StartStatus.UNAUTHORIZED);
+        onSuccess.run();
     }
 }

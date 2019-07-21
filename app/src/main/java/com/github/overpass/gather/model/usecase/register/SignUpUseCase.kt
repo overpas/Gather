@@ -1,24 +1,29 @@
 package com.github.overpass.gather.model.usecase.register
 
-import androidx.lifecycle.LiveData
-
-import com.github.overpass.gather.model.commons.LiveDataUtils
-import com.github.overpass.gather.model.data.validator.BaseValidator
+import com.github.overpass.gather.model.commons.map
+import com.github.overpass.gather.model.data.validator.Validator
 import com.github.overpass.gather.model.repo.register.SignUpRepo
 import com.github.overpass.gather.screen.auth.register.signup.SignUpStatus
+import com.google.android.gms.tasks.Task
+import com.google.android.gms.tasks.Tasks
 
 class SignUpUseCase(
         private val signUpRepo: SignUpRepo,
-        private val validator: BaseValidator
+        private val emailValidator: Validator<String>,
+        private val passwordValidator: Validator<String>
 ) {
 
-    fun signUp(email: String, password: String): LiveData<SignUpStatus> {
-        if (!validator.isEmailValid(email)) {
-            return LiveDataUtils.just(SignUpStatus.InvalidEmail("Invalid Email"))
+    fun signUp(email: String, password: String): Task<SignUpStatus> {
+        if (!emailValidator.isValid(email)) {
+            return Tasks.forResult(SignUpStatus.InvalidEmail("Invalid Email"))
         }
-        if (!validator.isPasswordValid(password)) {
-            return LiveDataUtils.just(SignUpStatus.InvalidPassword("Invalid Password"))
+        if (!passwordValidator.isValid(password)) {
+            return Tasks.forResult(SignUpStatus.InvalidPassword("Invalid Password"))
         }
         return signUpRepo.signUp(email, password)
+                .map(
+                        successMapper = { SignUpStatus.Success },
+                        failureMapper = { SignUpStatus.Error(it) }
+                )
     }
 }

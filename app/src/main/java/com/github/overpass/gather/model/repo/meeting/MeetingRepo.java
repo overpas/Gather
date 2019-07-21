@@ -9,20 +9,16 @@ import androidx.lifecycle.Transformations;
 
 import com.annimon.stream.Stream;
 import com.github.overpass.gather.model.commons.Runners;
+import com.github.overpass.gather.screen.create.MeetingType;
 import com.github.overpass.gather.screen.map.AuthUser;
 import com.github.overpass.gather.screen.map.Meeting;
 import com.github.overpass.gather.screen.map.SaveMeetingStatus;
-import com.github.overpass.gather.model.data.FailedTask;
-import com.github.overpass.gather.screen.create.MeetingType;
 import com.github.overpass.gather.screen.map.detail.Current2MaxPeopleRatio;
 import com.github.overpass.gather.screen.meeting.MeetingAndRatio;
 import com.github.overpass.gather.screen.meeting.base.LoadMeetingStatus;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
+import com.google.android.gms.tasks.Tasks;
+import com.google.firebase.FirebaseException;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.firestore.Source;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -96,7 +92,7 @@ public class MeetingRepo implements MeetingsData {
                         return docRef.collection(MeetingsData.Users.COLLECTION)
                                 .add(authUser);
                     }
-                    return new FailedTask<>("Something Went Wrong!");
+                    return Tasks.forException(new FirebaseException("Something Went Wrong!"));
                 })
                 .addOnSuccessListener(result -> {
                     resultData.setValue(new SaveMeetingStatus.Success(meetingId[0]));
@@ -237,7 +233,7 @@ public class MeetingRepo implements MeetingsData {
                 .get()
                 .onSuccessTask(Runners.io(), doc -> {
                     if (doc == null) {
-                        return new FailedTask<>("Something went wrong");
+                        return Tasks.forException(new FirebaseException("Something went wrong"));
                     } else {
                         Meeting meeting = doc.toObject(Meeting.class);
                         List<String> photos = meeting.getPhotos();

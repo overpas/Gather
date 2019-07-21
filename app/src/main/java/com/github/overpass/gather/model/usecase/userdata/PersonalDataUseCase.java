@@ -8,25 +8,25 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.Transformations;
 
+import com.github.overpass.gather.model.data.validator.Validator;
 import com.github.overpass.gather.screen.auth.register.add.AddDataStatus;
 import com.github.overpass.gather.screen.auth.register.add.ImageUploadStatus;
 import com.github.overpass.gather.screen.auth.register.add.SaveUserStatus;
 import com.github.overpass.gather.model.data.validator.UsernameValidator;
 import com.github.overpass.gather.model.repo.upload.UploadImageRepo;
 import com.github.overpass.gather.model.repo.user.UserAuthRepo;
-import com.github.overpass.gather.screen.map.SaveMeetingStatus;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class PersonalDataUseCase {
 
     private final UserAuthRepo userAuthRepo;
     private final UploadImageRepo uploadImageRepo;
-    private final UsernameValidator validator;
+    private final Validator<String> validator;
     private final FirebaseAuth firebaseAuth;
 
     public PersonalDataUseCase(UserAuthRepo userAuthRepo,
                                UploadImageRepo uploadImageRepo,
-                               UsernameValidator validator,
+                               Validator<String> validator,
                                FirebaseAuth firebaseAuth) {
         this.userAuthRepo = userAuthRepo;
         this.uploadImageRepo = uploadImageRepo;
@@ -96,7 +96,7 @@ public class PersonalDataUseCase {
                                           @Nullable Uri imageUri) {
         MediatorLiveData<AddDataStatus> addDataStatus = new MediatorLiveData<>();
         addDataStatus.setValue(new AddDataStatus.Progress());
-        if (!validator.isUsernameValid(username)) {
+        if (!validator.isValid(username)) {
             addDataStatus.setValue(new AddDataStatus.InvalidUsername());
             return addDataStatus;
         }
