@@ -30,9 +30,9 @@ class SignInViewModel(application: Application) : AndroidViewModel(application) 
     fun signIn(email: String, password: String) {
         signInUseCase.signIn(email, password)
                 .toLiveData(
-                        { SignInStatus.Progress },
-                        { it },
-                        { it }
+                        onStart = { SignInStatus.Progress },
+                        onSuccessMap = { it },
+                        onFailureMap = { it }
                 )
                 .observeForever { status ->
                     when (status) {

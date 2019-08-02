@@ -19,6 +19,8 @@ import com.github.overpass.gather.screen.map.Meeting;
 import com.github.overpass.gather.screen.meeting.chat.attachments.closeup.CloseupActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
 
 import butterknife.BindView;
@@ -38,6 +40,7 @@ public class PhotosFragment extends DataFragment<PhotosViewModel> {
 
     private PhotosAdapter adapter;
 
+    @NotNull
     @Override
     protected PhotosViewModel createViewModel() {
         ImageSourceUseCase imageSourceUseCase = ViewModelProviders.of(getActivity())
@@ -60,33 +63,21 @@ public class PhotosFragment extends DataFragment<PhotosViewModel> {
         setupList();
         getViewModel().getMeeting(getMeetingId()).observe(getViewLifecycleOwner(), this::handleMeeting);
         getViewModel().getSuggestToChooseData().observe(getViewLifecycleOwner(), this::handleChoose);
-        getViewModel().getPhotoUploadData().observe(getViewLifecycleOwner(), this::handleUpload);
+        getViewModel().photoUploadSuccess().observe(getViewLifecycleOwner(), v -> handleUploadSuccess());
+        getViewModel().photoUploadProgress().observe(getViewLifecycleOwner(), v -> handleUploadProgress());
+        getViewModel().photoUploadError().observe(getViewLifecycleOwner(), this::handleUploadError);
     }
 
-    private void handleUpload(PhotoUploadStatus uploadStatus) {
-        switch (uploadStatus.tag()) {
-            case PhotoUploadStatus.PROGRESS:
-                handleUploadProgress(uploadStatus.as(PhotoUploadStatus.Progress.class));
-                break;
-            case PhotoUploadStatus.ERROR:
-                handleUploadError(uploadStatus.as(PhotoUploadStatus.Error.class));
-                break;
-            case PhotoUploadStatus.SUCCESS:
-                handleUploadSuccess(uploadStatus.as(PhotoUploadStatus.Success.class));
-                break;
-        }
-    }
-
-    private void handleUploadProgress(PhotoUploadStatus.Progress progress) {
+    private void handleUploadProgress() {
         ProgressDialogFragment.show(getFragmentManager());
     }
 
-    private void handleUploadError(PhotoUploadStatus.Error error) {
+    private void handleUploadError(String message) {
         ProgressDialogFragment.hide(getFragmentManager());
-        snackbar(ivPhotoPreview, error.getThrowable().getLocalizedMessage());
+        snackbar(ivPhotoPreview, message);
     }
 
-    private void handleUploadSuccess(PhotoUploadStatus.Success success) {
+    private void handleUploadSuccess() {
         ProgressDialogFragment.hide(getFragmentManager());
         snackbar(ivPhotoPreview, getString(R.string.success));
         getViewModel().resetChosenImage();

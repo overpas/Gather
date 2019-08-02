@@ -1,6 +1,6 @@
 package com.github.overpass.gather.model.usecase.register
 
-import com.github.overpass.gather.model.commons.map
+import com.github.overpass.gather.model.commons.mapToSuccess
 import com.github.overpass.gather.model.data.validator.Validator
 import com.github.overpass.gather.model.repo.register.SignUpRepo
 import com.github.overpass.gather.screen.auth.register.signup.SignUpStatus
@@ -21,7 +21,7 @@ class SignUpUseCase(
             return Tasks.forResult(SignUpStatus.InvalidPassword("Invalid Password"))
         }
         return signUpRepo.signUp(email, password)
-                .map(
+                .mapToSuccess(
                         successMapper = { SignUpStatus.Success },
                         failureMapper = { SignUpStatus.Error(it) }
                 )

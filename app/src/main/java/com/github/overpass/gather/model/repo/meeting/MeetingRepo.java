@@ -16,6 +16,7 @@ import com.github.overpass.gather.screen.map.SaveMeetingStatus;
 import com.github.overpass.gather.screen.map.detail.Current2MaxPeopleRatio;
 import com.github.overpass.gather.screen.meeting.MeetingAndRatio;
 import com.github.overpass.gather.screen.meeting.base.LoadMeetingStatus;
+import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -226,9 +227,8 @@ public class MeetingRepo implements MeetingsData {
         return meetingData;
     }
 
-    public LiveData<Boolean> addPhoto(String meetingId, String photoUrl) {
-        MutableLiveData<Boolean> photoAddedData = new MutableLiveData<>();
-        firestore.collection(COLLECTION_MEETINGS)
+    public Task<Void> addPhoto(String meetingId, String photoUrl) {
+        return firestore.collection(COLLECTION_MEETINGS)
                 .document(meetingId)
                 .get()
                 .onSuccessTask(Runners.io(), doc -> {
@@ -242,9 +242,6 @@ public class MeetingRepo implements MeetingsData {
                                 .document(meetingId)
                                 .update(MeetingsData.FIELD_PHOTOS, photos);
                     }
-                })
-                .addOnSuccessListener(__ -> photoAddedData.setValue(true))
-                .addOnFailureListener(e -> photoAddedData.setValue(false));
-        return photoAddedData;
+                });
     }
 }

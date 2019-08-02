@@ -1,6 +1,6 @@
 package com.github.overpass.gather.model.repo.login
 
-import com.github.overpass.gather.model.commons.map
+import com.github.overpass.gather.model.commons.mapToSuccess
 import com.github.overpass.gather.model.data.entity.signin.SignInStatus
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
@@ -9,7 +9,7 @@ class AuthRepo(private val auth: FirebaseAuth) {
 
     fun signIn(email: String, password: String): Task<SignInStatus> {
         return auth.signInWithEmailAndPassword(email, password)
-                .map(
+                .mapToSuccess(
                         successMapper = { SignInStatus.Success },
                         failureMapper = { SignInStatus.Error(it) }
                 )
