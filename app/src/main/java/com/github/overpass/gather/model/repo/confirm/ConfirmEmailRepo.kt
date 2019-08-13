@@ -8,8 +8,9 @@ import com.google.firebase.auth.FirebaseAuth
 class ConfirmEmailRepo(private val firebaseAuth: FirebaseAuth) {
 
     fun isEmailVerified(): Boolean {
-        val user = firebaseAuth.currentUser
-        return user != null && user.isEmailVerified
+        return firebaseAuth.currentUser
+                ?.isEmailVerified
+                ?: false
     }
 
     fun confirmEmail(): Task<Void> {

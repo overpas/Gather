@@ -30,7 +30,7 @@ import javax.annotation.Nullable;
 
 import static com.annimon.stream.Objects.nonNull;
 
-public class MeetingRepo implements MeetingsData {
+public class MeetingRepo implements MeetingsMetadata {
 
     private static final String TAG = "MeetingRepo";
 
@@ -90,7 +90,7 @@ public class MeetingRepo implements MeetingsData {
                 .onSuccessTask(Runners.io(), docRef -> {
                     if (authUser != null) {
                         meetingId[0] = docRef.getId();
-                        return docRef.collection(MeetingsData.Users.COLLECTION)
+                        return docRef.collection(MeetingsMetadata.Users.COLLECTION)
                                 .add(authUser);
                     }
                     return Tasks.forException(new FirebaseException("Something Went Wrong!"));
@@ -113,7 +113,7 @@ public class MeetingRepo implements MeetingsData {
                 .onSuccessTask(Runners.io(), docRef -> {
                     numbers[0] = (int) docRef.getLong("maxPeople").longValue();
                     return docRef.getReference()
-                            .collection(MeetingsData.Users.COLLECTION)
+                            .collection(MeetingsMetadata.Users.COLLECTION)
                             .get();
                 })
                 .addOnSuccessListener(queryDocumentSnapshots -> {
@@ -240,7 +240,7 @@ public class MeetingRepo implements MeetingsData {
                         photos.add(photoUrl);
                         return firestore.collection(COLLECTION_MEETINGS)
                                 .document(meetingId)
-                                .update(MeetingsData.FIELD_PHOTOS, photos);
+                                .update(MeetingsMetadata.FIELD_PHOTOS, photos);
                     }
                 });
     }

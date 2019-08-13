@@ -9,7 +9,7 @@ import androidx.lifecycle.Transformations;
 import com.annimon.stream.Stream;
 import com.github.overpass.gather.model.commons.LiveDataUtils;
 import com.github.overpass.gather.model.commons.Runners;
-import com.github.overpass.gather.model.repo.meeting.MeetingsData;
+import com.github.overpass.gather.model.repo.meeting.MeetingsMetadata;
 import com.github.overpass.gather.screen.map.AuthUser;
 import com.github.overpass.gather.screen.meeting.chat.users.model.Acceptance;
 import com.github.overpass.gather.screen.meeting.chat.users.model.LoadUsersStatus;
@@ -22,7 +22,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserDataRepo implements MeetingsData, UsersData {
+public class UserDataRepo implements MeetingsMetadata, UsersData {
 
     private final FirebaseAuth auth;
     private final FirebaseFirestore firestore;
@@ -42,12 +42,12 @@ public class UserDataRepo implements MeetingsData, UsersData {
     }
 
     public LiveData<LoadUsersStatus> getMembers(String meetingId) {
-        return getUsers(meetingId, MeetingsData.Users.COLLECTION,
+        return getUsers(meetingId, MeetingsMetadata.Users.COLLECTION,
                 LoadUsersStatus.MembersSuccess::new);
     }
 
     public LiveData<LoadUsersStatus> getPendingUsers(String meetingId) {
-        return getUsers(meetingId, MeetingsData.PendingUsers.COLLECTION,
+        return getUsers(meetingId, MeetingsMetadata.PendingUsers.COLLECTION,
                 LoadUsersStatus.PendingSuccess::new);
     }
 

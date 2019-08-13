@@ -1,14 +1,15 @@
 package com.github.overpass.gather.model.commons
 
-import android.app.Activity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.github.overpass.gather.model.commons.exception.DefaultException
-import com.google.android.gms.tasks.OnFailureListener
-import com.google.android.gms.tasks.OnSuccessListener
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.Tasks
-import java.util.concurrent.Executor
+import com.google.firebase.storage.CancellableTask
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
 
 inline fun <T, R> Task<T>.map(crossinline successMapper: (T?) -> R?): Task<R> {
     return continueWithTask<R> {
@@ -37,64 +38,45 @@ inline fun <T, R> Task<T>.mapToSuccess(
     }
 }
 
-inline fun <T> Task<T>.take(count: Int): Task<T> {
-    var invocations = 0
-    return object : Task<T>() {
-        override fun isComplete(): Boolean = this@take.isComplete
+@ExperimentalCoroutinesApi
+inline fun <T, R> Task<T>.asFlow(
+        crossinline onSuccess: (value: T?) -> R,
+        crossinline onFailure: (exception: Exception) -> R
+): Flow<R> = callbackFlow {
+    addOnSuccessListener { offer(onSuccess(it)) }
+    addOnFailureListener { offer(onFailure(it)) }
+}
 
-        override fun getException(): java.lang.Exception? = this@take.exception
+@ExperimentalCoroutinesApi
+inline fun <T, R> Task<T>.asFlow(
+        crossinline onStart: () -> R,
+        crossinline onSuccess: (value: T) -> R,
+        crossinline onFailure: (exception: Exception) -> R
+): Flow<R> = callbackFlow {
+    send(onStart())
+    addOnSuccessListener { offer(onSuccess(it)) }
+    addOnFailureListener { offer(onFailure(it)) }
+}
 
-        override fun addOnFailureListener(p0: OnFailureListener): Task<T> =
-                this@take.addOnFailureListener(p0)
+@ExperimentalCoroutinesApi
+fun <T> Task<T>.asResultFlow(): Flow<Result<Unit>> = callbackFlow {
+    send(Result.Loading)
+    addOnSuccessListener { offer(Result.Success(Unit)) }
+    addOnFailureListener { offer(Result.Error(it)) }
+    awaitClose()
+}
 
-        override fun addOnFailureListener(p0: Executor, p1: OnFailureListener): Task<T> =
-                this@take.addOnFailureListener(p0, p1)
-
-        override fun addOnFailureListener(p0: Activity, p1: OnFailureListener): Task<T> =
-                this@take.addOnFailureListener(p0, p1)
-
-        override fun getResult(): T? = this@take.result
-
-        override fun <X : Throwable?> getResult(p0: Class<X>): T? = this@take.getResult(p0)
-
-        override fun addOnSuccessListener(onSuccessListener: OnSuccessListener<in T>): Task<T> {
-            this@take.addOnSuccessListener{
-                checkNumberOfInvocations(onSuccessListener, it)
-            }
-            return this
-        }
-
-        override fun addOnSuccessListener(
-                executor: Executor,
-                onSuccessListener: OnSuccessListener<in T>
-        ): Task<T> {
-            this@take.addOnSuccessListener(executor, OnSuccessListener {
-                checkNumberOfInvocations(onSuccessListener, it)
-            })
-            return this
-        }
-
-        override fun addOnSuccessListener(
-                activity: Activity,
-                onSuccessListener: OnSuccessListener<in T>
-        ): Task<T> {
-            this@take.addOnSuccessListener(activity) {
-                checkNumberOfInvocations(onSuccessListener, it)
-            }
-            return this
-        }
-
-        override fun isSuccessful(): Boolean = this@take.isSuccessful
-
-        override fun isCanceled(): Boolean = this@take.isCanceled
-
-        private fun checkNumberOfInvocations(listener: OnSuccessListener<in T>, value: T) {
-            if (invocations < count) {
-                listener.onSuccess(value)
-                invocations++
-            }
-        }
-    }
+@ExperimentalCoroutinesApi
+inline fun <T, R> CancellableTask<T>.asFlow(
+        crossinline onStart: () -> R,
+        crossinline onProgress: (value: T) -> R,
+        crossinline onSuccess: (value: T?) -> R,
+        crossinline onFailure: (exception: Exception) -> R
+): Flow<R> = callbackFlow {
+    send(onStart())
+    addOnProgressListener { offer(onProgress(it)) }
+    addOnSuccessListener { offer(onSuccess(it)) }
+    addOnFailureListener { offer(onFailure(it)) }
 }
 
 inline fun <T, R> Task<T>.toLiveData(

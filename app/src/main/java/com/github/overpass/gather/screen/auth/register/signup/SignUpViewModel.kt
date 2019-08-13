@@ -2,8 +2,8 @@ package com.github.overpass.gather.screen.auth.register.signup
 
 import android.app.Application
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.viewModelScope
 import com.github.overpass.gather.model.commons.SingleLiveEvent
-import com.github.overpass.gather.model.commons.toLiveData
 import com.github.overpass.gather.model.data.entity.splash.StartStatus
 import com.github.overpass.gather.model.data.validator.EmailValidator
 import com.github.overpass.gather.model.data.validator.PasswordValidator
@@ -14,6 +14,9 @@ import com.github.overpass.gather.model.usecase.register.SignUpUseCase
 import com.github.overpass.gather.screen.auth.register.RegistrationStepViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 class SignUpViewModel(application: Application) : RegistrationStepViewModel(application) {
 
@@ -32,14 +35,10 @@ class SignUpViewModel(application: Application) : RegistrationStepViewModel(appl
     private val invalidEmailData = SingleLiveEvent<String>()
     private val invalidPasswordData = SingleLiveEvent<String>()
 
-    fun signUp(email: String, password: String) {
-        signUpUseCase.signUp(email, password)
-                .toLiveData(
-                        onStart = { SignUpStatus.Progress },
-                        onSuccessMap = { it },
-                        onFailureMap = { it }
-                )
-                .observeForever {
+    @ExperimentalCoroutinesApi
+    fun signUp(email: String, password: String) = viewModelScope.launch {
+        signUpUseCase.signUp2(email, password)
+                .collect {
                     when (it) {
                         is SignUpStatus.Error -> signUpErrorData.value = it.throwable.localizedMessage
                         is SignUpStatus.Success -> signUpSuccessData.call()
@@ -55,8 +54,12 @@ class SignUpViewModel(application: Application) : RegistrationStepViewModel(appl
     }
 
     fun signUpError(): LiveData<String> = signUpErrorData
+
     fun signUpSuccess(): LiveData<Void> = signUpSuccessData
+
     fun signUpProgress(): LiveData<Void> = signUpProgressData
+
     fun invalidEmail(): LiveData<String> = invalidEmailData
+
     fun invalidPassword(): LiveData<String> = invalidPasswordData
 }

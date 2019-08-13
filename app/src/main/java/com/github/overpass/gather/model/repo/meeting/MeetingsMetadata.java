@@ -1,6 +1,6 @@
 package com.github.overpass.gather.model.repo.meeting;
 
-public interface MeetingsData {
+public interface MeetingsMetadata {
 
     String COLLECTION_MEETINGS = "Meetings";
     String FIELD_LATITUDE = "latitude";

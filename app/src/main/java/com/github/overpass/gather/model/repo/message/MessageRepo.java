@@ -1,14 +1,13 @@
 package com.github.overpass.gather.model.repo.message;
 
 import androidx.annotation.NonNull;
-import androidx.arch.core.util.Function;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 
 import com.annimon.stream.Stream;
 import com.github.overpass.gather.model.commons.LiveDataUtils;
-import com.github.overpass.gather.model.repo.meeting.MeetingsData;
+import com.github.overpass.gather.model.repo.meeting.MeetingsMetadata;
 import com.github.overpass.gather.model.repo.user.UserData;
 import com.github.overpass.gather.screen.meeting.chat.DeleteStatus;
 import com.github.overpass.gather.screen.meeting.chat.MessageStatus;
@@ -24,7 +23,7 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-public class MessageRepo implements MeetingsData {
+public class MessageRepo implements MeetingsMetadata {
 
     private final FirebaseFirestore firestore;
 

@@ -8,7 +8,7 @@ import com.github.overpass.gather.screen.map.AuthUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
-public class UserRoleRepo implements MeetingsData {
+public class UserRoleRepo implements MeetingsMetadata {
 
     private final FirebaseFirestore firestore;
 
