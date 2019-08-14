@@ -4,15 +4,21 @@ import android.content.ContentResolver
 import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.github.overpass.gather.model.commons.Result
 import com.github.overpass.gather.model.commons.Runners
-import com.github.overpass.gather.model.commons.image.uriToBytes
-import com.github.overpass.gather.model.commons.mapToSuccess
+import com.github.overpass.gather.model.commons.image.ImageConverter
 import com.github.overpass.gather.screen.auth.register.add.ImageUploadStatus
 import com.google.android.gms.tasks.SuccessContinuation
-import com.google.android.gms.tasks.Task
 import com.google.firebase.storage.FirebaseStorage
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
 
-class UploadImageRepo(private val storage: FirebaseStorage) {
+class UploadImageRepo(
+        private val storage: FirebaseStorage,
+        private val imageConverter: ImageConverter
+) {
 
     @Deprecated("""Use this:
         fun saveImage(imageBytes: ByteArray,
@@ -31,7 +37,8 @@ class UploadImageRepo(private val storage: FirebaseStorage) {
         Runners.io().execute {
             val path = "$bucket/$folder/$imageName$IMAGE_EXTENSION"
             val storageReference = storage.reference.child(path)
-            storageReference.putBytes(uriToBytes(contentResolver, imageUri))
+            val imageBytes = imageConverter.resolveBytesFromImageUri(imageUri)
+            storageReference.putBytes(imageBytes)
                     .addOnFailureListener { e -> data.postValue(ImageUploadStatus.Error(e)) }
                     .addOnProgressListener { temp ->
                         val percent = temp.bytesTransferred / temp.totalByteCount
@@ -46,21 +53,27 @@ class UploadImageRepo(private val storage: FirebaseStorage) {
         return data
     }
 
-    fun saveImage(imageBytes: ByteArray,
-                  bucket: String,
-                  folder: String,
-                  imageName: String
-    ): Task<ImageUploadStatus> {
+    @ExperimentalCoroutinesApi
+    fun saveImage2(
+            imageBytes: ByteArray,
+            bucket: String,
+            folder: String,
+            imageName: String
+    ): Flow<Result<String>> = callbackFlow {
+        send(Result.Loading())
         val path = "$bucket/$folder/$imageName$IMAGE_EXTENSION"
         val storageReference = storage.reference.child(path)
-        return storageReference.putBytes(imageBytes)
-                .onSuccessTask<Uri>(Runners.io(), SuccessContinuation { docRef ->
-                    storageReference.downloadUrl
-                })
-                .mapToSuccess(
-                        successMapper = { ImageUploadStatus.Success(it!!) },
-                        failureMapper = { ImageUploadStatus.Error(it) }
-                )
+        storageReference.putBytes(imageBytes)
+                .addOnProgressListener { temp ->
+                    val current = temp.bytesTransferred.toDouble()
+                    val total = temp.totalByteCount.toDouble()
+                    val percent = (current / total * 100).toInt()
+                    offer(Result.Loading(percent))
+                }
+                .onSuccessTask { storageReference.downloadUrl }
+                .addOnSuccessListener { offer(Result.Success(it.toString())) }
+                .addOnFailureListener { offer(Result.Error(it)) }
+        awaitClose()
     }
 
     companion object {

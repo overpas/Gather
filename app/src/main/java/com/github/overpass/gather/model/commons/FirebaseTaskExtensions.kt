@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import com.github.overpass.gather.model.commons.exception.DefaultException
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.Tasks
-import com.google.firebase.storage.CancellableTask
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -38,6 +37,11 @@ inline fun <T, R> Task<T>.mapToSuccess(
     }
 }
 
+fun <T> Task<T>.await(): Task<T> {
+    Tasks.await(this)
+    return this
+}
+
 @ExperimentalCoroutinesApi
 inline fun <T, R> Task<T>.asFlow(
         crossinline onSuccess: (value: T?) -> R,
@@ -60,23 +64,10 @@ inline fun <T, R> Task<T>.asFlow(
 
 @ExperimentalCoroutinesApi
 fun <T> Task<T>.asResultFlow(): Flow<Result<Unit>> = callbackFlow {
-    send(Result.Loading)
+    send(Result.Loading())
     addOnSuccessListener { offer(Result.Success(Unit)) }
     addOnFailureListener { offer(Result.Error(it)) }
     awaitClose()
-}
-
-@ExperimentalCoroutinesApi
-inline fun <T, R> CancellableTask<T>.asFlow(
-        crossinline onStart: () -> R,
-        crossinline onProgress: (value: T) -> R,
-        crossinline onSuccess: (value: T?) -> R,
-        crossinline onFailure: (exception: Exception) -> R
-): Flow<R> = callbackFlow {
-    send(onStart())
-    addOnProgressListener { offer(onProgress(it)) }
-    addOnSuccessListener { offer(onSuccess(it)) }
-    addOnFailureListener { offer(onFailure(it)) }
 }
 
 inline fun <T, R> Task<T>.toLiveData(

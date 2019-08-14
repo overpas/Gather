@@ -22,7 +22,7 @@ class SignUpRepo(
 
     @ExperimentalCoroutinesApi
     suspend fun signUp2(email: String, password: String): Flow<Result<Unit>> = callbackFlow {
-        send(Result.Loading)
+        send(Result.Loading())
         firebaseAuth.createUserWithEmailAndPassword(email, password)
                 .onSuccessTask<FirebaseUser>(Runners.io(), SuccessContinuation { authResult ->
                     val user = authResult!!.user
