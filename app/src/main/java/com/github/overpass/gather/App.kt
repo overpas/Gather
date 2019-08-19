@@ -2,7 +2,6 @@ package com.github.overpass.gather
 
 import android.app.Application
 import android.content.Context
-
 import com.mapbox.mapboxsdk.Mapbox
 
 class App : Application() {

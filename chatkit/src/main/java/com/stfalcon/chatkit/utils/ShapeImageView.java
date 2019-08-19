@@ -33,12 +33,10 @@ public class ShapeImageView extends AppCompatImageView {
 
     public ShapeImageView(Context context) {
         super(context);
-        setLayerType(View.LAYER_TYPE_SOFTWARE, null);
     }
 
     public ShapeImageView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        setLayerType(View.LAYER_TYPE_SOFTWARE, null);
     }
 
     @Override

@@ -116,7 +116,7 @@ public class PhotosFragment extends DataFragment<PhotosViewModel> {
                 RecyclerView.VERTICAL);
         rvAttachments.setLayoutManager(layoutManager);
         adapter = new PhotosAdapter(photoUrl -> {
-            CloseupActivity.start(getContext(), photoUrl);
+            CloseupActivity.Companion.start(getContext(), photoUrl);
         });
         rvAttachments.setAdapter(adapter);
     }

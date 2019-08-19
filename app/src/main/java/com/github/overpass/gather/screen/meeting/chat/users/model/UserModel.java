@@ -1,8 +1,10 @@
 package com.github.overpass.gather.screen.meeting.chat.users.model;
 
+import com.github.overpass.gather.screen.meeting.chat.users.list.viewholder.Item;
+
 import java.util.Objects;
 
-public class UserModel {
+public class UserModel implements Item {
 
     public static final UserModel PROGRESS = new UserModel("-1");
     public static final UserModel NO_DATA = new UserModel("-2");
