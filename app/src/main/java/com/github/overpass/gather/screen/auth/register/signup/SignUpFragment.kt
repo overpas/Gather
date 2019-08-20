@@ -9,7 +9,7 @@ import com.github.overpass.gather.R
 import com.github.overpass.gather.model.commons.UIUtil.snackbar
 import com.github.overpass.gather.model.commons.UIUtil.textOf
 import com.github.overpass.gather.screen.auth.register.RegistrationFragment
-import com.github.overpass.gather.screen.dialog.ProgressDialogFragment
+import com.github.overpass.gather.screen.dialog.progress.indeterminate.ProgressDialogFragment
 import kotlinx.android.synthetic.main.fragment_sign_up.*
 
 class SignUpFragment : RegistrationFragment<SignUpViewModel>() {

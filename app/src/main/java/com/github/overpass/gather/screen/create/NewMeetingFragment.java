@@ -12,7 +12,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.github.overpass.gather.R;
 import com.github.overpass.gather.screen.base.BaseFragment;
-import com.github.overpass.gather.screen.dialog.ProgressDialogFragment;
+import com.github.overpass.gather.screen.dialog.progress.indeterminate.ProgressDialogFragment;
 import com.github.overpass.gather.screen.map.SaveMeetingStatus;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.switchmaterial.SwitchMaterial;
@@ -93,22 +93,22 @@ public class NewMeetingFragment extends BaseFragment<NewMeetingViewModel> {
     private void handleSaveMeetingStatus(SaveMeetingStatus saveMeetingStatus) {
         switch (saveMeetingStatus.tag()) {
             case SaveMeetingStatus.ERROR:
-                ProgressDialogFragment.hide(getFragmentManager());
+                ProgressDialogFragment.Companion.hide(getFragmentManager());
                 String message = saveMeetingStatus.as(SaveMeetingStatus.Error.class)
                         .getThrowable()
                         .getLocalizedMessage();
                 snackbar(tietName, message);
                 break;
             case SaveMeetingStatus.SUCCESS:
-                ProgressDialogFragment.hide(getFragmentManager());
+                ProgressDialogFragment.Companion.hide(getFragmentManager());
                 snackbar(tietName, "Success");
                 getActivity().finish();
                 break;
             case SaveMeetingStatus.PROGRESS:
-                ProgressDialogFragment.show(getFragmentManager());
+                ProgressDialogFragment.Companion.show(getFragmentManager());
                 break;
             case SaveMeetingStatus.EMPTY_NAME:
-                ProgressDialogFragment.hide(getFragmentManager());
+                ProgressDialogFragment.Companion.hide(getFragmentManager());
                 tietName.setError("Please, type a proper name");
                 break;
         }

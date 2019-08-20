@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModelProviders
 
 import com.github.overpass.gather.R
 import com.github.overpass.gather.screen.auth.register.RegistrationFragment
-import com.github.overpass.gather.screen.dialog.ProgressDialogFragment
+import com.github.overpass.gather.screen.dialog.progress.indeterminate.ProgressDialogFragment
 
 import com.github.overpass.gather.model.commons.UIUtil.toast
 import kotlinx.android.synthetic.main.fragment_confirm_email.*

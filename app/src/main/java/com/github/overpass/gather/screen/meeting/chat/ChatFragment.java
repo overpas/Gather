@@ -15,7 +15,7 @@ import com.annimon.stream.Stream;
 import com.bumptech.glide.Glide;
 import com.github.overpass.gather.R;
 import com.github.overpass.gather.screen.create.MeetingType;
-import com.github.overpass.gather.screen.dialog.ProgressDialogFragment;
+import com.github.overpass.gather.screen.dialog.progress.indeterminate.ProgressDialogFragment;
 import com.github.overpass.gather.screen.dialog.delete.DeleteDialogFragment;
 import com.github.overpass.gather.screen.dialog.details.MeetingDetailsDialogFragment;
 import com.github.overpass.gather.screen.map.AuthUser;
@@ -209,7 +209,7 @@ public class ChatFragment extends BaseMeetingFragment<ChatViewModel> {
     }
 
     private void handleDeletionSuccess(DeleteStatus.Success success) {
-        ProgressDialogFragment.hide(getFragmentManager());
+        ProgressDialogFragment.Companion.hide(getFragmentManager());
         setDefaultToolbar();
     }
 
@@ -219,11 +219,11 @@ public class ChatFragment extends BaseMeetingFragment<ChatViewModel> {
     }
 
     private void handleDeletionProgress(DeleteStatus.Progress progress) {
-        ProgressDialogFragment.show(getFragmentManager());
+        ProgressDialogFragment.Companion.show(getFragmentManager());
     }
 
     private void handleDeletionError(DeleteStatus.Error error) {
-        ProgressDialogFragment.hide(getFragmentManager());
+        ProgressDialogFragment.Companion.hide(getFragmentManager());
         snackbar(tvMeetingName, error.getThrowable().getLocalizedMessage());
         setDefaultToolbar();
     }

@@ -6,18 +6,13 @@ import android.os.Handler
 import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
 import android.view.animation.LinearInterpolator
-import android.widget.ImageView
 import androidx.lifecycle.Observer
-
 import androidx.lifecycle.ViewModelProviders
-
 import com.github.overpass.gather.R
 import com.github.overpass.gather.screen.auth.login.LoginActivity
 import com.github.overpass.gather.screen.auth.register.RegisterActivity
 import com.github.overpass.gather.screen.base.BaseActivity
 import com.github.overpass.gather.screen.map.MapActivity
-
-import butterknife.BindView
 import kotlinx.android.synthetic.main.activity_splash_screen.*
 
 class SplashScreenActivity : BaseActivity<SplashViewModel>() {

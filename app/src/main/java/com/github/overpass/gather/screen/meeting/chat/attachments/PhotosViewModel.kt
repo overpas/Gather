@@ -18,8 +18,6 @@ import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.filterNot
-import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 
 class PhotosViewModel(application: Application) : DataViewModel(application) {
@@ -33,14 +31,14 @@ class PhotosViewModel(application: Application) : DataViewModel(application) {
             )
     )
     private val photoUploadSuccessData = SingleLiveEvent<Void>()
-    private val photoUploadProgressData = SingleLiveEvent<Void>()
+    private val photoUploadProgressData = SingleLiveEvent<Int>()
     private val photoUploadErrorData = SingleLiveEvent<String>()
     private val suggestToChooseData: SingleLiveEvent<Boolean> = SingleLiveEvent()
     private val imageConverter: ImageConverter = ImageConverter(application.contentResolver)
 
     fun photoUploadSuccess(): LiveData<Void> = photoUploadSuccessData
 
-    fun photoUploadProgress(): LiveData<Void> = photoUploadProgressData
+    fun photoUploadProgress(): LiveData<Int> = photoUploadProgressData
 
     fun photoUploadError(): LiveData<String> = photoUploadErrorData
 
@@ -68,13 +66,13 @@ class PhotosViewModel(application: Application) : DataViewModel(application) {
     private fun sendImage2(imageUri: Uri, meetingId: String) = viewModelScope.launch {
         val imageBytes = imageConverter.getImageBytes(imageUri)
         attachmentsUseCase.uploadPhoto(imageBytes, meetingId)
-                // Omit multiple Result.Loading values
-                .filterNot { it is Result.Loading }
-                .onStart { emit(Result.Loading()) }
+//                // Omit multiple Result.Loading values
+//                .filterNot { it is Result.Loading }
+//                .onStart { emit(Result.Loading()) }
                 .collect {
                     when (it) {
                         is Result.Success -> photoUploadSuccessData.call()
-                        is Result.Loading -> photoUploadProgressData.call()
+                        is Result.Loading -> photoUploadProgressData.value = it.percent
                         is Result.Error -> photoUploadErrorData.value = it.exception.localizedMessage
                     }
                 }

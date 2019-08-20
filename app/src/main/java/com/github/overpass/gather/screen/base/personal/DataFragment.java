@@ -14,7 +14,7 @@ import com.github.overpass.gather.screen.auth.register.RegistrationFragment;
 import com.github.overpass.gather.screen.auth.register.add.AddDataStatus;
 import com.github.overpass.gather.screen.auth.register.add.ImageSource;
 import com.github.overpass.gather.screen.dialog.PickImageDialogFragment;
-import com.github.overpass.gather.screen.dialog.ProgressDialogFragment;
+import com.github.overpass.gather.screen.dialog.progress.indeterminate.ProgressDialogFragment;
 import com.google.android.material.textfield.TextInputEditText;
 
 import butterknife.BindView;
@@ -110,22 +110,22 @@ public abstract class DataFragment<VM extends DataViewModel>
     }
 
     protected void handleProgress(AddDataStatus.Progress progress) {
-        ProgressDialogFragment.show(getFragmentManager());
+        ProgressDialogFragment.Companion.show(getFragmentManager());
     }
 
     protected void handleInvalidUsername(AddDataStatus.InvalidUsername invalidUsername) {
-        ProgressDialogFragment.hide(getFragmentManager());
+        ProgressDialogFragment.Companion.hide(getFragmentManager());
         tietUsername.setError("Invalid username");
     }
 
     protected void handleError(AddDataStatus.Error error) {
-        ProgressDialogFragment.hide(getFragmentManager());
+        ProgressDialogFragment.Companion.hide(getFragmentManager());
         String message = error.getThrowable().getLocalizedMessage();
         snackbar(ivPhotoPreview, message);
     }
 
     protected void handleSuccess(AddDataStatus.Success success) {
-        ProgressDialogFragment.hide(getFragmentManager());
+        ProgressDialogFragment.Companion.hide(getFragmentManager());
     }
 
     @Override

@@ -9,7 +9,7 @@ import com.github.overpass.gather.model.usecase.image.ImageSourceUseCase;
 import com.github.overpass.gather.screen.auth.register.RegisterViewModel;
 import com.github.overpass.gather.screen.auth.register.RegisterViewModelFactory;
 import com.github.overpass.gather.screen.base.personal.DataFragment;
-import com.github.overpass.gather.screen.dialog.ProgressDialogFragment;
+import com.github.overpass.gather.screen.dialog.progress.indeterminate.ProgressDialogFragment;
 import com.github.overpass.gather.screen.map.MapActivity;
 
 import butterknife.OnClick;
@@ -49,7 +49,7 @@ public class AddPersonalDataFragment extends DataFragment<AddPersonalDataViewMod
     protected void handleSuccess(AddDataStatus.Success success) {
         super.handleSuccess(success);
         getViewModel().setSignUpComplete();
-        ProgressDialogFragment.hide(getFragmentManager());
+        ProgressDialogFragment.Companion.hide(getFragmentManager());
         Intent intent = new Intent(getContext(), MapActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);

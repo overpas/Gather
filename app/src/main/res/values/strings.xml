@@ -69,4 +69,5 @@
     <string name="cancel">Cancel</string>
     <string name="should_delete">Delete message?</string>
     <string name="success">Success</string>
+    <string name="text_zero_percent">0 %</string>
 </resources>

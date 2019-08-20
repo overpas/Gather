@@ -1,13 +1,13 @@
 package com.github.overpass.gather.screen.base;
 
 import android.os.Bundle;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+
 
 public abstract class BaseDialogFragment extends DialogFragment {
 
@@ -35,8 +35,7 @@ public abstract class BaseDialogFragment extends DialogFragment {
                                                            @Nullable Bundle arguments,
                                                            @NonNull Producer<F> producer) {
         if (manager == null) {
-            Log.e(tag, "Passed FragmentManager is null");
-            return;
+            throw new IllegalArgumentException( "Passed FragmentManager is null");
         }
         Fragment previous = manager.findFragmentByTag(tag);
         if (previous != null) {
@@ -52,8 +51,7 @@ public abstract class BaseDialogFragment extends DialogFragment {
                                                            @Nullable FragmentManager manager,
                                                            Class<F> fragmentClass) {
         if (manager == null) {
-            Log.e(tag, "Passed FragmentManager is null");
-            return;
+            throw new IllegalArgumentException( "Passed FragmentManager is null");
         }
         Fragment fragment = manager.findFragmentByTag(tag);
         if (fragment != null && fragment.getClass().equals(fragmentClass)) {

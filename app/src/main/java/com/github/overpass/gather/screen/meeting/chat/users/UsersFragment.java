@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.overpass.gather.R;
 import com.github.overpass.gather.screen.base.BaseFragment;
-import com.github.overpass.gather.screen.dialog.ProgressDialogFragment;
+import com.github.overpass.gather.screen.dialog.progress.indeterminate.ProgressDialogFragment;
 import com.github.overpass.gather.screen.map.AuthUser;
 import com.github.overpass.gather.screen.meeting.chat.users.list.PendingUsersAdapter;
 import com.github.overpass.gather.screen.meeting.chat.users.list.UsersAdapter;
@@ -135,16 +135,16 @@ public class UsersFragment extends BaseFragment<UsersViewModel> {
     }
 
     private void handleAcceptanceProgress() {
-        ProgressDialogFragment.show(getFragmentManager());
+        ProgressDialogFragment.Companion.show(getFragmentManager());
     }
 
     private void handleAcceptanceSuccess() {
-        ProgressDialogFragment.hide(getFragmentManager());
+        ProgressDialogFragment.Companion.hide(getFragmentManager());
         getActivity().recreate();
     }
 
     private void handleAcceptanceError() {
-        ProgressDialogFragment.hide(getFragmentManager());
+        ProgressDialogFragment.Companion.hide(getFragmentManager());
         snackbar(rvMembers, getString(R.string.couldnt_accept));
     }
 

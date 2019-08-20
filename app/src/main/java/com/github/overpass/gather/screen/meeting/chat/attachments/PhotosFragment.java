@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import com.github.overpass.gather.R;
 import com.github.overpass.gather.model.usecase.image.ImageSourceUseCase;
 import com.github.overpass.gather.screen.base.personal.DataFragment;
-import com.github.overpass.gather.screen.dialog.ProgressDialogFragment;
+import com.github.overpass.gather.screen.dialog.progress.determinate.ProgressPercentDialogFragment;
 import com.github.overpass.gather.screen.map.Meeting;
 import com.github.overpass.gather.screen.meeting.chat.attachments.closeup.CloseupActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -64,21 +64,21 @@ public class PhotosFragment extends DataFragment<PhotosViewModel> {
         getViewModel().getMeeting(getMeetingId()).observe(getViewLifecycleOwner(), this::handleMeeting);
         getViewModel().getSuggestToChooseData().observe(getViewLifecycleOwner(), this::handleChoose);
         getViewModel().photoUploadSuccess().observe(getViewLifecycleOwner(), v -> handleUploadSuccess());
-        getViewModel().photoUploadProgress().observe(getViewLifecycleOwner(), v -> handleUploadProgress());
+        getViewModel().photoUploadProgress().observe(getViewLifecycleOwner(), this::handleUploadProgress);
         getViewModel().photoUploadError().observe(getViewLifecycleOwner(), this::handleUploadError);
     }
 
-    private void handleUploadProgress() {
-        ProgressDialogFragment.show(getFragmentManager());
+    private void handleUploadProgress(int percent) {
+        ProgressPercentDialogFragment.progress(getFragmentManager(), percent);
     }
 
     private void handleUploadError(String message) {
-        ProgressDialogFragment.hide(getFragmentManager());
+        ProgressPercentDialogFragment.hide(getFragmentManager());
         snackbar(ivPhotoPreview, message);
     }
 
     private void handleUploadSuccess() {
-        ProgressDialogFragment.hide(getFragmentManager());
+        ProgressPercentDialogFragment.hide(getFragmentManager());
         snackbar(ivPhotoPreview, getString(R.string.success));
         getViewModel().resetChosenImage();
     }

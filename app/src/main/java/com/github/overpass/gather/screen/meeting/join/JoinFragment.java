@@ -2,7 +2,6 @@ package com.github.overpass.gather.screen.meeting.join;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -17,7 +16,7 @@ import com.github.overpass.gather.R;
 import com.github.overpass.gather.model.commons.DateFormatting;
 import com.github.overpass.gather.model.commons.FragmentUtils;
 import com.github.overpass.gather.screen.create.MeetingType;
-import com.github.overpass.gather.screen.dialog.ProgressDialogFragment;
+import com.github.overpass.gather.screen.dialog.progress.indeterminate.ProgressDialogFragment;
 import com.github.overpass.gather.screen.meeting.base.BaseMeetingFragment;
 import com.github.overpass.gather.screen.meeting.base.LoadMeetingStatus;
 import com.github.overpass.gather.screen.meeting.chat.ChatFragment;
@@ -98,22 +97,22 @@ public class JoinFragment extends BaseMeetingFragment<JoinViewModel> {
     }
 
     private void handleProgress(JoinStatus.Progress progress) {
-        ProgressDialogFragment.show(getFragmentManager());
+        ProgressDialogFragment.Companion.show(getFragmentManager());
     }
 
     private void handleJoined(JoinStatus.Joined joined) {
-        ProgressDialogFragment.hide(getFragmentManager());
+        ProgressDialogFragment.Companion.hide(getFragmentManager());
         FragmentUtils.replace(getFragmentManager(), R.id.flMeetingContainer,
                 ChatFragment.newInstance(getMeetingId()), false);
     }
 
     private void handleJoinError(JoinStatus.Error error) {
-        ProgressDialogFragment.hide(getFragmentManager());
+        ProgressDialogFragment.Companion.hide(getFragmentManager());
         snackbar(ivMeetingType, error.getThrowable().getLocalizedMessage());
     }
 
     private void handleEnrolled(JoinStatus.Enrolled enrolled) {
-        ProgressDialogFragment.hide(getFragmentManager());
+        ProgressDialogFragment.Companion.hide(getFragmentManager());
         startActivity(new Intent(getContext(), EnrolledActivity.class));
         getActivity().finish();
     }

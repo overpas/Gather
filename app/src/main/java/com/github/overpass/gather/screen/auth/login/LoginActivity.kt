@@ -10,7 +10,7 @@ import com.github.overpass.gather.model.commons.UIUtil.textOf
 import com.github.overpass.gather.screen.auth.login.forgot.ForgotPasswordBottomFragment
 import com.github.overpass.gather.screen.auth.register.RegisterActivity
 import com.github.overpass.gather.screen.base.BaseActivity
-import com.github.overpass.gather.screen.dialog.ProgressDialogFragment
+import com.github.overpass.gather.screen.dialog.progress.indeterminate.ProgressDialogFragment
 import com.github.overpass.gather.screen.map.MapActivity
 import kotlinx.android.synthetic.main.activity_sign_in.*
 

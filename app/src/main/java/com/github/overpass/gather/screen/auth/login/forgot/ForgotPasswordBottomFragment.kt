@@ -9,14 +9,10 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 
 import com.github.overpass.gather.R
-import com.github.overpass.gather.model.data.entity.forgot.ForgotStatus
-import com.github.overpass.gather.screen.dialog.ProgressDialogFragment
+import com.github.overpass.gather.screen.dialog.progress.indeterminate.ProgressDialogFragment
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.google.android.material.textfield.TextInputEditText
 
-import butterknife.BindView
 import butterknife.ButterKnife
-import butterknife.OnClick
 
 import com.github.overpass.gather.model.commons.UIUtil.snackbar
 import com.github.overpass.gather.model.commons.UIUtil.textOf
