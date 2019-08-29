@@ -1,17 +1,21 @@
 package com.github.overpass.gather.model.usecase.login
 
+import com.github.overpass.gather.di.ViewModelScope
 import com.github.overpass.gather.model.data.entity.signin.SignInStatus
 import com.github.overpass.gather.model.data.entity.splash.StartStatus
-import com.github.overpass.gather.model.data.validator.Validator
+import com.github.overpass.gather.model.data.validator.EmailValidator
+import com.github.overpass.gather.model.data.validator.PasswordValidator
 import com.github.overpass.gather.model.repo.login.AuthRepo
 import com.github.overpass.gather.model.repo.pref.PreferenceRepo
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.Tasks
+import javax.inject.Inject
 
-class SignInUseCase(
+@ViewModelScope
+class SignInUseCase @Inject constructor(
         private val authRepo: AuthRepo,
-        private val emailValidator: Validator<String>,
-        private val passwordValidator: Validator<String>,
+        private val emailValidator: EmailValidator,
+        private val passwordValidator: PasswordValidator,
         private val preferenceRepo: PreferenceRepo
 ) {
 
