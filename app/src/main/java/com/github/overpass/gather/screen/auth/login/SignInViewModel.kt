@@ -1,34 +1,21 @@
 package com.github.overpass.gather.screen.auth.login
 
-import android.app.Application
 import androidx.lifecycle.LiveData
-import com.github.overpass.gather.App.Companion.appComponent
+import androidx.lifecycle.ViewModel
 import com.github.overpass.gather.model.commons.SingleLiveEvent
 import com.github.overpass.gather.model.commons.toLiveData
 import com.github.overpass.gather.model.data.entity.signin.SignInStatus
 import com.github.overpass.gather.model.usecase.login.SignInUseCase
-import com.github.overpass.gather.screen.base.BaseViewModel
 import javax.inject.Inject
 
-class SignInViewModel(application: Application) : BaseViewModel(application) {
-
-    @Inject
-    internal lateinit var signInUseCase: SignInUseCase
-    @Inject
-    internal lateinit var signInErrorData: SingleLiveEvent<String>
-    @Inject
-    internal lateinit var signInSuccessData: SingleLiveEvent<Void>
-    @Inject
-    internal lateinit var signInProgressData: SingleLiveEvent<Void>
-    @Inject
-    internal lateinit var invalidEmailData: SingleLiveEvent<String>
-    @Inject
-    internal lateinit var invalidPasswordData: SingleLiveEvent<String>
-
-    init {
-        appComponent.signIn()
-                .inject(this)
-    }
+class SignInViewModel @Inject constructor(
+        private val signInUseCase: SignInUseCase,
+        private val signInErrorData: SingleLiveEvent<String>,
+        private val signInSuccessData: SingleLiveEvent<Void>,
+        private val signInProgressData: SingleLiveEvent<Void>,
+        private val invalidEmailData: SingleLiveEvent<String>,
+        private val invalidPasswordData: SingleLiveEvent<String>
+) : ViewModel() {
 
     fun signIn(email: String, password: String) {
         signInUseCase.signIn(email, password)

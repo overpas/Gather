@@ -11,6 +11,10 @@ import androidx.lifecycle.ViewModel;
 
 import butterknife.ButterKnife;
 
+/**
+ * @deprecated use {@link BaseActivityKt} instead
+ */
+@Deprecated
 public abstract class BaseActivity<VM extends ViewModel> extends AppCompatActivity {
 
     protected VM viewModel;
@@ -19,10 +23,14 @@ public abstract class BaseActivity<VM extends ViewModel> extends AppCompatActivi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getLayoutRes());
+        onInject();
         ButterKnife.bind(this);
         setupToolbar();
         viewModel = createViewModel();
         onBind();
+    }
+
+    protected void onInject() {
     }
 
     protected abstract int getLayoutRes();
