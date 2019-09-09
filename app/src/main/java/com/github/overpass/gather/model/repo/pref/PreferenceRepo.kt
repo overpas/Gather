@@ -3,7 +3,6 @@ package com.github.overpass.gather.model.repo.pref
 import android.content.Context
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
-
 import com.github.overpass.gather.model.data.entity.splash.StartStatus
 import javax.inject.Inject
 import javax.inject.Singleton
