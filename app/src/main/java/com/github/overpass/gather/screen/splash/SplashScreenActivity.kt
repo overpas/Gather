@@ -7,22 +7,27 @@ import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
 import android.view.animation.LinearInterpolator
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import com.github.overpass.gather.App.Companion.componentManager
 import com.github.overpass.gather.R
 import com.github.overpass.gather.screen.auth.login.LoginActivity
 import com.github.overpass.gather.screen.auth.register.RegisterActivity
-import com.github.overpass.gather.screen.base.BaseActivity
+import com.github.overpass.gather.screen.base.BaseActivityKt
 import com.github.overpass.gather.screen.map.MapActivity
 import kotlinx.android.synthetic.main.activity_splash_screen.*
 
-class SplashScreenActivity : BaseActivity<SplashViewModel>() {
+class SplashScreenActivity : BaseActivityKt<SplashViewModel>() {
 
     override fun getLayoutRes(): Int {
         return R.layout.activity_splash_screen
     }
 
     override fun createViewModel(): SplashViewModel {
-        return ViewModelProviders.of(this).get(SplashViewModel::class.java)
+        return viewModelProvider.get(SplashViewModel::class.java)
+    }
+
+    override fun inject() {
+        componentManager.getSplashComponent()
+                .inject(this)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

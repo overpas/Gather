@@ -10,12 +10,15 @@ import com.github.overpass.gather.model.repo.meeting.MeetingRepo;
 
 import java.util.Map;
 
+import javax.inject.Inject;
+
 public class MeetingsUseCase {
 
     private static final double RADIUS = 0.02; // approximately 1 mile
 
     private final MeetingRepo meetingRepo;
 
+    @Inject
     public MeetingsUseCase(MeetingRepo meetingRepo) {
         this.meetingRepo = meetingRepo;
     }

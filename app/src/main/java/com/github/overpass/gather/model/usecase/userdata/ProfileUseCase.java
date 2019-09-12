@@ -8,12 +8,15 @@ import com.github.overpass.gather.model.repo.user.UserDataRepo;
 import com.github.overpass.gather.model.data.entity.splash.StartStatus;
 import com.google.firebase.auth.FirebaseUser;
 
+import javax.inject.Inject;
+
 public class ProfileUseCase {
 
     private final UserDataRepo userDataRepo;
     private final AuthRepo authRepo;
     private final PreferenceRepo preferenceRepo;
 
+    @Inject
     public ProfileUseCase(UserDataRepo userDataRepo,
                           AuthRepo authRepo,
                           PreferenceRepo preferenceRepo) {

@@ -21,19 +21,19 @@ abstract class BaseActivityKt<VM : ViewModel> : AppCompatActivity() {
     protected val viewModelProvider: ViewModelProvider
         get() = ViewModelProviders.of(this, viewModelFactory)
 
-    protected abstract fun getLayoutRes(): Int
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(getLayoutRes())
-        onInject()
+        inject()
         ButterKnife.bind(this)
         setupToolbar()
         viewModel = createViewModel()
         onBind()
     }
 
-    protected abstract fun onInject()
+    protected abstract fun getLayoutRes(): Int
+
+    protected abstract fun inject()
 
     protected abstract fun createViewModel(): VM
 

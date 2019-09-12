@@ -3,7 +3,7 @@ package com.github.overpass.gather.screen.auth.login
 import android.content.Intent
 import android.os.Bundle
 import androidx.lifecycle.Observer
-import com.github.overpass.gather.App.Companion.appComponent
+import com.github.overpass.gather.App.Companion.componentManager
 import com.github.overpass.gather.R
 import com.github.overpass.gather.model.commons.UIUtil.snackbar
 import com.github.overpass.gather.model.commons.UIUtil.textOf
@@ -24,8 +24,8 @@ class LoginActivity : BaseActivityKt<SignInViewModel>() {
         return viewModelProvider.get(SignInViewModel::class.java)
     }
 
-    override fun onInject() {
-        appComponent.signIn()
+    override fun inject() {
+        componentManager.getSignInComponent()
                 .inject(this)
     }
 

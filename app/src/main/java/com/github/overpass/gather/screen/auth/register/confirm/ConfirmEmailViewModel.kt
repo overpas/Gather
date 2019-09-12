@@ -6,29 +6,20 @@ import com.github.overpass.gather.model.commons.SingleLiveEvent
 import com.github.overpass.gather.model.commons.exception.NotAuthorized
 import com.github.overpass.gather.model.commons.toLiveData
 import com.github.overpass.gather.model.data.entity.confirm.ConfirmEmailStatus
-
-import com.github.overpass.gather.model.repo.confirm.ConfirmEmailRepo
-import com.github.overpass.gather.model.repo.pref.PreferenceRepo
-import com.github.overpass.gather.model.repo.register.SignUpRepo
+import com.github.overpass.gather.model.data.entity.splash.StartStatus
 import com.github.overpass.gather.model.usecase.confirm.ConfirmEmailUseCase
 import com.github.overpass.gather.model.usecase.login.StartStatusUseCase
 import com.github.overpass.gather.screen.auth.register.RegistrationStepViewModel
-import com.github.overpass.gather.model.data.entity.splash.StartStatus
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
+import javax.inject.Inject
 
-class ConfirmEmailViewModel(application: Application) : RegistrationStepViewModel(application) {
-
-    private val confirmEmailUseCase: ConfirmEmailUseCase = ConfirmEmailUseCase(
-            ConfirmEmailRepo(FirebaseAuth.getInstance())
-    )
-    private val startStatusUseCase: StartStatusUseCase = StartStatusUseCase(
-            PreferenceRepo(application),
-            SignUpRepo(FirebaseAuth.getInstance(), FirebaseFirestore.getInstance())
-    )
-    private val confirmErrorData = SingleLiveEvent<String>()
-    private val confirmSuccessData = SingleLiveEvent<Void>()
-    private val confirmProgressData = SingleLiveEvent<Void>()
+class ConfirmEmailViewModel @Inject constructor(
+        application: Application,
+        private val confirmEmailUseCase: ConfirmEmailUseCase,
+        private val startStatusUseCase: StartStatusUseCase,
+        private val confirmErrorData: SingleLiveEvent<String>,
+        private val confirmSuccessData: SingleLiveEvent<Void>,
+        private val confirmProgressData: SingleLiveEvent<Void>
+) : RegistrationStepViewModel(application) {
 
     fun confirm() {
         confirmEmailUseCase.confirmEmail()

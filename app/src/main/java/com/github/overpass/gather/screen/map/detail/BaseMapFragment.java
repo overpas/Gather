@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import com.github.overpass.gather.screen.base.BackPressFragment;
 import com.github.overpass.gather.R;
 import com.github.overpass.gather.screen.base.BaseFragment;
+import com.github.overpass.gather.screen.base.BaseFragmentKt;
 import com.github.overpass.gather.screen.create.NewMeetingActivity;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -31,7 +32,7 @@ import butterknife.OnClick;
 
 import static com.github.overpass.gather.model.commons.UIUtil.snackbar;
 
-public abstract class BaseMapFragment<VM extends BaseMapDetailViewModel> extends BaseFragment<VM>
+public abstract class BaseMapFragment<VM extends BaseMapDetailViewModel> extends BaseFragmentKt<VM>
         implements BackPressFragment, OnMapReadyCallback, MapboxMap.OnMarkerClickListener {
 
     private static final String TAG = "BaseMapFragment";
@@ -52,8 +53,8 @@ public abstract class BaseMapFragment<VM extends BaseMapDetailViewModel> extends
     ImageButton ibBack;
 
     @Override
-    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
         getViewModel().getPermissionGrantedData()

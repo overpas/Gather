@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Nullable;
+import javax.inject.Inject;
 
 import static com.annimon.stream.Objects.nonNull;
 
@@ -36,6 +37,7 @@ public class MeetingRepo implements MeetingsMetadata {
     private final FirebaseFirestore firestore;
     private MediatorLiveData<LoadMeetingStatus> meetingStatus = new MediatorLiveData<>();
 
+    @Inject
     public MeetingRepo(FirebaseFirestore firestore) {
         this.firestore = firestore;
     }

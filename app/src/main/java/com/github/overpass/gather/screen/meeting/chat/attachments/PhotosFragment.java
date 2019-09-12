@@ -58,6 +58,11 @@ public class PhotosFragment extends DataFragment<PhotosViewModel> {
     }
 
     @Override
+    protected void inject() {
+        throw new RuntimeException();
+    }
+
+    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setupList();

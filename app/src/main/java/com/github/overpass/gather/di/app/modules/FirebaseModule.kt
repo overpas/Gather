@@ -1,4 +1,4 @@
-package com.github.overpass.gather.di.app
+package com.github.overpass.gather.di.app.modules
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore

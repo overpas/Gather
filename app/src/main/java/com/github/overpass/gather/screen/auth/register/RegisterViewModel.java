@@ -7,15 +7,20 @@ import com.github.overpass.gather.model.commons.SingleLiveEvent;
 import com.github.overpass.gather.model.usecase.image.ImageSourceUseCase;
 import com.github.overpass.gather.screen.base.imagesource.IImageSourceViewModel;
 
+import javax.inject.Inject;
+
 public class RegisterViewModel extends ViewModel implements IImageSourceViewModel {
 
     private final ImageSourceUseCase imageSourceUseCase;
     private final SingleLiveEvent<Integer> registrationData;
 
-    public RegisterViewModel(int initialStep) {
-        imageSourceUseCase = new ImageSourceUseCase();
-        registrationData = new SingleLiveEvent<>();
-        registrationData.setValue(initialStep);
+    @Inject
+    public RegisterViewModel(Integer initialStep,
+                             ImageSourceUseCase imageSourceUseCase,
+                             SingleLiveEvent<Integer> registrationData) {
+        this.imageSourceUseCase = imageSourceUseCase;
+        this.registrationData = registrationData;
+        this.registrationData.setValue(initialStep);
     }
 
     @SuppressWarnings("ConstantConditions")

@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.annimon.stream.Stream;
 
-public abstract class BackPressActivity<VM extends ViewModel> extends BaseActivity<VM> {
+public abstract class BackPressActivity<VM extends ViewModel> extends BaseActivityKt<VM> {
 
     @Override
     public void onBackPressed() {

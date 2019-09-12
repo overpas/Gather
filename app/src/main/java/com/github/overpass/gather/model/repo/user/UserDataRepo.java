@@ -22,11 +22,14 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 public class UserDataRepo implements MeetingsMetadata, UsersData {
 
     private final FirebaseAuth auth;
     private final FirebaseFirestore firestore;
 
+    @Inject
     public UserDataRepo(FirebaseAuth auth, FirebaseFirestore firestore) {
         this.auth = auth;
         this.firestore = firestore;
