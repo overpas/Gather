@@ -1,5 +1,7 @@
 package com.github.overpass.gather.di
 
+const val MAPBOX_TOKEN = "mapbox_token"
+
 const val EMAIL_VALIDATOR = "email_validator"
 const val PASSWORD_VALIDATOR = "password_validator"
 

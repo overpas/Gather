@@ -16,12 +16,15 @@ import com.github.overpass.gather.screen.map.SaveMeetingStatus;
 
 import java.util.Date;
 
+import javax.inject.Inject;
+
 public class CreateMeetingUseCase {
 
     private final MeetingRepo meetingRepo;
     private final UserAuthRepo userAuthRepo;
     private final SubscriptionRepo subscriptionRepo;
 
+    @Inject
     public CreateMeetingUseCase(MeetingRepo meetingRepo, UserAuthRepo userAuthRepo, SubscriptionRepo subscriptionRepo) {
         this.meetingRepo = meetingRepo;
         this.userAuthRepo = userAuthRepo;

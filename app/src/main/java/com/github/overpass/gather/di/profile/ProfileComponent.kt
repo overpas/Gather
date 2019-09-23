@@ -1,7 +1,7 @@
 package com.github.overpass.gather.di.profile
 
-import com.github.overpass.gather.di.image.ImageSourceModule
 import com.github.overpass.gather.di.ParentScope
+import com.github.overpass.gather.di.image.ImageSourceModule
 import com.github.overpass.gather.di.profile.detail.ProfileDetailComponent
 import com.github.overpass.gather.screen.profile.ProfileActivity
 import dagger.Subcomponent

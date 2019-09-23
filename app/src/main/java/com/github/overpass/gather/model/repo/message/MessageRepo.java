@@ -22,11 +22,13 @@ import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Nullable;
+import javax.inject.Inject;
 
 public class MessageRepo implements MeetingsMetadata {
 
     private final FirebaseFirestore firestore;
 
+    @Inject
     public MessageRepo(FirebaseFirestore firestore) {
         this.firestore = firestore;
     }

@@ -1,12 +1,9 @@
 package com.github.overpass.gather.model.data
 
-import okhttp3.Callback
-import okhttp3.HttpUrl
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import okhttp3.RequestBody
+import okhttp3.*
+import javax.inject.Inject
 
-class HttpClient private constructor(private val client: OkHttpClient) {
+class HttpClient @Inject constructor(private val client: OkHttpClient) {
 
     fun get(url: String,
             callback: Callback,
@@ -17,7 +14,7 @@ class HttpClient private constructor(private val client: OkHttpClient) {
             urlBuilder.addQueryParameter(paramsNamesAndValues[i], paramsNamesAndValues[i + 1])
         }
         val finalUrl = urlBuilder.build().toString()
-        request("GET", finalUrl, requestBody, callback)
+        request(GET, finalUrl, requestBody, callback)
     }
 
     private fun request(method: String,
@@ -33,15 +30,6 @@ class HttpClient private constructor(private val client: OkHttpClient) {
 
     companion object {
 
-        @Volatile
-        private var instance: HttpClient? = null
-        private val lock = Any()
-
-        @JvmStatic
-        fun getInstance(): HttpClient = instance ?: synchronized(lock) {
-            instance ?: HttpClient(OkHttpClient.Builder().build()).also {
-                instance = it
-            }
-        }
+        private const val GET = "GET"
     }
 }

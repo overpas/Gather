@@ -9,11 +9,13 @@ import com.github.overpass.gather.screen.meeting.join.JoinStatus;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import javax.annotation.Nullable;
+import javax.inject.Inject;
 
 public class JoinRepo implements MeetingsMetadata {
 
     private final FirebaseFirestore firestore;
 
+    @Inject
     public JoinRepo(FirebaseFirestore firestore) {
         this.firestore = firestore;
     }

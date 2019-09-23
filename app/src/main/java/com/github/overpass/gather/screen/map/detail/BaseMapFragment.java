@@ -10,9 +10,8 @@ import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 
-import com.github.overpass.gather.screen.base.BackPressFragment;
 import com.github.overpass.gather.R;
-import com.github.overpass.gather.screen.base.BaseFragment;
+import com.github.overpass.gather.screen.base.BackPressFragment;
 import com.github.overpass.gather.screen.base.BaseFragmentKt;
 import com.github.overpass.gather.screen.create.NewMeetingActivity;
 import com.google.android.material.bottomappbar.BottomAppBar;
@@ -242,7 +241,7 @@ public abstract class BaseMapFragment<VM extends BaseMapDetailViewModel> extends
             case ADD_NEW:
                 switchMarker(false);
                 if (map != null) {
-                    NewMeetingActivity.start(map.getCameraPosition().target, getContext());
+                    NewMeetingActivity.Companion.start(map.getCameraPosition().target, getContext());
                 }
                 break;
             case CONFIRM_MARKER:

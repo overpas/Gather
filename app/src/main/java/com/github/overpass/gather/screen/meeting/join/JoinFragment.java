@@ -7,11 +7,10 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
-import androidx.lifecycle.ViewModelProviders;
 
+import com.github.overpass.gather.App;
 import com.github.overpass.gather.R;
 import com.github.overpass.gather.model.commons.DateFormatting;
 import com.github.overpass.gather.model.commons.FragmentUtils;
@@ -21,6 +20,8 @@ import com.github.overpass.gather.screen.meeting.base.BaseMeetingFragment;
 import com.github.overpass.gather.screen.meeting.base.LoadMeetingStatus;
 import com.github.overpass.gather.screen.meeting.chat.ChatFragment;
 import com.github.overpass.gather.screen.meeting.enrolled.EnrolledActivity;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.text.SimpleDateFormat;
 import java.util.Locale;
@@ -51,9 +52,10 @@ public class JoinFragment extends BaseMeetingFragment<JoinViewModel> {
     @BindView(R.id.btnJoin)
     TextView btnJoin;
 
+    @NotNull
     @Override
     protected JoinViewModel createViewModel() {
-        return ViewModelProviders.of(this).get(JoinViewModel.class);
+        return getViewModelProvider().get(JoinViewModel.class);
     }
 
     @Override
@@ -62,9 +64,16 @@ public class JoinFragment extends BaseMeetingFragment<JoinViewModel> {
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        toolbarJoin.setNavigationOnClickListener(navIcon -> getActivity().finish());
+    protected void inject() {
+        App.Companion.getComponentManager(this)
+                .getJoinComponent()
+                .inject(this);
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        toolbarJoin.setNavigationOnClickListener(navIcon -> requireActivity().finish());
         flProgress.setVisibility(View.VISIBLE);
     }
 
@@ -102,7 +111,7 @@ public class JoinFragment extends BaseMeetingFragment<JoinViewModel> {
 
     private void handleJoined(JoinStatus.Joined joined) {
         ProgressDialogFragment.Companion.hide(getFragmentManager());
-        FragmentUtils.replace(getFragmentManager(), R.id.flMeetingContainer,
+        FragmentUtils.replace(requireFragmentManager(), R.id.flMeetingContainer,
                 ChatFragment.newInstance(getMeetingId()), false);
     }
 
@@ -114,7 +123,7 @@ public class JoinFragment extends BaseMeetingFragment<JoinViewModel> {
     private void handleEnrolled(JoinStatus.Enrolled enrolled) {
         ProgressDialogFragment.Companion.hide(getFragmentManager());
         startActivity(new Intent(getContext(), EnrolledActivity.class));
-        getActivity().finish();
+        requireActivity().finish();
     }
 
     @Override

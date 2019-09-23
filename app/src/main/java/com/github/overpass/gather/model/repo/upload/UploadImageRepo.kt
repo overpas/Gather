@@ -14,8 +14,9 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import javax.inject.Inject
 
-class UploadImageRepo(
+class UploadImageRepo @Inject constructor(
         private val storage: FirebaseStorage,
         private val imageConverter: ImageConverter
 ) {

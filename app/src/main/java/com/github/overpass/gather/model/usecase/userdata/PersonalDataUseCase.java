@@ -17,6 +17,8 @@ import com.github.overpass.gather.model.repo.upload.UploadImageRepo;
 import com.github.overpass.gather.model.repo.user.UserAuthRepo;
 import com.google.firebase.auth.FirebaseAuth;
 
+import javax.inject.Inject;
+
 public class PersonalDataUseCase {
 
     private final UserAuthRepo userAuthRepo;
@@ -24,6 +26,7 @@ public class PersonalDataUseCase {
     private final Validator<String> validator;
     private final FirebaseAuth firebaseAuth;
 
+    @Inject
     public PersonalDataUseCase(UserAuthRepo userAuthRepo,
                                UploadImageRepo uploadImageRepo,
                                Validator<String> validator,

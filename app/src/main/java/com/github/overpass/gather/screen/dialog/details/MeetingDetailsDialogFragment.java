@@ -15,28 +15,43 @@ import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.airbnb.lottie.LottieAnimationView;
+import com.github.overpass.gather.App;
 import com.github.overpass.gather.R;
 import com.github.overpass.gather.model.commons.DateFormatting;
+import com.github.overpass.gather.model.commons.Fragments;
 import com.github.overpass.gather.screen.base.BaseDialogFragment;
 import com.github.overpass.gather.screen.meeting.MeetingAndRatio;
 import com.github.overpass.gather.screen.meeting.base.LoadMeetingStatus;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
 import static com.github.overpass.gather.model.commons.UIUtil.toast;
 
-public class MeetingDetailsDialogFragment extends BaseDialogFragment {
+public class MeetingDetailsDialogFragment extends BaseDialogFragment<MeetingDetailsViewModel> {
 
     private static final String TAG = "MeetingDetailsDialogFra";
     private static final String MEETING_ID_KEY = "MEETING_ID_KEY";
-
-    private MeetingDetailsViewModel viewModel;
 
     private TextView tvAddress;
     private TextView tvRatio;
     private TextView tvDate;
     private LottieAnimationView lavProgress;
+
+    @Override
+    protected void inject() {
+        App.Companion.getComponentManager(this)
+                .getMeetingDetailsComponent()
+                .inject(this);
+    }
+
+    @NotNull
+    @Override
+    protected MeetingDetailsViewModel createViewModel() {
+        return getViewModelProvider().get(MeetingDetailsViewModel.class);
+    }
 
     @NonNull
     @Override
@@ -47,15 +62,14 @@ public class MeetingDetailsDialogFragment extends BaseDialogFragment {
         tvRatio = view.findViewById(R.id.tvRatio);
         tvDate = view.findViewById(R.id.tvDate);
         lavProgress = view.findViewById(R.id.lavProgress);
-        return new AlertDialog.Builder(getContext())
+        return new AlertDialog.Builder(requireContext())
                 .setView(view)
                 .create();
     }
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        viewModel = ViewModelProviders.of(this).get(MeetingDetailsViewModel.class);
+    public void onBind() {
+        super.onBind();
         viewModel.loadMeeting(getMeetingId()).observe(this, this::handleMeeting);
     }
 
@@ -68,7 +82,7 @@ public class MeetingDetailsDialogFragment extends BaseDialogFragment {
                 handleSuccess(loadMeetingStatus.as(LoadMeetingStatus.Success.class));
                 break;
             case LoadMeetingStatus.PROGRESS:
-                handleProgress(loadMeetingStatus.as(LoadMeetingStatus.Progress.class));
+                handleProgress();
                 break;
         }
     }
@@ -106,7 +120,7 @@ public class MeetingDetailsDialogFragment extends BaseDialogFragment {
         viewModel.exportEvent(meetingAndRatio, getContext());
     }
 
-    private void handleProgress(LoadMeetingStatus.Progress progress) {
+    private void handleProgress() {
         lavProgress.setVisibility(View.VISIBLE);
     }
 
@@ -123,10 +137,10 @@ public class MeetingDetailsDialogFragment extends BaseDialogFragment {
     public static void show(String meetingId, @Nullable FragmentManager fragmentManager) {
         Bundle arguments = new Bundle();
         arguments.putString(MEETING_ID_KEY, meetingId);
-        show(TAG, fragmentManager, true, arguments, MeetingDetailsDialogFragment::new);
+        Fragments.Dialog.show(TAG, fragmentManager, true, arguments, MeetingDetailsDialogFragment::new);
     }
 
     public static void hide(@Nullable FragmentManager fragmentManager) {
-        hide(TAG, fragmentManager, MeetingDetailsDialogFragment.class);
+        Fragments.Dialog.hide(TAG, fragmentManager, MeetingDetailsDialogFragment.class);
     }
 }

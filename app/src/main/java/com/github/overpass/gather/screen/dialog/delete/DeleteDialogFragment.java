@@ -7,32 +7,41 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.FragmentManager;
-import androidx.lifecycle.ViewModelProviders;
 
+import com.github.overpass.gather.App;
 import com.github.overpass.gather.R;
+import com.github.overpass.gather.model.commons.Fragments;
 import com.github.overpass.gather.screen.base.BaseDialogFragment;
 import com.github.overpass.gather.screen.meeting.chat.DeleteStatus;
 
+import org.jetbrains.annotations.NotNull;
+
+import static com.github.overpass.gather.model.commons.AndroidParamsKt.getStringArg;
 import static com.github.overpass.gather.model.commons.UIUtil.toast;
 
-public class DeleteDialogFragment extends BaseDialogFragment {
+public class DeleteDialogFragment extends BaseDialogFragment<DeleteMessageViewModel> {
 
     private static final String TAG = "DeleteDialogFragment";
     private static final String MESSAGE_ID_KEY = "MESSAGE_ID_KEY";
     private static final String MEETING_ID_KEY = "MEETING_ID_KEY";
 
-    private DeleteMessageViewModel viewModel;
-
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        viewModel = ViewModelProviders.of(this).get(DeleteMessageViewModel.class);
+    protected void inject() {
+        App.Companion.getComponentManager(this)
+                .getDeleteMessageComponent()
+                .inject(this);
+    }
+
+    @NotNull
+    @Override
+    protected DeleteMessageViewModel createViewModel() {
+        return getViewModelProvider().get(DeleteMessageViewModel.class);
     }
 
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        return new AlertDialog.Builder(getContext())
+        return new AlertDialog.Builder(requireContext())
                 .setTitle(R.string.should_delete)
                 .setPositiveButton(R.string.delete, (dialog, id) -> {
                     viewModel.delete(getMeetingId(), getMessageId()).observe(
@@ -52,12 +61,12 @@ public class DeleteDialogFragment extends BaseDialogFragment {
                 handleDeletionError(deleteStatus.as(DeleteStatus.Error.class));
                 break;
             case DeleteStatus.SUCCESS:
-                handleDeletionSuccess(deleteStatus.as(DeleteStatus.Success.class));
+                handleDeletionSuccess();
                 break;
         }
     }
 
-    private void handleDeletionSuccess(DeleteStatus.Success success) {
+    private void handleDeletionSuccess() {
         toast(this, getString(R.string.success));
         dismiss();
     }
@@ -68,21 +77,17 @@ public class DeleteDialogFragment extends BaseDialogFragment {
     }
 
     private String getMessageId() {
-        return getIdFromArgs(MESSAGE_ID_KEY);
+        return getStringArg(this, MESSAGE_ID_KEY);
     }
 
     private String getMeetingId() {
-        return getIdFromArgs(MEETING_ID_KEY);
+        return getStringArg(this, MEETING_ID_KEY);
     }
 
     public static void show(String meetingId, String messageId, FragmentManager fragmentManager) {
         Bundle args = new Bundle();
         args.putString(MEETING_ID_KEY, meetingId);
         args.putString(MESSAGE_ID_KEY, messageId);
-        show(TAG, fragmentManager, true, args, DeleteDialogFragment::new);
-    }
-
-    public static void hide(FragmentManager fragmentManager) {
-
+        Fragments.Dialog.show(TAG, fragmentManager, true, args, DeleteDialogFragment::new);
     }
 }

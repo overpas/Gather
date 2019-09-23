@@ -10,8 +10,9 @@ import com.google.android.gms.tasks.Tasks
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class MeetingRepo2(private val firestore: FirebaseFirestore) {
+class MeetingRepo2 @Inject constructor(private val firestore: FirebaseFirestore) {
 
     suspend fun addPhotoUrl(
             meetingId: String,

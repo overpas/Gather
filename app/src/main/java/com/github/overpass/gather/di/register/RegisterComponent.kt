@@ -1,7 +1,7 @@
 package com.github.overpass.gather.di.register
 
-import com.github.overpass.gather.di.image.ImageSourceModule
 import com.github.overpass.gather.di.ParentScope
+import com.github.overpass.gather.di.image.ImageSourceModule
 import com.github.overpass.gather.di.register.add.AddPersonalDataComponent
 import com.github.overpass.gather.di.register.confirm.ConfirmationComponent
 import com.github.overpass.gather.di.register.signup.SignUpComponent
@@ -23,6 +23,8 @@ interface RegisterComponent {
 
     @Subcomponent.Factory
     interface Factory {
-        fun create(@BindsInstance initialStep: Integer): RegisterComponent
+        fun create(
+                @BindsInstance initialStep: Integer
+        ): RegisterComponent
     }
 }

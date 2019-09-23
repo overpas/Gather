@@ -8,11 +8,14 @@ import com.github.overpass.gather.model.repo.meeting.UserRoleRepo;
 import com.github.overpass.gather.model.repo.user.UserAuthRepo;
 import com.github.overpass.gather.screen.map.AuthUser;
 
+import javax.inject.Inject;
+
 public class RoleUseCase {
 
     private final UserAuthRepo userAuthRepo;
     private final UserRoleRepo userRoleRepo;
 
+    @Inject
     public RoleUseCase(UserAuthRepo userAuthRepo, UserRoleRepo userRoleRepo) {
         this.userAuthRepo = userAuthRepo;
         this.userRoleRepo = userRoleRepo;

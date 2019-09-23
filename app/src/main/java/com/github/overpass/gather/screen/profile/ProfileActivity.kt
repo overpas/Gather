@@ -1,9 +1,7 @@
 package com.github.overpass.gather.screen.profile
 
 import android.os.Bundle
-
 import com.github.overpass.gather.App.Companion.componentManager
-
 import com.github.overpass.gather.R
 import com.github.overpass.gather.model.commons.FragmentUtils
 import com.github.overpass.gather.screen.base.BackPressActivity
@@ -20,7 +18,7 @@ class ProfileActivity : BackPressActivity<GeneralProfileViewModel>(), PickImageD
     }
 
     override fun inject() {
-        componentManager.getProfileComponent()
+        componentManager.getProfileComponent(lifecycle)
                 .inject(this)
     }
 

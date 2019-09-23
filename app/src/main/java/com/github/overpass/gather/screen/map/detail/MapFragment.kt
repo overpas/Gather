@@ -38,7 +38,7 @@ class MapFragment : BaseMapFragment<MapDetailViewModel>(), BackPressFragment, On
         bottomAppBar.setNavigationOnClickListener { v -> startActivity(Intent(context, ProfileActivity::class.java)) }
         bottomAppBar.setOnMenuItemClickListener { item ->
             if (item.itemId == R.id.action_search) {
-                SearchBottomFragment.open(fragmentManager)
+                SearchBottomFragment.open(requireFragmentManager())
                 return@setOnMenuItemClickListener true
             }
             false
@@ -57,7 +57,7 @@ class MapFragment : BaseMapFragment<MapDetailViewModel>(), BackPressFragment, On
     }
 
     override fun onInfoWindowClick(marker: Marker): Boolean {
-        viewModel.openMeeting(marker) { id -> MeetingActivity.start(context, id) }
+        viewModel.openMeeting(marker) { id -> MeetingActivity.start(requireContext(), id) }
         return super.onInfoWindowClick(marker)
     }
 

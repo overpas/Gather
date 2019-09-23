@@ -1,20 +1,13 @@
 package com.github.overpass.gather.screen.meeting.base;
 
 import android.os.Bundle;
-import android.view.View;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.github.overpass.gather.R;
-import com.github.overpass.gather.screen.base.BaseFragment;
-import com.github.overpass.gather.screen.create.MeetingType;
-
-import java.text.SimpleDateFormat;
-import java.util.Locale;
+import com.github.overpass.gather.screen.base.BaseFragmentKt;
 
 public abstract class BaseMeetingFragment<VM extends BaseMeetingViewModel>
-        extends BaseFragment<VM> {
+        extends BaseFragmentKt<VM> {
 
     private static final String MEETING_ID_KEY = "MEETING_ID_KEY";
 
@@ -30,8 +23,8 @@ public abstract class BaseMeetingFragment<VM extends BaseMeetingViewModel>
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
         onLoadMeetingData();
     }
 

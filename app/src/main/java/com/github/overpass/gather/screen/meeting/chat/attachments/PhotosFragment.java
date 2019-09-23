@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
+import com.github.overpass.gather.App;
 import com.github.overpass.gather.R;
 import com.github.overpass.gather.model.usecase.image.ImageSourceUseCase;
 import com.github.overpass.gather.screen.base.personal.DataFragment;
@@ -43,13 +44,7 @@ public class PhotosFragment extends DataFragment<PhotosViewModel> {
     @NotNull
     @Override
     protected PhotosViewModel createViewModel() {
-        ImageSourceUseCase imageSourceUseCase = ViewModelProviders.of(getActivity())
-                .get(GeneralPhotoViewModel.class)
-                .getImageSourceUseCase();
-        PhotosViewModel photosViewModel = ViewModelProviders.of(this)
-                .get(PhotosViewModel.class);
-        photosViewModel.setImageSourceUseCase(imageSourceUseCase);
-        return photosViewModel;
+        return getViewModelProvider().get(PhotosViewModel.class);
     }
 
     @Override
@@ -59,12 +54,14 @@ public class PhotosFragment extends DataFragment<PhotosViewModel> {
 
     @Override
     protected void inject() {
-        throw new RuntimeException();
+        App.Companion.getComponentManager(this)
+                .getAttachmentsDetailsComponent()
+                .inject(this);
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
         setupList();
         getViewModel().getMeeting(getMeetingId()).observe(getViewLifecycleOwner(), this::handleMeeting);
         getViewModel().getSuggestToChooseData().observe(getViewLifecycleOwner(), this::handleChoose);
@@ -74,16 +71,16 @@ public class PhotosFragment extends DataFragment<PhotosViewModel> {
     }
 
     private void handleUploadProgress(int percent) {
-        ProgressPercentDialogFragment.progress(getFragmentManager(), percent);
+        ProgressPercentDialogFragment.progress(requireFragmentManager(), percent);
     }
 
     private void handleUploadError(String message) {
-        ProgressPercentDialogFragment.hide(getFragmentManager());
+        ProgressPercentDialogFragment.hide(requireFragmentManager());
         snackbar(ivPhotoPreview, message);
     }
 
     private void handleUploadSuccess() {
-        ProgressPercentDialogFragment.hide(getFragmentManager());
+        ProgressPercentDialogFragment.hide(requireFragmentManager());
         snackbar(ivPhotoPreview, getString(R.string.success));
         getViewModel().resetChosenImage();
     }
@@ -121,7 +118,7 @@ public class PhotosFragment extends DataFragment<PhotosViewModel> {
                 RecyclerView.VERTICAL);
         rvAttachments.setLayoutManager(layoutManager);
         adapter = new PhotosAdapter(photoUrl -> {
-            CloseupActivity.start(getContext(), photoUrl);
+            CloseupActivity.start(requireContext(), photoUrl);
         });
         rvAttachments.setAdapter(adapter);
     }

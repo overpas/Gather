@@ -6,19 +6,16 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 
 import com.annimon.stream.Stream;
-import com.github.overpass.gather.model.commons.LiveDataUtils;
-import com.github.overpass.gather.model.repo.meeting.UserRoleRepo;
 import com.github.overpass.gather.model.repo.message.Message;
-import com.github.overpass.gather.model.repo.message.MessageRepo;
-import com.github.overpass.gather.model.repo.user.UserAuthRepo;
+import com.github.overpass.gather.model.usecase.meeting.MeetingUseCase;
 import com.github.overpass.gather.model.usecase.message.MessagesUseCase;
 import com.github.overpass.gather.model.usecase.userdata.RoleUseCase;
 import com.github.overpass.gather.screen.map.AuthUser;
 import com.github.overpass.gather.screen.meeting.base.BaseMeetingViewModel;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
+
+import javax.inject.Inject;
 
 public class ChatViewModel extends BaseMeetingViewModel {
 
@@ -26,16 +23,15 @@ public class ChatViewModel extends BaseMeetingViewModel {
     private final RoleUseCase roleUseCase;
     private final MutableLiveData<Integer> selectedItemsData;
 
-    public ChatViewModel() {
-        this.roleUseCase = new RoleUseCase(
-                new UserAuthRepo(FirebaseAuth.getInstance(), FirebaseFirestore.getInstance()),
-                new UserRoleRepo(FirebaseFirestore.getInstance())
-        );
-        this.messagesUseCase = new MessagesUseCase(
-                new MessageRepo(FirebaseFirestore.getInstance()),
-                new UserAuthRepo(FirebaseAuth.getInstance(), FirebaseFirestore.getInstance())
-        );
-        selectedItemsData = new MutableLiveData<>();
+    @Inject
+    public ChatViewModel(MeetingUseCase meetingUseCase,
+                         RoleUseCase roleUseCase,
+                         MessagesUseCase messagesUseCase,
+                         MutableLiveData<Integer> selectedItemsData) {
+        super(meetingUseCase);
+        this.roleUseCase = roleUseCase;
+        this.messagesUseCase = messagesUseCase;
+        this.selectedItemsData = selectedItemsData;
     }
 
     public LiveData<MessageModel> messages(String messageId) {

@@ -11,14 +11,17 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 public class SearchViewModel extends ViewModel {
 
     private final SearchUseCase searchUseCase;
 
     private MediatorLiveData<List<MeetingWithId>> meetingData = new MediatorLiveData<>();
 
-    public SearchViewModel() {
-        this.searchUseCase = new SearchUseCase(new MeetingRepo(FirebaseFirestore.getInstance()));
+    @Inject
+    public SearchViewModel(SearchUseCase searchUseCase) {
+        this.searchUseCase = searchUseCase;
     }
 
     public void setQueryText(String newText) {

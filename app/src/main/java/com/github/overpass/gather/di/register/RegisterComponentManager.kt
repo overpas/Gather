@@ -16,14 +16,23 @@ class RegisterComponentManager(
     }
 
     fun getAddPersonalDataComponent(): AddPersonalDataComponent {
-        return registerComponent.getAddPersonalDataComponent()
+        return getComponentOrThrowError { getAddPersonalDataComponent() }
     }
 
     fun getConfirmationComponent(): ConfirmationComponent {
-        return registerComponent.getConfirmationComponent()
+        return getComponentOrThrowError { getConfirmationComponent() }
     }
 
     fun getSignUpComponent(): SignUpComponent {
-        return registerComponent.getSignUpComponent()
+        return getComponentOrThrowError { getSignUpComponent() }
+    }
+
+    private fun <C> getComponentOrThrowError(getComponent: RegisterComponent.() -> C): C {
+        return registerComponent.getComponent()
+                ?: throw IllegalStateException(UNINITIALIZED_PARENT_MESSAGE)
+    }
+
+    companion object {
+        private const val UNINITIALIZED_PARENT_MESSAGE = "Parent component hasn't been initialized"
     }
 }

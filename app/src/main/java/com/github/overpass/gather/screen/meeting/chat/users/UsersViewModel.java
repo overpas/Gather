@@ -14,19 +14,17 @@ import com.github.overpass.gather.screen.meeting.chat.users.model.LoadUsersStatu
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import javax.inject.Inject;
+
 public class UsersViewModel extends ViewModel {
 
     private final UsersUseCase usersUseCase;
     private final RoleUseCase roleUseCase;
 
-    public UsersViewModel() {
-        this.roleUseCase = new RoleUseCase(
-                new UserAuthRepo(FirebaseAuth.getInstance(), FirebaseFirestore.getInstance()),
-                new UserRoleRepo(FirebaseFirestore.getInstance())
-        );
-        this.usersUseCase = new UsersUseCase(
-                new UserDataRepo(FirebaseAuth.getInstance(), FirebaseFirestore.getInstance())
-        );
+    @Inject
+    public UsersViewModel(UsersUseCase usersUseCase, RoleUseCase roleUseCase) {
+        this.roleUseCase = roleUseCase;
+        this.usersUseCase = usersUseCase;
     }
 
     public LiveData<LoadUsersStatus> getMembers(String meetingId) {

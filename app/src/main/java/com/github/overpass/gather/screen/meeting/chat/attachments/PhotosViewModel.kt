@@ -7,34 +7,30 @@ import androidx.lifecycle.viewModelScope
 import com.github.overpass.gather.model.commons.Result
 import com.github.overpass.gather.model.commons.SingleLiveEvent
 import com.github.overpass.gather.model.commons.image.ImageConverter
-import com.github.overpass.gather.model.repo.meeting.MeetingRepo
-import com.github.overpass.gather.model.repo.meeting.MeetingRepo2
-import com.github.overpass.gather.model.repo.upload.UploadImageRepo
 import com.github.overpass.gather.model.usecase.attachment.PhotosUseCase
+import com.github.overpass.gather.model.usecase.image.ImageSourceUseCase
 import com.github.overpass.gather.screen.base.personal.DataViewModel
 import com.github.overpass.gather.screen.map.Meeting
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class PhotosViewModel(application: Application) : DataViewModel(application) {
+class PhotosViewModel @Inject constructor(
+        application: Application,
+        imageSourceUseCase: ImageSourceUseCase,
+        private val attachmentsUseCase: PhotosUseCase,
+        private val photoUploadSuccessData: SingleLiveEvent<Void>,
+        private val photoUploadProgressData: SingleLiveEvent<Int>,
+        private val photoUploadErrorData: SingleLiveEvent<String>,
+        private val suggestToChooseData: SingleLiveEvent<Boolean>,
+        private val imageConverter: ImageConverter
+) : DataViewModel(application) {
 
-    private val attachmentsUseCase: PhotosUseCase = PhotosUseCase(
-            MeetingRepo(FirebaseFirestore.getInstance()),
-            MeetingRepo2(FirebaseFirestore.getInstance()),
-            UploadImageRepo(
-                    FirebaseStorage.getInstance(),
-                    ImageConverter(application.contentResolver)
-            )
-    )
-    private val photoUploadSuccessData = SingleLiveEvent<Void>()
-    private val photoUploadProgressData = SingleLiveEvent<Int>()
-    private val photoUploadErrorData = SingleLiveEvent<String>()
-    private val suggestToChooseData: SingleLiveEvent<Boolean> = SingleLiveEvent()
-    private val imageConverter: ImageConverter = ImageConverter(application.contentResolver)
+    init {
+        setImageSourceUseCase(imageSourceUseCase)
+    }
 
     fun photoUploadSuccess(): LiveData<Void> = photoUploadSuccessData
 

@@ -6,21 +6,16 @@ import com.github.overpass.gather.model.commons.SingleLiveEvent
 import com.github.overpass.gather.model.commons.exception.InvalidCredentialsException
 import com.github.overpass.gather.model.commons.toLiveData
 import com.github.overpass.gather.model.data.entity.forgot.ForgotStatus
-import com.github.overpass.gather.model.data.validator.EmailValidator
-import com.github.overpass.gather.model.repo.password.PasswordResetRepo
 import com.github.overpass.gather.model.usecase.forgot.ForgotPasswordUseCase
-import com.google.firebase.auth.FirebaseAuth
+import javax.inject.Inject
 
-class ForgotPasswordViewModel : ViewModel() {
-
-    private val forgotPasswordUseCase: ForgotPasswordUseCase = ForgotPasswordUseCase(
-            PasswordResetRepo(FirebaseAuth.getInstance()),
-            EmailValidator()
-    )
-    private val resetPasswordErrorData = SingleLiveEvent<String>()
-    private val resetPasswordSuccessData = SingleLiveEvent<Void>()
-    private val invalidEmailData = SingleLiveEvent<Void>()
-    private val resetPasswordProgressData = SingleLiveEvent<Void>()
+class ForgotPasswordViewModel @Inject constructor(
+        private val forgotPasswordUseCase: ForgotPasswordUseCase,
+        private val resetPasswordErrorData: SingleLiveEvent<String>,
+        private val resetPasswordSuccessData: SingleLiveEvent<Void>,
+        private val invalidEmailData: SingleLiveEvent<Void>,
+        private val resetPasswordProgressData: SingleLiveEvent<Void>
+) : ViewModel() {
 
     fun sendForgotPassword(email: String) {
         forgotPasswordUseCase.sendForgotPassword(email)

@@ -7,11 +7,14 @@ import com.github.overpass.gather.model.repo.meeting.MeetingRepo;
 import com.github.overpass.gather.model.repo.user.UserAuthRepo;
 import com.github.overpass.gather.screen.map.AuthUser;
 
+import javax.inject.Inject;
+
 public class AllowedUseCase {
 
     private final MeetingRepo meetingRepo;
     private final UserAuthRepo userAuthRepo;
 
+    @Inject
     public AllowedUseCase(MeetingRepo meetingRepo, UserAuthRepo userAuthRepo) {
         this.meetingRepo = meetingRepo;
         this.userAuthRepo = userAuthRepo;

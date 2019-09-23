@@ -15,6 +15,8 @@ import com.github.overpass.gather.screen.meeting.base.LoadMeetingStatus;
 import com.github.overpass.gather.screen.meeting.join.JoinStatus;
 import com.github.overpass.gather.screen.meeting.join.LoadPrivateMeetingStatus;
 
+import javax.inject.Inject;
+
 public class MeetingUseCase {
 
     private final MeetingRepo meetingRepo;
@@ -22,6 +24,7 @@ public class MeetingUseCase {
     private final UserAuthRepo userAuthRepo;
     private final SubscriptionRepo subscriptionRepo;
 
+    @Inject
     public MeetingUseCase(MeetingRepo meetingRepo,
                           JoinRepo joinRepo,
                           UserAuthRepo userAuthRepo,

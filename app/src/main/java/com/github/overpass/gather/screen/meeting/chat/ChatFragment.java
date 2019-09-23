@@ -2,22 +2,20 @@ package com.github.overpass.gather.screen.meeting.chat;
 
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
-import androidx.lifecycle.ViewModelProviders;
 
 import com.annimon.stream.Stream;
 import com.bumptech.glide.Glide;
+import com.github.overpass.gather.App;
 import com.github.overpass.gather.R;
 import com.github.overpass.gather.screen.create.MeetingType;
-import com.github.overpass.gather.screen.dialog.progress.indeterminate.ProgressDialogFragment;
 import com.github.overpass.gather.screen.dialog.delete.DeleteDialogFragment;
 import com.github.overpass.gather.screen.dialog.details.MeetingDetailsDialogFragment;
+import com.github.overpass.gather.screen.dialog.progress.indeterminate.ProgressDialogFragment;
 import com.github.overpass.gather.screen.map.AuthUser;
 import com.github.overpass.gather.screen.meeting.base.BaseMeetingFragment;
 import com.github.overpass.gather.screen.meeting.base.LoadMeetingStatus;
@@ -27,12 +25,13 @@ import com.stfalcon.chatkit.messages.MessageInput;
 import com.stfalcon.chatkit.messages.MessagesList;
 import com.stfalcon.chatkit.messages.MessagesListAdapter;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
 
 import butterknife.BindView;
 
 import static com.github.overpass.gather.model.commons.UIUtil.snackbar;
-import static com.github.overpass.gather.model.commons.UIUtil.toast;
 
 public class ChatFragment extends BaseMeetingFragment<ChatViewModel> {
 
@@ -47,11 +46,12 @@ public class ChatFragment extends BaseMeetingFragment<ChatViewModel> {
     @BindView(R.id.tvMeetingName)
     TextView tvMeetingName;
 
-    MessagesListAdapter<IMessageImpl> adapter;
+    private MessagesListAdapter<IMessageImpl> adapter;
 
+    @NotNull
     @Override
     protected ChatViewModel createViewModel() {
-        return ViewModelProviders.of(getActivity()).get(ChatViewModel.class);
+        return getViewModelProvider().get(ChatViewModel.class);
     }
 
     @Override
@@ -60,10 +60,22 @@ public class ChatFragment extends BaseMeetingFragment<ChatViewModel> {
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    protected void inject() {
+        App.Companion.getComponentManager(this)
+                .getChatComponent(getLifecycle())
+                .inject(this);
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
         setupToolbar();
         setupList();
+    }
+
+    @Override
+    protected void onBind() {
+        super.onBind();
         getViewModel().messages(getMeetingId()).observe(getViewLifecycleOwner(), this::handleMessages);
         messageInput.setInputListener(input -> {
             if (TextUtils.isEmpty(input)) {
@@ -124,15 +136,15 @@ public class ChatFragment extends BaseMeetingFragment<ChatViewModel> {
     }
 
     private void setupToolbar() {
-        toolbarChat.setNavigationOnClickListener(navIcon -> getActivity().finish());
+        toolbarChat.setNavigationOnClickListener(navIcon -> requireActivity().finish());
         toolbarChat.inflateMenu(R.menu.menu_chat);
         toolbarChat.setOnMenuItemClickListener(item -> false);
         toolbarChat.setOnMenuItemClickListener(item -> {
             if (item.getItemId() == R.id.action_users) {
-                UsersActivity.start(getContext(), getMeetingId());
+                UsersActivity.Companion.start(requireContext(), getMeetingId());
                 return true;
             } else if (item.getItemId() == R.id.action_attachments) {
-                PhotosActivity.start(getContext(), getMeetingId());
+                PhotosActivity.Companion.start(requireContext(), getMeetingId());
                 return true;
             } else if (item.getItemId() == R.id.action_details) {
                 MeetingDetailsDialogFragment.show(getMeetingId(), getFragmentManager());

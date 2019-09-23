@@ -6,7 +6,10 @@ import com.github.overpass.gather.screen.map.MapActivity
 import dagger.Subcomponent
 
 @ParentScope
-@Subcomponent(modules = [MapModule::class, LocationPermissionModule::class])
+@Subcomponent(modules = [
+    MapModule::class,
+    LocationPermissionModule::class
+])
 interface MapComponent {
 
     fun getDetailComponent(): MapDetailComponent

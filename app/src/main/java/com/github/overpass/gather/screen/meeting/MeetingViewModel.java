@@ -9,16 +9,15 @@ import com.github.overpass.gather.model.usecase.meeting.AllowedUseCase;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import javax.inject.Inject;
 
 public class MeetingViewModel extends ViewModel {
 
     private final AllowedUseCase allowedUseCase;
 
-    public MeetingViewModel() {
-        allowedUseCase = new AllowedUseCase(
-                new MeetingRepo(FirebaseFirestore.getInstance()),
-                new UserAuthRepo(FirebaseAuth.getInstance(), FirebaseFirestore.getInstance())
-        );
+    @Inject
+    public MeetingViewModel(AllowedUseCase allowedUseCase) {
+        this.allowedUseCase = allowedUseCase;
     }
 
     public LiveData<Boolean> isAllowed(String meetingId) {

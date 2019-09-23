@@ -2,20 +2,20 @@ package com.github.overpass.gather.screen.meeting.join;
 
 import androidx.lifecycle.LiveData;
 
-import com.github.overpass.gather.model.data.HttpClient;
-import com.github.overpass.gather.model.repo.geocode.GeocodeRepo;
 import com.github.overpass.gather.model.usecase.geo.GeoUseCase;
+import com.github.overpass.gather.model.usecase.meeting.MeetingUseCase;
 import com.github.overpass.gather.screen.meeting.base.BaseMeetingViewModel;
-import com.github.overpass.gather.screen.meeting.base.LoadMeetingStatus;
-import com.google.gson.Gson;
+
+import javax.inject.Inject;
 
 public class JoinViewModel extends BaseMeetingViewModel {
 
     private final GeoUseCase geoUseCase;
 
-    public JoinViewModel() {
-        super();
-        geoUseCase = new GeoUseCase(new GeocodeRepo(HttpClient.getInstance(), new Gson()));
+    @Inject
+    public JoinViewModel(MeetingUseCase meetingUseCase, GeoUseCase geoUseCase) {
+        super(meetingUseCase);
+        this.geoUseCase = geoUseCase;
     }
 
     public LiveData<String> getAddress(double latitude, double longitude) {

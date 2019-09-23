@@ -3,12 +3,13 @@ package com.github.overpass.gather.screen.dialog.progress.indeterminate
 import android.app.Dialog
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 
 import com.github.overpass.gather.R
-import com.github.overpass.gather.screen.base.BaseDialogFragment
+import com.github.overpass.gather.model.commons.Fragments
 
-class ProgressDialogFragment : BaseDialogFragment() {
+class ProgressDialogFragment : DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return AlertDialog.Builder(context!!)
@@ -23,12 +24,12 @@ class ProgressDialogFragment : BaseDialogFragment() {
 
         @JvmStatic
         fun show(fragmentManager: FragmentManager?) {
-            show(TAG, fragmentManager, false) { ProgressDialogFragment() }
+            Fragments.Dialog.show(TAG, fragmentManager, false) { ProgressDialogFragment() }
         }
 
         @JvmStatic
         fun hide(fragmentManager: FragmentManager?) {
-            hide(TAG, fragmentManager, ProgressDialogFragment::class.java)
+            Fragments.Dialog.hide(TAG, fragmentManager, ProgressDialogFragment::class.java)
         }
     }
 }

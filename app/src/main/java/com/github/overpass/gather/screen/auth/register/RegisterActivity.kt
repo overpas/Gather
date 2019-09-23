@@ -25,7 +25,7 @@ class RegisterActivity : BaseActivityKt<RegisterViewModel>(), RegistrationContro
 
     @SuppressLint("UseValueOf")
     override fun inject() {
-        componentManager.getRegisterComponentFactory()
+        componentManager.getRegisterComponentFactory(lifecycle)
                 .create(Integer(getStep()))
                 .inject(this)
     }

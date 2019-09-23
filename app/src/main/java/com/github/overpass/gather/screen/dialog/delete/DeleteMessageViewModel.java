@@ -12,15 +12,15 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Collections;
 
+import javax.inject.Inject;
+
 public class DeleteMessageViewModel extends ViewModel {
 
     private final MessagesUseCase messagesUseCase;
 
-    public DeleteMessageViewModel() {
-        this.messagesUseCase = new MessagesUseCase(
-                new MessageRepo(FirebaseFirestore.getInstance()),
-                new UserAuthRepo(FirebaseAuth.getInstance(), FirebaseFirestore.getInstance())
-        );
+    @Inject
+    public DeleteMessageViewModel(MessagesUseCase messagesUseCase) {
+        this.messagesUseCase = messagesUseCase;
     }
 
     public LiveData<DeleteStatus> delete(String meetingId, String messageId) {

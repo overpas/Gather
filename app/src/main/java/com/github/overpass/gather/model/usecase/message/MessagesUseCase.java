@@ -11,11 +11,14 @@ import com.github.overpass.gather.screen.meeting.chat.MessageStatus;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 public class MessagesUseCase {
 
     private final MessageRepo messageRepo;
     private final UserAuthRepo userAuthRepo;
 
+    @Inject
     public MessagesUseCase(MessageRepo messageRepo, UserAuthRepo userAuthRepo) {
         this.messageRepo = messageRepo;
         this.userAuthRepo = userAuthRepo;

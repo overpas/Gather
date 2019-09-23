@@ -17,6 +17,7 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.github.overpass.gather.di.app.modules.DispatcherModule;
 import com.github.overpass.gather.model.commons.SingleLiveEvent;
 import com.github.overpass.gather.model.commons.image.ChooseImageHelper;
 import com.github.overpass.gather.model.commons.image.ImageConverter;
@@ -57,7 +58,8 @@ public abstract class DataViewModel extends RegistrationStepViewModel {
                 new UserAuthRepo(FirebaseAuth.getInstance(), FirebaseFirestore.getInstance()),
                 new UploadImageRepo(
                         FirebaseStorage.getInstance(),
-                        new ImageConverter(application.getContentResolver())
+                        new ImageConverter(application.getContentResolver(),
+                                DispatcherModule.provideDefault())
                 ),
                 new UsernameValidator(),
                 FirebaseAuth.getInstance()
