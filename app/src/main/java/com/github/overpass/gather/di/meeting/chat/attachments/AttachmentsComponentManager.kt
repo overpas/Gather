@@ -9,7 +9,7 @@ class AttachmentsComponentManager(
 ): AttachmentsComponent {
 
     init {
-        Log.d(this::class.java.simpleName, "MeetingComponentManager Created")
+        Log.w(this::class.java.simpleName, "MeetingComponentManager Created")
     }
 
     override fun getDetailComponent(): AttachmentsDetailsComponent =
@@ -19,6 +19,6 @@ class AttachmentsComponentManager(
             attachmentsComponent.inject(photosActivity)
 
     protected fun finalize() {
-        Log.d(this::class.java.simpleName, "ChatComponentManager Destroyed")
+        Log.w(this::class.java.simpleName, "ChatComponentManager Destroyed")
     }
 }

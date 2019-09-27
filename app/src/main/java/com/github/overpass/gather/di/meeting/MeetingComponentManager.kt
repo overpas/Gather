@@ -18,7 +18,7 @@ class MeetingComponentManager(
 ) : MeetingComponent {
 
     init {
-        Log.d(this::class.java.simpleName, "MeetingComponentManager Created")
+        Log.w(this::class.java.simpleName, "MeetingComponentManager Created")
     }
 
     private lateinit var chatComponentManagerDisposable: LifecycleDisposable<ChatComponentManager>
@@ -56,6 +56,6 @@ class MeetingComponentManager(
     override fun inject(meetingActivity: MeetingActivity) = meetingComponent.inject(meetingActivity)
 
     protected fun finalize() {
-        Log.d(this::class.java.simpleName, "MeetingComponentManager Destroyed")
+        Log.w(this::class.java.simpleName, "MeetingComponentManager Destroyed")
     }
 }

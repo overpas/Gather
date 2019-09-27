@@ -16,7 +16,7 @@ class ChatComponentManager(
 ) : ChatComponent {
 
     init {
-        Log.d(this::class.java.simpleName, "ChatComponentManager Created")
+        Log.w(this::class.java.simpleName, "ChatComponentManager Created")
     }
 
     private lateinit var attachmentsComponentManagerDisposable: LifecycleDisposable<AttachmentsComponentManager>
@@ -48,6 +48,6 @@ class ChatComponentManager(
     override fun inject(chatFragment: ChatFragment) = chatComponent.inject(chatFragment)
 
     protected fun finalize() {
-        Log.d(this::class.java.simpleName, "ChatComponentManager Destroyed")
+        Log.w(this::class.java.simpleName, "ChatComponentManager Destroyed")
     }
 }

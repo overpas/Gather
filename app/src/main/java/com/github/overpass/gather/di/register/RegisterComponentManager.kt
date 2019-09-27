@@ -1,5 +1,6 @@
 package com.github.overpass.gather.di.register
 
+import android.util.Log
 import com.github.overpass.gather.di.register.add.AddPersonalDataComponent
 import com.github.overpass.gather.di.register.confirm.ConfirmationComponent
 import com.github.overpass.gather.di.register.signup.SignUpComponent
@@ -7,6 +8,10 @@ import com.github.overpass.gather.di.register.signup.SignUpComponent
 class RegisterComponentManager(
         private val registerComponentFactory: RegisterComponent.Factory
 ) : RegisterComponent.Factory {
+
+    init {
+        Log.w(this::class.java.simpleName, "RegisterComponentManager Created")
+    }
 
     private lateinit var registerComponent: RegisterComponent
 
@@ -30,6 +35,10 @@ class RegisterComponentManager(
     private fun <C> getComponentOrThrowError(getComponent: RegisterComponent.() -> C): C {
         return registerComponent.getComponent()
                 ?: throw IllegalStateException(UNINITIALIZED_PARENT_MESSAGE)
+    }
+
+    protected fun finalize() {
+        Log.w(this::class.java.simpleName, "RegisterComponentManager Destroyed")
     }
 
     companion object {

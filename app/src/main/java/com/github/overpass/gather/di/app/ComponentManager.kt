@@ -38,8 +38,7 @@ class ComponentManager(private val appComponent: AppComponent) : AppComponent {
     override fun getSignInComponent(): SignInComponent = appComponent.getSignInComponent()
 
     override fun getMapComponent(): MapComponent {
-        throw IllegalStateException("The subcomponent hasn't been initialized. Consider calling" +
-                "fun getMapComponent(lifecycle: Lifecycle) instead")
+        throw IllegalStateException(notInitializedMessage("getMapComponent"))
     }
 
     fun getMapComponent(lifecycle: Lifecycle): MapComponent {
@@ -54,8 +53,7 @@ class ComponentManager(private val appComponent: AppComponent) : AppComponent {
             mapComponentDisposable.value!!.getDetailComponent()
 
     override fun getProfileComponent(): ProfileComponent {
-        throw IllegalStateException("The subcomponent hasn't been initialized. Consider calling" +
-                "fun getProfileComponent(lifecycle: Lifecycle) instead")
+        throw IllegalStateException(notInitializedMessage("getProfileComponent"))
     }
 
     fun getProfileComponent(lifecycle: Lifecycle): ProfileComponent {
@@ -70,8 +68,7 @@ class ComponentManager(private val appComponent: AppComponent) : AppComponent {
             profileComponentDisposable.value!!.getDetailComponent()
 
     override fun getRegisterComponentFactory(): RegisterComponent.Factory {
-        throw IllegalStateException("The subcomponent hasn't been initialized. Consider calling" +
-                "fun getRegisterComponentFactory(lifecycle: Lifecycle) instead")
+        throw IllegalStateException(notInitializedMessage("getRegisterComponentFactory"))
     }
 
     fun getRegisterComponentFactory(lifecycle: Lifecycle): RegisterComponent.Factory {
@@ -100,8 +97,7 @@ class ComponentManager(private val appComponent: AppComponent) : AppComponent {
     override fun getEnrolledComponent(): EnrolledComponent = appComponent.getEnrolledComponent()
 
     override fun getMeetingComponent(): MeetingComponent {
-        throw IllegalStateException("The subcomponent hasn't been initialized. Consider calling" +
-                "fun getMeetingComponent(lifecycle: Lifecycle) instead")
+        throw IllegalStateException(notInitializedMessage("getMeetingComponent"))
     }
 
     fun getMeetingComponent(lifecycle: Lifecycle): MeetingComponent {
@@ -139,4 +135,7 @@ class ComponentManager(private val appComponent: AppComponent) : AppComponent {
 
     override fun getNewMeetingComponent(): NewMeetingComponent =
             appComponent.getNewMeetingComponent()
+
+    private fun notInitializedMessage(methodName: String) = "The subcomponent hasn't" +
+            " been initialized. Consider calling fun $methodName(lifecycle: Lifecycle) instead"
 }
