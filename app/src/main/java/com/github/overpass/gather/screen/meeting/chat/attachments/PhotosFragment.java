@@ -70,6 +70,13 @@ public class PhotosFragment extends DataFragment<PhotosViewModel> {
         getViewModel().photoUploadError().observe(getViewLifecycleOwner(), this::handleUploadError);
     }
 
+    @Override
+    protected void clearComponent() {
+        super.clearComponent();
+        App.Companion.getComponentManager(this)
+                .clearAttachmentDetailsComponent();
+    }
+
     private void handleUploadProgress(int percent) {
         ProgressPercentDialogFragment.progress(requireFragmentManager(), percent);
     }

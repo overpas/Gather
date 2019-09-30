@@ -18,7 +18,7 @@ class ProfileActivity : BackPressActivity<GeneralProfileViewModel>(), PickImageD
     }
 
     override fun inject() {
-        componentManager.getProfileComponent(lifecycle)
+        componentManager.getProfileComponent()
                 .inject(this)
     }
 
@@ -28,6 +28,11 @@ class ProfileActivity : BackPressActivity<GeneralProfileViewModel>(), PickImageD
             FragmentUtils.replace(supportFragmentManager, R.id.flProfileContainer,
                     ProfileFragment.newInstance(), false)
         }
+    }
+
+    override fun clearComponent() {
+        super.clearComponent()
+        componentManager.clearProfileComponent()
     }
 
     override fun onGallery() {

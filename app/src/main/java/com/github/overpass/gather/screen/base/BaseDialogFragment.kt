@@ -25,9 +25,18 @@ abstract class BaseDialogFragment<VM : ViewModel> : DialogFragment() {
         onBind()
     }
 
+    override fun onDetach() {
+        super.onDetach()
+        if (isRemoving) {
+            clearComponent()
+        }
+    }
+
     protected abstract fun inject()
 
     protected abstract fun createViewModel(): VM
 
     protected open fun onBind() {}
+
+    protected open fun clearComponent() {}
 }

@@ -46,6 +46,11 @@ class ProfileFragment : DataFragment<ProfileViewModel>(), BackPressFragment {
         )
     }
 
+    override fun clearComponent() {
+        super.clearComponent()
+        componentManager.clearProfileDetailComponent()
+    }
+
     override fun handleBackPress(): Boolean {
         if (viewModel.checkIfIsEditMode()) {
             changeUIMode(false)

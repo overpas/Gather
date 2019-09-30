@@ -33,6 +33,11 @@ class ForgotPasswordBottomFragment : BaseBottomSheetDialogFragment<ForgotPasswor
         viewModel.resetPasswordSuccess().observe(viewLifecycleOwner, Observer { handleSuccess() })
     }
 
+    override fun clearComponent() {
+        super.clearComponent()
+        componentManager.clearForgotComponent()
+    }
+
     private fun handleError(message: String) {
         ProgressDialogFragment.hide(fragmentManager)
         snackbar(tietEmail, message)

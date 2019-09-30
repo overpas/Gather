@@ -1,14 +1,11 @@
 package com.github.overpass.gather.di.meeting.chat
 
 import android.util.Log
-import androidx.lifecycle.Lifecycle
-import com.github.overpass.gather.di.meeting.chat.attachments.AttachmentsComponent
 import com.github.overpass.gather.di.meeting.chat.attachments.AttachmentsComponentManager
 import com.github.overpass.gather.di.meeting.chat.attachments.detail.AttachmentsDetailsComponent
 import com.github.overpass.gather.di.meeting.chat.delete.DeleteMessageComponent
 import com.github.overpass.gather.di.meeting.chat.details.MeetingDetailComponent
 import com.github.overpass.gather.di.meeting.chat.users.UsersComponent
-import com.github.overpass.gather.model.commons.LifecycleDisposable
 import com.github.overpass.gather.screen.meeting.chat.ChatFragment
 
 class ChatComponentManager(
@@ -19,31 +16,48 @@ class ChatComponentManager(
         Log.w(this::class.java.simpleName, "ChatComponentManager Created")
     }
 
-    private lateinit var attachmentsComponentManagerDisposable: LifecycleDisposable<AttachmentsComponentManager>
+    private var attachmentsComponentManager: AttachmentsComponentManager? = null
+    private var deleteMessageComponent: DeleteMessageComponent? = null
+    private var meetingDetailsComponent: MeetingDetailComponent? = null
+    private var usersComponent: UsersComponent? = null
 
     override fun getDeleteMessageComponent(): DeleteMessageComponent =
-            chatComponent.getDeleteMessageComponent()
+            deleteMessageComponent ?: chatComponent.getDeleteMessageComponent()
+                    .also { deleteMessageComponent = it }
 
-    override fun getMeetingDetailsComponent(): MeetingDetailComponent =
-            chatComponent.getMeetingDetailsComponent()
-
-    override fun getUsersComponent(): UsersComponent = chatComponent.getUsersComponent()
-
-    override fun getAttachmentsComponent(): AttachmentsComponent {
-        throw IllegalStateException("The subcomponent hasn't been initialized. Consider calling" +
-                "fun getAttachmentsComponent(lifecycle: Lifecycle) instead")
+    fun clearDeleteMessageComponent() {
+        deleteMessageComponent = null
     }
 
-    fun getAttachmentsComponent(lifecycle: Lifecycle): AttachmentsComponent {
-        attachmentsComponentManagerDisposable = LifecycleDisposable(
-                lifecycle,
-                AttachmentsComponentManager(chatComponent.getAttachmentsComponent())
-        )
-        return attachmentsComponentManagerDisposable.value!!
+    override fun getMeetingDetailsComponent(): MeetingDetailComponent =
+            meetingDetailsComponent ?: chatComponent.getMeetingDetailsComponent()
+                    .also { meetingDetailsComponent = it }
+
+    fun clearMeetingDetailsComponent() {
+        meetingDetailsComponent = null
+    }
+
+    override fun getUsersComponent(): UsersComponent =
+            usersComponent ?: chatComponent.getUsersComponent()
+                    .also { usersComponent = it }
+
+    fun clearUsersComponent() {
+        usersComponent = null
+    }
+
+    override fun getAttachmentsComponent(): AttachmentsComponentManager =
+            attachmentsComponentManager ?: chatComponent.getAttachmentsComponent()
+                    .also { attachmentsComponentManager = AttachmentsComponentManager(it) }
+                    .let { attachmentsComponentManager!! }
+
+    fun clearAttachmentsComponent() {
+        attachmentsComponentManager = null
     }
 
     fun getAttachmentDetailComponent(): AttachmentsDetailsComponent =
-            attachmentsComponentManagerDisposable.value!!.getDetailComponent()
+            getAttachmentsComponent().getDetailComponent()
+
+    fun clearAttachmentDetailsComponent() = getAttachmentsComponent().clearDetailComponent()
 
     override fun inject(chatFragment: ChatFragment) = chatComponent.inject(chatFragment)
 

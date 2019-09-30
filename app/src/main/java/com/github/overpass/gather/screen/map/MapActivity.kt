@@ -18,7 +18,7 @@ class MapActivity : BackPressActivity<MapViewModel>() {
     }
 
     override fun inject() {
-        componentManager.getMapComponent(lifecycle)
+        componentManager.getMapComponent()
                 .inject(this)
     }
 
@@ -28,6 +28,11 @@ class MapActivity : BackPressActivity<MapViewModel>() {
             FragmentUtils.replace(supportFragmentManager, R.id.flMapFragmentContainer,
                     MapFragment.newInstance(), false)
         }
+    }
+
+    override fun clearComponent() {
+        super.clearComponent()
+        componentManager.clearMapComponent()
     }
 
     override fun onRequestPermissionsResult(requestCode: Int,

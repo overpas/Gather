@@ -53,6 +53,10 @@ class NewMeetingActivity : BaseActivityKt<NewMeetingViewModel>() {
         }
     }
 
+    override fun clearComponent() {
+        componentManager.clearNewMeetingComponent()
+    }
+
     private fun create() {
         val meetingType: MeetingType = when (bnvMeetingType.selectedItemId) {
             R.id.type_business -> MeetingType.BUSINESS

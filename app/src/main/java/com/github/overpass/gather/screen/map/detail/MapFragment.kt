@@ -45,6 +45,11 @@ class MapFragment : BaseMapFragment<MapDetailViewModel>(), BackPressFragment, On
         }
     }
 
+    override fun clearComponent() {
+        super.clearComponent()
+        componentManager.clearMapDetailComponent()
+    }
+
     override fun onLocationUpdated(location: Location, forceCameraMove: Boolean) {
         super.onLocationUpdated(location, forceCameraMove)
         viewModel.scanArea(location)

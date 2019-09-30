@@ -1,13 +1,11 @@
 package com.github.overpass.gather.di.app
 
-import androidx.lifecycle.Lifecycle
 import com.github.overpass.gather.di.closeup.CloseupComponent
 import com.github.overpass.gather.di.enrolled.EnrolledComponent
 import com.github.overpass.gather.di.forgot.ForgotComponent
 import com.github.overpass.gather.di.login.SignInComponent
-import com.github.overpass.gather.di.map.MapComponent
+import com.github.overpass.gather.di.map.MapComponentManager
 import com.github.overpass.gather.di.map.detail.MapDetailComponent
-import com.github.overpass.gather.di.meeting.MeetingComponent
 import com.github.overpass.gather.di.meeting.MeetingComponentManager
 import com.github.overpass.gather.di.meeting.chat.ChatComponent
 import com.github.overpass.gather.di.meeting.chat.attachments.AttachmentsComponent
@@ -17,125 +15,178 @@ import com.github.overpass.gather.di.meeting.chat.details.MeetingDetailComponent
 import com.github.overpass.gather.di.meeting.chat.users.UsersComponent
 import com.github.overpass.gather.di.meeting.join.JoinComponent
 import com.github.overpass.gather.di.newmeeting.NewMeetingComponent
-import com.github.overpass.gather.di.profile.ProfileComponent
+import com.github.overpass.gather.di.profile.ProfileComponentManager
 import com.github.overpass.gather.di.profile.detail.ProfileDetailComponent
-import com.github.overpass.gather.di.register.RegisterComponent
 import com.github.overpass.gather.di.register.RegisterComponentManager
 import com.github.overpass.gather.di.register.add.AddPersonalDataComponent
 import com.github.overpass.gather.di.register.confirm.ConfirmationComponent
 import com.github.overpass.gather.di.register.signup.SignUpComponent
 import com.github.overpass.gather.di.search.SearchComponent
 import com.github.overpass.gather.di.splash.SplashComponent
-import com.github.overpass.gather.model.commons.LifecycleDisposable
 
 class ComponentManager(private val appComponent: AppComponent) : AppComponent {
 
-    private lateinit var registerComponentManagerDisposable: LifecycleDisposable<RegisterComponentManager>
-    private lateinit var meetingComponentManagerDisposable: LifecycleDisposable<MeetingComponentManager>
-    private lateinit var mapComponentDisposable: LifecycleDisposable<MapComponent>
-    private lateinit var profileComponentDisposable: LifecycleDisposable<ProfileComponent>
+    private var registerComponentManager: RegisterComponentManager? = null
+    private var meetingComponentManager: MeetingComponentManager? = null
+    private var newMeetingComponent: NewMeetingComponent? = null
+    private var signInComponent: SignInComponent? = null
+    private var forgotComponent: ForgotComponent? = null
+    private var searchComponent: SearchComponent? = null
+    private var splashComponent: SplashComponent? = null
+    private var closeupComponent: CloseupComponent? = null
+    private var enrolledComponent: EnrolledComponent? = null
+    private var mapComponentManager: MapComponentManager? = null
+    private var profileComponentManager: ProfileComponentManager? = null
 
-    override fun getSignInComponent(): SignInComponent = appComponent.getSignInComponent()
+    override fun getSignInComponent(): SignInComponent =
+            signInComponent ?: appComponent.getSignInComponent()
+                    .also { signInComponent = it }
 
-    override fun getMapComponent(): MapComponent {
-        throw IllegalStateException(notInitializedMessage("getMapComponent"))
+    fun clearSignInComponent() {
+        signInComponent = null
     }
 
-    fun getMapComponent(lifecycle: Lifecycle): MapComponent {
-        mapComponentDisposable = LifecycleDisposable(
-                lifecycle,
-                appComponent.getMapComponent()
-        )
-        return mapComponentDisposable.value!!
+    override fun getMapComponent(): MapComponentManager =
+        mapComponentManager ?: appComponent.getMapComponent()
+                .also { mapComponentManager = MapComponentManager(it) }
+                .let { mapComponentManager!! }
+
+    fun clearMapComponent() {
+        mapComponentManager = null
     }
 
-    fun getMapDetailComponent(): MapDetailComponent =
-            mapComponentDisposable.value!!.getDetailComponent()
+    fun getMapDetailComponent(): MapDetailComponent = getMapComponent().getDetailComponent()
 
-    override fun getProfileComponent(): ProfileComponent {
-        throw IllegalStateException(notInitializedMessage("getProfileComponent"))
+    fun clearMapDetailComponent() = getMapComponent().clearDetailComponent()
+
+    override fun getProfileComponent(): ProfileComponentManager =
+        profileComponentManager ?: appComponent.getProfileComponent()
+                .also { profileComponentManager = ProfileComponentManager(it) }
+                .let { profileComponentManager!! }
+
+    fun clearProfileComponent() {
+        profileComponentManager = null
     }
 
-    fun getProfileComponent(lifecycle: Lifecycle): ProfileComponent {
-        profileComponentDisposable = LifecycleDisposable(
-                lifecycle,
-                appComponent.getProfileComponent()
-        )
-        return profileComponentDisposable.value!!
+    fun getProfileDetailComponent(): ProfileDetailComponent = getProfileComponent().getDetailComponent()
+
+    fun clearProfileDetailComponent() = getProfileComponent().clearDetailComponent()
+
+    override fun getRegisterComponentFactory(): RegisterComponentManager =
+            registerComponentManager ?: appComponent.getRegisterComponentFactory()
+                    .also { registerComponentManager = RegisterComponentManager(it) }
+                    .let { registerComponentManager!! }
+
+    fun clearRegisterComponentFactory() {
+        registerComponentManager = null
     }
 
-    fun getProfileDetailComponent(): ProfileDetailComponent =
-            profileComponentDisposable.value!!.getDetailComponent()
+    fun getAddPersonalDataComponent(): AddPersonalDataComponent =
+            getRegisterComponentFactory().getAddPersonalDataComponent()
 
-    override fun getRegisterComponentFactory(): RegisterComponent.Factory {
-        throw IllegalStateException(notInitializedMessage("getRegisterComponentFactory"))
+    fun clearAddPersonalDataComponent() =
+            getRegisterComponentFactory().clearAddPersonalDataComponent()
+
+    fun getConfirmationComponent(): ConfirmationComponent =
+            getRegisterComponentFactory().getConfirmationComponent()
+
+    fun clearConfirmationComponent() =
+            getRegisterComponentFactory().clearConfirmationComponent()
+
+    fun getSignUpComponent(): SignUpComponent =
+            getRegisterComponentFactory().getSignUpComponent()
+
+    fun clearSignUpComponent() =
+            getRegisterComponentFactory().clearSignUpComponent()
+
+    override fun getSplashComponent(): SplashComponent =
+            splashComponent ?: appComponent.getSplashComponent()
+                    .also { splashComponent = it }
+
+    fun clearSplashComponent() {
+        splashComponent = null
     }
 
-    fun getRegisterComponentFactory(lifecycle: Lifecycle): RegisterComponent.Factory {
-        registerComponentManagerDisposable = LifecycleDisposable(lifecycle,
-                RegisterComponentManager(appComponent.getRegisterComponentFactory())
-        )
-        return registerComponentManagerDisposable.value!!
+    override fun getCloseupComponent(): CloseupComponent =
+            closeupComponent ?: appComponent.getCloseupComponent()
+                    .also { closeupComponent = it }
+
+    fun clearCloseupComponent() {
+        closeupComponent = null
     }
 
-    fun getAddPersonalDataComponent(): AddPersonalDataComponent {
-        return registerComponentManagerDisposable.value!!.getAddPersonalDataComponent()
+    override fun getEnrolledComponent(): EnrolledComponent =
+            enrolledComponent ?: appComponent.getEnrolledComponent()
+                    .also { enrolledComponent = it }
+
+    fun clearEnrolledComponent() {
+        enrolledComponent = null
     }
 
-    fun getConfirmationComponent(): ConfirmationComponent {
-        return registerComponentManagerDisposable.value!!.getConfirmationComponent()
+    override fun getMeetingComponent(): MeetingComponentManager =
+            meetingComponentManager ?: appComponent.getMeetingComponent()
+                    .also { meetingComponentManager = MeetingComponentManager(it) }
+                    .let { meetingComponentManager!! }
+
+    fun clearMeetingComponent() {
+        meetingComponentManager = null
     }
 
-    fun getSignUpComponent(): SignUpComponent {
-        return registerComponentManagerDisposable.value!!.getSignUpComponent()
+    fun getUsersComponent(): UsersComponent = getMeetingComponent().getUsersComponent()
+
+    fun clearUsersComponent() = getMeetingComponent().clearUsersComponent()
+
+    override fun getSearchComponent(): SearchComponent =
+            searchComponent ?: appComponent.getSearchComponent()
+                    .also { searchComponent = it }
+
+    fun clearSearchComponent() {
+        searchComponent = null
     }
 
-    override fun getSplashComponent(): SplashComponent = appComponent.getSplashComponent()
+    override fun getForgotComponent(): ForgotComponent =
+            forgotComponent ?: appComponent.getForgotComponent()
+                    .also { forgotComponent = it }
 
-    override fun getCloseupComponent(): CloseupComponent = appComponent.getCloseupComponent()
-
-    override fun getEnrolledComponent(): EnrolledComponent = appComponent.getEnrolledComponent()
-
-    override fun getMeetingComponent(): MeetingComponent {
-        throw IllegalStateException(notInitializedMessage("getMeetingComponent"))
+    fun clearForgotComponent() {
+        forgotComponent = null
     }
 
-    fun getMeetingComponent(lifecycle: Lifecycle): MeetingComponent {
-        meetingComponentManagerDisposable = LifecycleDisposable(
-                lifecycle,
-                MeetingComponentManager(appComponent.getMeetingComponent())
-        )
-        return meetingComponentManagerDisposable.value!!
+    fun getChatComponent(): ChatComponent = getMeetingComponent().getChatComponent()
+
+    fun clearChatComponent() {
+        getMeetingComponent().clearChatComponent()
     }
-
-    fun getUsersComponent(): UsersComponent =
-            meetingComponentManagerDisposable.value!!.getUsersComponent()
-
-    override fun getSearchComponent(): SearchComponent = appComponent.getSearchComponent()
-
-    override fun getForgotComponent(): ForgotComponent = appComponent.getForgotComponent()
-
-    fun getChatComponent(lifecycle: Lifecycle): ChatComponent =
-            meetingComponentManagerDisposable.value!!.getChatComponent(lifecycle)
 
     fun getMeetingDetailsComponent(): MeetingDetailComponent =
-            meetingComponentManagerDisposable.value!!.getMeetingDetailComponent()
+            getMeetingComponent().getMeetingDetailComponent()
+
+    fun clearMeetingDetailsComponent() = getMeetingComponent().clearMeetingDetailsComponent()
 
     fun getDeleteMessageComponent(): DeleteMessageComponent =
-            meetingComponentManagerDisposable.value!!.getDeleteMessageComponent()
+            getMeetingComponent().getDeleteMessageComponent()
 
-    fun getAttachmentsComponent(lifecycle: Lifecycle): AttachmentsComponent =
-            meetingComponentManagerDisposable.value!!.getAttachmentsComponent(lifecycle)
+    fun clearDeleteMessageComponent() = getMeetingComponent().clearDeleteMessageComponent()
+
+    fun getAttachmentsComponent(): AttachmentsComponent =
+            getMeetingComponent().getAttachmentsComponent()
+
+    fun clearAttachmentsComponent() = getMeetingComponent().clearAttachmentsComponent()
 
     fun getAttachmentsDetailsComponent(): AttachmentsDetailsComponent =
-            meetingComponentManagerDisposable.value!!.getAttachmentDetailComponent()
+            getMeetingComponent().getAttachmentDetailComponent()
 
-    fun getJoinComponent(): JoinComponent =
-            meetingComponentManagerDisposable.value!!.getJoinComponent()
+    fun clearAttachmentDetailsComponent() = getMeetingComponent().cleatAttachmentDetailComponent()
+
+    fun getJoinComponent(): JoinComponent = getMeetingComponent().getJoinComponent()
+
+    fun clearJoinComponent() = getMeetingComponent().clearJoinComponent()
 
     override fun getNewMeetingComponent(): NewMeetingComponent =
-            appComponent.getNewMeetingComponent()
+            newMeetingComponent ?: appComponent.getNewMeetingComponent()
+                    .also { newMeetingComponent = it }
 
-    private fun notInitializedMessage(methodName: String) = "The subcomponent hasn't" +
-            " been initialized. Consider calling fun $methodName(lifecycle: Lifecycle) instead"
+    fun clearNewMeetingComponent() {
+        newMeetingComponent = null
+    }
 }

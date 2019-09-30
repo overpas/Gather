@@ -4,16 +4,11 @@ import android.content.Context
 import com.bumptech.glide.Glide
 import com.github.overpass.gather.App.Companion.componentManager
 import com.github.overpass.gather.R
+import com.github.overpass.gather.model.commons.getStringExtra
 import com.github.overpass.gather.screen.base.BaseActivityKt
 import kotlinx.android.synthetic.main.activity_closeup.*
 
 class CloseupActivity : BaseActivityKt<CloseupViewModel>() {
-
-    private fun getPhotoUrl(): String {
-        return intent.extras
-                ?.getString(PHOTO_URL_KEY)
-                ?: "nothingness"
-    }
 
     override fun getLayoutRes(): Int {
         return R.layout.activity_closeup
@@ -31,8 +26,13 @@ class CloseupActivity : BaseActivityKt<CloseupViewModel>() {
     override fun onBind() {
         super.onBind()
         Glide.with(this)
-                .load(getPhotoUrl())
+                .load(getStringExtra(PHOTO_URL_KEY))
                 .into(pvPhoto)
+    }
+
+    override fun clearComponent() {
+        super.clearComponent()
+        componentManager.clearCloseupComponent()
     }
 
     companion object {

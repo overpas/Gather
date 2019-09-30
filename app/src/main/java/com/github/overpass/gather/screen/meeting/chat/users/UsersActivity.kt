@@ -52,6 +52,11 @@ class UsersActivity : BaseActivityKt<UsersViewModel>() {
         viewModel.checkUserRole(getMeetingId()).observe(this, Observer<AuthUser.Role> { this.handleRole(it) })
     }
 
+    override fun clearComponent() {
+        super.clearComponent()
+        componentManager.clearUsersComponent()
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == android.R.id.home) {
             finish()

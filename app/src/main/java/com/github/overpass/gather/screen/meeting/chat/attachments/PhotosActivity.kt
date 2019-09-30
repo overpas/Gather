@@ -25,7 +25,7 @@ class PhotosActivity : BaseActivityKt<GeneralPhotoViewModel>(), PickImageDialogF
     }
 
     override fun inject() {
-        componentManager.getAttachmentsComponent(lifecycle)
+        componentManager.getAttachmentsComponent()
                 .inject(this)
     }
 
@@ -35,6 +35,11 @@ class PhotosActivity : BaseActivityKt<GeneralPhotoViewModel>(), PickImageDialogF
             FragmentUtils.replace(supportFragmentManager, R.id.flPhotosContainer,
                     PhotosFragment.newInstance(getStringExtra(MEETING_ID_KEY)), false)
         }
+    }
+
+    override fun clearComponent() {
+        super.clearComponent()
+        componentManager.clearAttachmentsComponent()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

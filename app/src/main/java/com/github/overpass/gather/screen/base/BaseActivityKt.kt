@@ -31,6 +31,13 @@ abstract class BaseActivityKt<VM : ViewModel> : AppCompatActivity() {
         onBind()
     }
 
+    override fun onStop() {
+        super.onStop()
+        if (isFinishing) {
+            clearComponent()
+        }
+    }
+
     protected abstract fun getLayoutRes(): Int
 
     protected abstract fun inject()
@@ -40,6 +47,8 @@ abstract class BaseActivityKt<VM : ViewModel> : AppCompatActivity() {
     protected open fun onActionBar(actionBar: ActionBar) {}
 
     protected open fun onBind() {}
+
+    protected open fun clearComponent() {}
 
     // TODO: Use non-default toolbar
     protected open fun setupToolbar() {

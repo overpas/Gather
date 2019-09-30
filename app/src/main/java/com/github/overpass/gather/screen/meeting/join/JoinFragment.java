@@ -78,6 +78,13 @@ public class JoinFragment extends BaseMeetingFragment<JoinViewModel> {
     }
 
     @Override
+    protected void clearComponent() {
+        super.clearComponent();
+        App.Companion.getComponentManager(this)
+                .clearJoinComponent();
+    }
+
+    @Override
     protected void onLoadMeetingData() {
         getViewModel().loadMeetingCheckEnrolled(getMeetingId())
                 .observe(getViewLifecycleOwner(), this::handleLoadStatus);

@@ -61,6 +61,11 @@ class SearchBottomFragment : BaseBottomSheetDialogFragment<SearchViewModel>() {
         })
     }
 
+    override fun clearComponent() {
+        super.clearComponent()
+        componentManager.clearSearchComponent()
+    }
+
     companion object {
 
         private const val TAG = "SearchBottomFragment"

@@ -42,6 +42,11 @@ class SignUpFragment : RegistrationFragment<SignUpViewModel>() {
         viewModel.invalidPassword().observe(viewLifecycleOwner, Observer { handleInvalidPassword(it) })
     }
 
+    override fun clearComponent() {
+        super.clearComponent()
+        componentManager.clearSignUpComponent()
+    }
+
     private fun handleError(message: String) {
         snackbar(tietEmail, message)
     }

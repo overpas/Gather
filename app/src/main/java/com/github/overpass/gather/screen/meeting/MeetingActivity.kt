@@ -25,7 +25,7 @@ class MeetingActivity : BaseActivityKt<MeetingViewModel>() {
     }
 
     override fun inject() {
-        componentManager.getMeetingComponent(lifecycle)
+        componentManager.getMeetingComponent()
                 .inject(this)
     }
 
@@ -35,6 +35,11 @@ class MeetingActivity : BaseActivityKt<MeetingViewModel>() {
             lavProgress.visibility = View.VISIBLE
             viewModel.isAllowed(getMeetingId()).observe(this, Observer<Boolean> { this.handleIsAllowed(it) })
         }
+    }
+
+    override fun clearComponent() {
+        super.clearComponent()
+        componentManager.clearMeetingComponent()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

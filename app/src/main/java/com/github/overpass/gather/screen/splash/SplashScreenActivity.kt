@@ -39,10 +39,15 @@ class SplashScreenActivity : BaseActivityKt<SplashViewModel>() {
 
     override fun onBind() {
         super.onBind()
-        viewModel.authorized().observe(this, Observer{ handleAuthorized() })
-        viewModel.unauthorized().observe(this, Observer{ handleUnauthorized() })
-        viewModel.notAddedData().observe(this, Observer{ handleNotAddedData() })
-        viewModel.unconfirmedEmail().observe(this, Observer{ handleUnconfirmedEmail() })
+        viewModel.authorized().observe(this, Observer { handleAuthorized() })
+        viewModel.unauthorized().observe(this, Observer { handleUnauthorized() })
+        viewModel.notAddedData().observe(this, Observer { handleNotAddedData() })
+        viewModel.unconfirmedEmail().observe(this, Observer { handleUnconfirmedEmail() })
+    }
+
+    override fun clearComponent() {
+        super.clearComponent()
+        componentManager.clearSplashComponent()
     }
 
     private fun playAnimation() {

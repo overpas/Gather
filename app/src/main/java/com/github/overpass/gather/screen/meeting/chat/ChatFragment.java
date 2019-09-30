@@ -62,7 +62,7 @@ public class ChatFragment extends BaseMeetingFragment<ChatViewModel> {
     @Override
     protected void inject() {
         App.Companion.getComponentManager(this)
-                .getChatComponent(getLifecycle())
+                .getChatComponent()
                 .inject(this);
     }
 
@@ -86,6 +86,13 @@ public class ChatFragment extends BaseMeetingFragment<ChatViewModel> {
         });
         getViewModel().checkUserRole(getMeetingId()).observe(getViewLifecycleOwner(), this::handleRole);
         getViewModel().selectedItems().observe(getViewLifecycleOwner(), this::handleSelection);
+    }
+
+    @Override
+    protected void clearComponent() {
+        super.clearComponent();
+        App.Companion.getComponentManager(this)
+                .clearChatComponent();
     }
 
     @Override

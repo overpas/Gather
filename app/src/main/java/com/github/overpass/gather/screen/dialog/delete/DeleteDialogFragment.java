@@ -55,6 +55,13 @@ public class DeleteDialogFragment extends BaseDialogFragment<DeleteMessageViewMo
                 .create();
     }
 
+    @Override
+    protected void clearComponent() {
+        super.clearComponent();
+        App.Companion.getComponentManager(this)
+                .clearDeleteMessageComponent();
+    }
+
     private void handleDeletion(DeleteStatus deleteStatus) {
         switch (deleteStatus.tag()) {
             case DeleteStatus.ERROR:

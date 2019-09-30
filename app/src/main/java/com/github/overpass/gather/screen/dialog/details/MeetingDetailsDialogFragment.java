@@ -73,6 +73,13 @@ public class MeetingDetailsDialogFragment extends BaseDialogFragment<MeetingDeta
         viewModel.loadMeeting(getMeetingId()).observe(this, this::handleMeeting);
     }
 
+    @Override
+    protected void clearComponent() {
+        super.clearComponent();
+        App.Companion.getComponentManager(this)
+                .clearMeetingDetailsComponent();
+    }
+
     private void handleMeeting(LoadMeetingStatus loadMeetingStatus) {
         switch (loadMeetingStatus.tag()) {
             case LoadMeetingStatus.ERROR:

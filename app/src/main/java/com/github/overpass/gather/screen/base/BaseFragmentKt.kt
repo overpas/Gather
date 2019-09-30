@@ -41,6 +41,13 @@ abstract class BaseFragmentKt<VM : ViewModel> : Fragment() {
         onBind()
     }
 
+    override fun onDetach() {
+        super.onDetach()
+        if (isRemoving) {
+            clearComponent()
+        }
+    }
+
     protected abstract fun getLayoutRes(): Int
 
     protected abstract fun inject()
@@ -48,6 +55,8 @@ abstract class BaseFragmentKt<VM : ViewModel> : Fragment() {
     protected abstract fun createViewModel(): VM
 
     protected open fun onBind() {}
+
+    protected open fun clearComponent() {}
 
     companion object {
 

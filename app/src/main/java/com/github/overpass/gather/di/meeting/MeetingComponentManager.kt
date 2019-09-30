@@ -1,8 +1,6 @@
 package com.github.overpass.gather.di.meeting
 
 import android.util.Log
-import androidx.lifecycle.Lifecycle
-import com.github.overpass.gather.di.meeting.chat.ChatComponent
 import com.github.overpass.gather.di.meeting.chat.ChatComponentManager
 import com.github.overpass.gather.di.meeting.chat.attachments.AttachmentsComponent
 import com.github.overpass.gather.di.meeting.chat.attachments.detail.AttachmentsDetailsComponent
@@ -10,7 +8,6 @@ import com.github.overpass.gather.di.meeting.chat.delete.DeleteMessageComponent
 import com.github.overpass.gather.di.meeting.chat.details.MeetingDetailComponent
 import com.github.overpass.gather.di.meeting.chat.users.UsersComponent
 import com.github.overpass.gather.di.meeting.join.JoinComponent
-import com.github.overpass.gather.model.commons.LifecycleDisposable
 import com.github.overpass.gather.screen.meeting.MeetingActivity
 
 class MeetingComponentManager(
@@ -21,37 +18,51 @@ class MeetingComponentManager(
         Log.w(this::class.java.simpleName, "MeetingComponentManager Created")
     }
 
-    private lateinit var chatComponentManagerDisposable: LifecycleDisposable<ChatComponentManager>
+    private var chatComponentManager: ChatComponentManager? = null
+    private var joinComponent: JoinComponent? = null
 
-    override fun getChatComponent(): ChatComponent {
-        throw IllegalStateException("The subcomponent hasn't been initialized. Consider calling" +
-                "fun getChatComponent(lifecycle: Lifecycle) instead")
+    override fun getChatComponent(): ChatComponentManager =
+            chatComponentManager ?: meetingComponent.getChatComponent()
+                    .also { chatComponentManager = ChatComponentManager(it) }
+                    .let { chatComponentManager!! }
+
+    fun clearChatComponent() {
+        chatComponentManager = null
     }
 
-    fun getChatComponent(lifecycle: Lifecycle): ChatComponent {
-        chatComponentManagerDisposable = LifecycleDisposable(
-                lifecycle,
-                ChatComponentManager(meetingComponent.getChatComponent())
-        )
-        return chatComponentManagerDisposable.value!!
+    override fun getJoinComponent(): JoinComponent =
+            joinComponent ?: meetingComponent.getJoinComponent()
+                    .also { joinComponent = it }
+
+    fun clearJoinComponent() {
+        joinComponent = null
     }
 
-    override fun getJoinComponent(): JoinComponent = meetingComponent.getJoinComponent()
+    fun getUsersComponent(): UsersComponent = getChatComponent().getUsersComponent()
 
-    fun getUsersComponent(): UsersComponent =
-            chatComponentManagerDisposable.value!!.getUsersComponent()
+    fun clearUsersComponent() {
+        getChatComponent().clearUsersComponent()
+    }
 
     fun getMeetingDetailComponent(): MeetingDetailComponent =
-            chatComponentManagerDisposable.value!!.getMeetingDetailsComponent()
+            getChatComponent().getMeetingDetailsComponent()
+
+    fun clearMeetingDetailsComponent() = getChatComponent().clearMeetingDetailsComponent()
 
     fun getDeleteMessageComponent(): DeleteMessageComponent =
-            chatComponentManagerDisposable.value!!.getDeleteMessageComponent()
+            getChatComponent().getDeleteMessageComponent()
 
-    fun getAttachmentsComponent(lifecycle: Lifecycle): AttachmentsComponent =
-            chatComponentManagerDisposable.value!!.getAttachmentsComponent(lifecycle)
+    fun clearDeleteMessageComponent() = getChatComponent().clearDeleteMessageComponent()
+
+    fun getAttachmentsComponent(): AttachmentsComponent =
+            getChatComponent().getAttachmentsComponent()
+
+    fun clearAttachmentsComponent() = getChatComponent().clearAttachmentsComponent()
 
     fun getAttachmentDetailComponent(): AttachmentsDetailsComponent =
-            chatComponentManagerDisposable.value!!.getAttachmentDetailComponent()
+            getChatComponent().getAttachmentDetailComponent()
+
+    fun cleatAttachmentDetailComponent() = getChatComponent().clearAttachmentDetailsComponent()
 
     override fun inject(meetingActivity: MeetingActivity) = meetingComponent.inject(meetingActivity)
 

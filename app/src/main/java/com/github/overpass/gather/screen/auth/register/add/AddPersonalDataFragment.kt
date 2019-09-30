@@ -35,6 +35,11 @@ class AddPersonalDataFragment : DataFragment<AddPersonalDataViewModel>() {
         }
     }
 
+    override fun clearComponent() {
+        super.clearComponent()
+        componentManager.clearAddPersonalDataComponent()
+    }
+
     override fun handleSuccess(success: AddDataStatus.Success) {
         super.handleSuccess(success)
         viewModel.setSignUpComplete()

@@ -51,6 +51,11 @@ class LoginActivity : BaseActivityKt<SignInViewModel>() {
         viewModel.invalidPassword().observe(this, Observer { this.handleInvalidPassword(it) })
     }
 
+    override fun clearComponent() {
+        super.clearComponent()
+        componentManager.clearSignInComponent()
+    }
+
     private fun handleInvalidPassword(message: String) {
         ProgressDialogFragment.hide(supportFragmentManager)
         snackbar(tietEmail, message)

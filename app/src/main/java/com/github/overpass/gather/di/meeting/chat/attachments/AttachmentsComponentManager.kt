@@ -6,19 +6,26 @@ import com.github.overpass.gather.screen.meeting.chat.attachments.PhotosActivity
 
 class AttachmentsComponentManager(
         private val attachmentsComponent: AttachmentsComponent
-): AttachmentsComponent {
+) : AttachmentsComponent {
 
     init {
-        Log.w(this::class.java.simpleName, "MeetingComponentManager Created")
+        Log.w(this::class.java.simpleName, "AttachmentsComponentManager Created")
     }
 
+    private var detailsComponent: AttachmentsDetailsComponent? = null
+
     override fun getDetailComponent(): AttachmentsDetailsComponent =
-            attachmentsComponent.getDetailComponent()
+            detailsComponent ?: attachmentsComponent.getDetailComponent()
+                    .also { detailsComponent = it }
+
+    fun clearDetailComponent() {
+        detailsComponent = null
+    }
 
     override fun inject(photosActivity: PhotosActivity) =
             attachmentsComponent.inject(photosActivity)
 
     protected fun finalize() {
-        Log.w(this::class.java.simpleName, "ChatComponentManager Destroyed")
+        Log.w(this::class.java.simpleName, "AttachmentsComponentManager Destroyed")
     }
 }

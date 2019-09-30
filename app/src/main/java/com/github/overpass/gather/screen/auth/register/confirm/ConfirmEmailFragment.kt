@@ -37,6 +37,11 @@ class ConfirmEmailFragment : RegistrationFragment<ConfirmEmailViewModel>() {
         viewModel.confirmationProgress().observe(viewLifecycleOwner, Observer { handleProgress() })
     }
 
+    override fun clearComponent() {
+        super.clearComponent()
+        componentManager.clearConfirmationComponent()
+    }
+
     private fun handleSuccess() {
         ProgressDialogFragment.hide(fragmentManager)
         viewModel.setEmailConfirmed()

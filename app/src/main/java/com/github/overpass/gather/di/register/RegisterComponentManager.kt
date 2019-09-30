@@ -15,33 +15,40 @@ class RegisterComponentManager(
 
     private lateinit var registerComponent: RegisterComponent
 
+    private var addPersonalDataComponent: AddPersonalDataComponent? = null
+    private var confirmationComponent: ConfirmationComponent? = null
+    private var signUpComponent: SignUpComponent? = null
+
     override fun create(initialStep: Integer): RegisterComponent {
         registerComponent = registerComponentFactory.create(initialStep)
         return registerComponent
     }
 
-    fun getAddPersonalDataComponent(): AddPersonalDataComponent {
-        return getComponentOrThrowError { getAddPersonalDataComponent() }
+    fun getAddPersonalDataComponent(): AddPersonalDataComponent =
+            addPersonalDataComponent ?: registerComponent.getAddPersonalDataComponent()
+                    .also { addPersonalDataComponent = it }
+
+    fun clearAddPersonalDataComponent() {
+        addPersonalDataComponent = null
     }
 
-    fun getConfirmationComponent(): ConfirmationComponent {
-        return getComponentOrThrowError { getConfirmationComponent() }
+    fun getConfirmationComponent(): ConfirmationComponent =
+            confirmationComponent ?: registerComponent.getConfirmationComponent()
+                    .also { confirmationComponent = it }
+
+    fun clearConfirmationComponent() {
+        confirmationComponent = null
     }
 
-    fun getSignUpComponent(): SignUpComponent {
-        return getComponentOrThrowError { getSignUpComponent() }
-    }
+    fun getSignUpComponent(): SignUpComponent =
+            signUpComponent ?: registerComponent.getSignUpComponent()
+                    .also { signUpComponent = it }
 
-    private fun <C> getComponentOrThrowError(getComponent: RegisterComponent.() -> C): C {
-        return registerComponent.getComponent()
-                ?: throw IllegalStateException(UNINITIALIZED_PARENT_MESSAGE)
+    fun clearSignUpComponent() {
+        signUpComponent = null
     }
 
     protected fun finalize() {
         Log.w(this::class.java.simpleName, "RegisterComponentManager Destroyed")
-    }
-
-    companion object {
-        private const val UNINITIALIZED_PARENT_MESSAGE = "Parent component hasn't been initialized"
     }
 }

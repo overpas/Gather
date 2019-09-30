@@ -32,4 +32,9 @@ class EnrolledActivity : BaseActivityKt<EnrolledViewModel>() {
             finish()
         }
     }
+
+    override fun clearComponent() {
+        super.clearComponent()
+        componentManager.clearEnrolledComponent()
+    }
 }
