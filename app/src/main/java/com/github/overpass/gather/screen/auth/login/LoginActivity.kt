@@ -3,30 +3,32 @@ package com.github.overpass.gather.screen.auth.login
 import android.content.Intent
 import android.os.Bundle
 import androidx.lifecycle.Observer
-import com.github.overpass.gather.App.Companion.componentManager
+import com.github.overpass.gather.App.Companion.appComponentManager
 import com.github.overpass.gather.R
+import com.github.overpass.gather.di.ComponentManager
+import com.github.overpass.gather.di.login.SignInComponent
 import com.github.overpass.gather.model.commons.UIUtil.snackbar
 import com.github.overpass.gather.model.commons.UIUtil.textOf
 import com.github.overpass.gather.screen.auth.login.forgot.ForgotPasswordBottomFragment
 import com.github.overpass.gather.screen.auth.register.RegisterActivity
-import com.github.overpass.gather.screen.base.BaseActivityKt
+import com.github.overpass.gather.screen.base.BaseActivity
 import com.github.overpass.gather.screen.dialog.progress.indeterminate.ProgressDialogFragment
 import com.github.overpass.gather.screen.map.MapActivity
 import kotlinx.android.synthetic.main.activity_sign_in.*
 
-class LoginActivity : BaseActivityKt<SignInViewModel>() {
+class LoginActivity : BaseActivity<SignInViewModel, SignInComponent>() {
 
-    override fun getLayoutRes(): Int {
-        return R.layout.activity_sign_in
+    override val layoutRes: Int = R.layout.activity_sign_in
+
+    override val componentManager: ComponentManager<SignInComponent> =
+            appComponentManager.getSignInComponentManager()
+
+    override fun onComponentCreated(component: SignInComponent) {
+        component.inject(this)
     }
 
     override fun createViewModel(): SignInViewModel {
         return viewModelProvider.get(SignInViewModel::class.java)
-    }
-
-    override fun inject() {
-        componentManager.getSignInComponent()
-                .inject(this)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,11 +51,6 @@ class LoginActivity : BaseActivityKt<SignInViewModel>() {
         viewModel.signInProgress().observe(this, Observer { this.handleSignInProgress() })
         viewModel.invalidEmail().observe(this, Observer { this.handleInvalidEmail(it) })
         viewModel.invalidPassword().observe(this, Observer { this.handleInvalidPassword(it) })
-    }
-
-    override fun clearComponent() {
-        super.clearComponent()
-        componentManager.clearSignInComponent()
     }
 
     private fun handleInvalidPassword(message: String) {

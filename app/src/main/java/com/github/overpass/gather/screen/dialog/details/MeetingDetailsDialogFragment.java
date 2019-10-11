@@ -12,7 +12,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.FragmentManager;
-import androidx.lifecycle.ViewModelProviders;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.github.overpass.gather.App;
@@ -42,7 +41,7 @@ public class MeetingDetailsDialogFragment extends BaseDialogFragment<MeetingDeta
 
     @Override
     protected void inject() {
-        App.Companion.getComponentManager(this)
+        App.Companion.getAppComponentManager(this)
                 .getMeetingDetailsComponent()
                 .inject(this);
     }
@@ -76,7 +75,7 @@ public class MeetingDetailsDialogFragment extends BaseDialogFragment<MeetingDeta
     @Override
     protected void clearComponent() {
         super.clearComponent();
-        App.Companion.getComponentManager(this)
+        App.Companion.getAppComponentManager(this)
                 .clearMeetingDetailsComponent();
     }
 

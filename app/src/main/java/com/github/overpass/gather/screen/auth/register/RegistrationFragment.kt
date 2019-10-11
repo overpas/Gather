@@ -3,9 +3,9 @@ package com.github.overpass.gather.screen.auth.register
 import android.content.Context
 import android.util.Log
 import androidx.lifecycle.ViewModel
-import com.github.overpass.gather.screen.base.BaseFragmentKt
+import com.github.overpass.gather.screen.base.BaseFragment
 
-abstract class RegistrationFragment<VM : ViewModel> : BaseFragmentKt<VM>() {
+abstract class RegistrationFragment<VM : ViewModel, C> : BaseFragment<VM, C>() {
 
     protected var registrationController: RegistrationController? = null
 

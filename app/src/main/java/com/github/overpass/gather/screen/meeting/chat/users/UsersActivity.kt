@@ -9,7 +9,7 @@ import androidx.appcompat.app.ActionBar
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.github.overpass.gather.App.Companion.componentManager
+import com.github.overpass.gather.App.Companion.appComponentManager
 import com.github.overpass.gather.R
 import com.github.overpass.gather.model.commons.UIUtil.snackbar
 import com.github.overpass.gather.model.commons.UIUtil.toast
@@ -32,7 +32,7 @@ class UsersActivity : BaseActivityKt<UsersViewModel>() {
     }
 
     override fun inject() {
-        componentManager.getUsersComponent()
+        appComponentManager.getUsersComponent()
                 .inject(this)
     }
 
@@ -54,7 +54,7 @@ class UsersActivity : BaseActivityKt<UsersViewModel>() {
 
     override fun clearComponent() {
         super.clearComponent()
-        componentManager.clearUsersComponent()
+        appComponentManager.clearUsersComponent()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

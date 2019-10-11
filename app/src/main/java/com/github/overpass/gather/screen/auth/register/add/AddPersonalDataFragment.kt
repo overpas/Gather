@@ -3,7 +3,6 @@ package com.github.overpass.gather.screen.auth.register.add
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import com.github.overpass.gather.App.Companion.componentManager
 import com.github.overpass.gather.R
 import com.github.overpass.gather.screen.base.personal.DataFragment
 import com.github.overpass.gather.screen.dialog.progress.indeterminate.ProgressDialogFragment

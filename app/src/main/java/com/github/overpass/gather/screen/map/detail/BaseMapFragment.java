@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 
 import com.github.overpass.gather.R;
 import com.github.overpass.gather.screen.base.BackPressFragment;
+import com.github.overpass.gather.screen.base.BaseFragment;
 import com.github.overpass.gather.screen.base.BaseFragmentKt;
 import com.github.overpass.gather.screen.create.NewMeetingActivity;
 import com.google.android.material.bottomappbar.BottomAppBar;
@@ -31,7 +32,8 @@ import butterknife.OnClick;
 
 import static com.github.overpass.gather.model.commons.UIUtil.snackbar;
 
-public abstract class BaseMapFragment<VM extends BaseMapDetailViewModel> extends BaseFragmentKt<VM>
+public abstract class BaseMapFragment<VM extends BaseMapDetailViewModel, C>
+        extends BaseFragment<VM, C>
         implements BackPressFragment, OnMapReadyCallback, MapboxMap.OnMarkerClickListener {
 
     private static final String TAG = "BaseMapFragment";

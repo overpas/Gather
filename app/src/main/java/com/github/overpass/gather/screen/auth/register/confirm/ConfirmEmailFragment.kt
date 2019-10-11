@@ -3,7 +3,6 @@ package com.github.overpass.gather.screen.auth.register.confirm
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Observer
-import com.github.overpass.gather.App.Companion.componentManager
 import com.github.overpass.gather.R
 import com.github.overpass.gather.model.commons.UIUtil.toast
 import com.github.overpass.gather.screen.auth.register.RegistrationFragment

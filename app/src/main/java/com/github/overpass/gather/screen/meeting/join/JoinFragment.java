@@ -65,7 +65,7 @@ public class JoinFragment extends BaseMeetingFragment<JoinViewModel> {
 
     @Override
     protected void inject() {
-        App.Companion.getComponentManager(this)
+        App.Companion.getAppComponentManager(this)
                 .getJoinComponent()
                 .inject(this);
     }
@@ -80,7 +80,7 @@ public class JoinFragment extends BaseMeetingFragment<JoinViewModel> {
     @Override
     protected void clearComponent() {
         super.clearComponent();
-        App.Companion.getComponentManager(this)
+        App.Companion.getAppComponentManager(this)
                 .clearJoinComponent();
     }
 

@@ -1,25 +1,27 @@
 package com.github.overpass.gather.screen.map
 
 import android.os.Bundle
-import com.github.overpass.gather.App.Companion.componentManager
+import com.github.overpass.gather.App.Companion.appComponentManager
 import com.github.overpass.gather.R
+import com.github.overpass.gather.di.ComponentManager
+import com.github.overpass.gather.di.map.MapComponent
 import com.github.overpass.gather.model.commons.FragmentUtils
 import com.github.overpass.gather.screen.base.BackPressActivity
 import com.github.overpass.gather.screen.map.detail.MapFragment
 
-class MapActivity : BackPressActivity<MapViewModel>() {
+class MapActivity : BackPressActivity<MapViewModel, MapComponent>() {
 
-    override fun getLayoutRes(): Int {
-        return R.layout.activity_map
+    override val componentManager: ComponentManager<MapComponent> =
+            appComponentManager.getMapComponentManager()
+
+    override fun onComponentCreated(component: MapComponent) {
+        component.inject(this)
     }
+
+    override val layoutRes: Int = R.layout.activity_map
 
     override fun createViewModel(): MapViewModel {
         return viewModelProvider.get(MapViewModel::class.java)
-    }
-
-    override fun inject() {
-        componentManager.getMapComponent()
-                .inject(this)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,11 +30,6 @@ class MapActivity : BackPressActivity<MapViewModel>() {
             FragmentUtils.replace(supportFragmentManager, R.id.flMapFragmentContainer,
                     MapFragment.newInstance(), false)
         }
-    }
-
-    override fun clearComponent() {
-        super.clearComponent()
-        componentManager.clearMapComponent()
     }
 
     override fun onRequestPermissionsResult(requestCode: Int,

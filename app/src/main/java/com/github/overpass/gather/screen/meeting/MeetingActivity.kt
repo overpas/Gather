@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import androidx.lifecycle.Observer
-import com.github.overpass.gather.App.Companion.componentManager
+import com.github.overpass.gather.App.Companion.appComponentManager
 import com.github.overpass.gather.R
 import com.github.overpass.gather.model.commons.Constants.MEETING_ID_KEY
 import com.github.overpass.gather.model.commons.FragmentUtils
@@ -25,7 +25,7 @@ class MeetingActivity : BaseActivityKt<MeetingViewModel>() {
     }
 
     override fun inject() {
-        componentManager.getMeetingComponent()
+        appComponentManager.getMeetingComponent()
                 .inject(this)
     }
 
@@ -39,7 +39,7 @@ class MeetingActivity : BaseActivityKt<MeetingViewModel>() {
 
     override fun clearComponent() {
         super.clearComponent()
-        componentManager.clearMeetingComponent()
+        appComponentManager.clearMeetingComponent()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

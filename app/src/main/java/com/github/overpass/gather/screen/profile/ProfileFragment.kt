@@ -5,8 +5,10 @@ import android.os.Bundle
 import android.view.View
 import butterknife.OnClick
 import com.bumptech.glide.Glide
-import com.github.overpass.gather.App.Companion.componentManager
+import com.github.overpass.gather.App.Companion.appComponentManager
 import com.github.overpass.gather.R
+import com.github.overpass.gather.di.ComponentManager
+import com.github.overpass.gather.di.profile.detail.ProfileDetailComponent
 import com.github.overpass.gather.model.commons.UIUtil.snackbar
 import com.github.overpass.gather.screen.auth.login.LoginActivity
 import com.github.overpass.gather.screen.auth.register.add.AddDataStatus
@@ -17,19 +19,19 @@ import kotlinx.android.synthetic.main.content_personal_data.*
 import kotlinx.android.synthetic.main.content_profile.*
 import kotlinx.android.synthetic.main.fragment_profile.*
 
-class ProfileFragment : DataFragment<ProfileViewModel>(), BackPressFragment {
+class ProfileFragment : DataFragment<ProfileViewModel, ProfileDetailComponent>(), BackPressFragment {
+
+    override val componentManager: ComponentManager<ProfileDetailComponent> =
+            appComponentManager.getProfileDetailComponentManager()
+
+    override fun onComponentCreated(component: ProfileDetailComponent) {
+        component.inject(this)
+    }
+
+    override val layoutRes: Int = R.layout.fragment_profile
 
     override fun createViewModel(): ProfileViewModel {
         return viewModelProvider.get(ProfileViewModel::class.java)
-    }
-
-    override fun getLayoutRes(): Int {
-        return R.layout.fragment_profile
-    }
-
-    override fun inject() {
-        componentManager.getProfileDetailComponent()
-                .inject(this)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -44,11 +46,6 @@ class ProfileFragment : DataFragment<ProfileViewModel>(), BackPressFragment {
                 { this.onUserDataLoaded(it) },
                 { this.onUserNotFound() }
         )
-    }
-
-    override fun clearComponent() {
-        super.clearComponent()
-        componentManager.clearProfileDetailComponent()
     }
 
     override fun handleBackPress(): Boolean {

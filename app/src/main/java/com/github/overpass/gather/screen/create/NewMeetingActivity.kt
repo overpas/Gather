@@ -8,25 +8,27 @@ import android.view.MenuItem
 import androidx.appcompat.app.ActionBar
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
-import com.github.overpass.gather.App.Companion.componentManager
+import com.github.overpass.gather.App.Companion.appComponentManager
 import com.github.overpass.gather.R
+import com.github.overpass.gather.di.ComponentManager
+import com.github.overpass.gather.di.newmeeting.NewMeetingComponent
 import com.github.overpass.gather.model.commons.UIUtil.*
 import com.github.overpass.gather.model.commons.getDoubleExtra
-import com.github.overpass.gather.screen.base.BaseActivityKt
+import com.github.overpass.gather.screen.base.BaseActivity
 import com.github.overpass.gather.screen.dialog.progress.indeterminate.ProgressDialogFragment
 import com.github.overpass.gather.screen.map.SaveMeetingStatus
 import com.mapbox.mapboxsdk.geometry.LatLng
 import kotlinx.android.synthetic.main.activity_new_meeting.*
 
-class NewMeetingActivity : BaseActivityKt<NewMeetingViewModel>() {
+class NewMeetingActivity : BaseActivity<NewMeetingViewModel, NewMeetingComponent>() {
 
-    override fun getLayoutRes(): Int {
-        return R.layout.activity_new_meeting
-    }
+    override val componentManager: ComponentManager<NewMeetingComponent> =
+            appComponentManager.getNewMeetingComponentManager()
 
-    override fun inject() {
-        componentManager.getNewMeetingComponent()
-                .inject(this)
+    override val layoutRes: Int = R.layout.activity_new_meeting
+
+    override fun onComponentCreated(component: NewMeetingComponent) {
+        component.inject(this)
     }
 
     override fun createViewModel(): NewMeetingViewModel {
@@ -51,10 +53,6 @@ class NewMeetingActivity : BaseActivityKt<NewMeetingViewModel>() {
             }
             else -> return super.onOptionsItemSelected(item)
         }
-    }
-
-    override fun clearComponent() {
-        componentManager.clearNewMeetingComponent()
     }
 
     private fun create() {

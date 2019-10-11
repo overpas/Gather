@@ -1,11 +1,13 @@
 package com.github.overpass.gather.di.app
 
+import com.github.overpass.gather.di.ComponentManager
 import com.github.overpass.gather.di.closeup.CloseupComponent
 import com.github.overpass.gather.di.enrolled.EnrolledComponent
 import com.github.overpass.gather.di.forgot.ForgotComponent
 import com.github.overpass.gather.di.login.SignInComponent
+import com.github.overpass.gather.di.login.SignInComponentManager
 import com.github.overpass.gather.di.map.MapComponentManager
-import com.github.overpass.gather.di.map.detail.MapDetailComponent
+import com.github.overpass.gather.di.map.detail.MapDetailComponentManager
 import com.github.overpass.gather.di.meeting.MeetingComponentManager
 import com.github.overpass.gather.di.meeting.chat.ChatComponent
 import com.github.overpass.gather.di.meeting.chat.attachments.AttachmentsComponent
@@ -14,9 +16,10 @@ import com.github.overpass.gather.di.meeting.chat.delete.DeleteMessageComponent
 import com.github.overpass.gather.di.meeting.chat.details.MeetingDetailComponent
 import com.github.overpass.gather.di.meeting.chat.users.UsersComponent
 import com.github.overpass.gather.di.meeting.join.JoinComponent
-import com.github.overpass.gather.di.newmeeting.NewMeetingComponent
+import com.github.overpass.gather.di.newmeeting.NewMeetingComponentManager
 import com.github.overpass.gather.di.profile.ProfileComponentManager
 import com.github.overpass.gather.di.profile.detail.ProfileDetailComponent
+import com.github.overpass.gather.di.profile.detail.ProfileDetailComponentManager
 import com.github.overpass.gather.di.register.RegisterComponentManager
 import com.github.overpass.gather.di.register.add.AddPersonalDataComponent
 import com.github.overpass.gather.di.register.confirm.ConfirmationComponent
@@ -24,12 +27,12 @@ import com.github.overpass.gather.di.register.signup.SignUpComponent
 import com.github.overpass.gather.di.search.SearchComponent
 import com.github.overpass.gather.di.splash.SplashComponent
 
-class ComponentManager(private val appComponent: AppComponent) : AppComponent {
+class AppComponentManager(private val appComponent: AppComponent) {
 
+    private var signInComponentManager: SignInComponentManager? = null
     private var registerComponentManager: RegisterComponentManager? = null
     private var meetingComponentManager: MeetingComponentManager? = null
-    private var newMeetingComponent: NewMeetingComponent? = null
-    private var signInComponent: SignInComponent? = null
+    private var newMeetingComponentManager: NewMeetingComponentManager? = null
     private var forgotComponent: ForgotComponent? = null
     private var searchComponent: SearchComponent? = null
     private var splashComponent: SplashComponent? = null
@@ -38,41 +41,26 @@ class ComponentManager(private val appComponent: AppComponent) : AppComponent {
     private var mapComponentManager: MapComponentManager? = null
     private var profileComponentManager: ProfileComponentManager? = null
 
-    override fun getSignInComponent(): SignInComponent =
-            signInComponent ?: appComponent.getSignInComponent()
-                    .also { signInComponent = it }
+    fun getSignInComponentManager(): SignInComponentManager =
+            signInComponentManager ?: SignInComponentManager { appComponent.getSignInComponent() }
+                    .also { signInComponentManager = it }
 
-    fun clearSignInComponent() {
-        signInComponent = null
-    }
+    fun getMapComponentManager(): MapComponentManager =
+            mapComponentManager ?: appComponent.getMapComponent()
+                    .also { mapComponentManager = MapComponentManager { it } }
+                    .let { mapComponentManager!! }
 
-    override fun getMapComponent(): MapComponentManager =
-        mapComponentManager ?: appComponent.getMapComponent()
-                .also { mapComponentManager = MapComponentManager(it) }
-                .let { mapComponentManager!! }
+    fun getMapDetailComponentManager(): MapDetailComponentManager =
+            getMapComponentManager().getDetailComponentManager()
 
-    fun clearMapComponent() {
-        mapComponentManager = null
-    }
+    fun getProfileComponentManager(): ProfileComponentManager =
+            profileComponentManager ?: ProfileComponentManager { appComponent.getProfileComponent() }
+                    .also { profileComponentManager = it }
 
-    fun getMapDetailComponent(): MapDetailComponent = getMapComponent().getDetailComponent()
+    fun getProfileDetailComponentManager(): ProfileDetailComponentManager =
+            getProfileComponentManager().getDetailComponentManager()
 
-    fun clearMapDetailComponent() = getMapComponent().clearDetailComponent()
-
-    override fun getProfileComponent(): ProfileComponentManager =
-        profileComponentManager ?: appComponent.getProfileComponent()
-                .also { profileComponentManager = ProfileComponentManager(it) }
-                .let { profileComponentManager!! }
-
-    fun clearProfileComponent() {
-        profileComponentManager = null
-    }
-
-    fun getProfileDetailComponent(): ProfileDetailComponent = getProfileComponent().getDetailComponent()
-
-    fun clearProfileDetailComponent() = getProfileComponent().clearDetailComponent()
-
-    override fun getRegisterComponentFactory(): RegisterComponentManager =
+    fun getRegisterComponentFactory(): RegisterComponentManager =
             registerComponentManager ?: appComponent.getRegisterComponentFactory()
                     .also { registerComponentManager = RegisterComponentManager(it) }
                     .let { registerComponentManager!! }
@@ -99,7 +87,7 @@ class ComponentManager(private val appComponent: AppComponent) : AppComponent {
     fun clearSignUpComponent() =
             getRegisterComponentFactory().clearSignUpComponent()
 
-    override fun getSplashComponent(): SplashComponent =
+    fun getSplashComponent(): SplashComponent =
             splashComponent ?: appComponent.getSplashComponent()
                     .also { splashComponent = it }
 
@@ -107,7 +95,7 @@ class ComponentManager(private val appComponent: AppComponent) : AppComponent {
         splashComponent = null
     }
 
-    override fun getCloseupComponent(): CloseupComponent =
+    fun getCloseupComponent(): CloseupComponent =
             closeupComponent ?: appComponent.getCloseupComponent()
                     .also { closeupComponent = it }
 
@@ -115,7 +103,7 @@ class ComponentManager(private val appComponent: AppComponent) : AppComponent {
         closeupComponent = null
     }
 
-    override fun getEnrolledComponent(): EnrolledComponent =
+    fun getEnrolledComponent(): EnrolledComponent =
             enrolledComponent ?: appComponent.getEnrolledComponent()
                     .also { enrolledComponent = it }
 
@@ -123,7 +111,7 @@ class ComponentManager(private val appComponent: AppComponent) : AppComponent {
         enrolledComponent = null
     }
 
-    override fun getMeetingComponent(): MeetingComponentManager =
+    fun getMeetingComponent(): MeetingComponentManager =
             meetingComponentManager ?: appComponent.getMeetingComponent()
                     .also { meetingComponentManager = MeetingComponentManager(it) }
                     .let { meetingComponentManager!! }
@@ -136,7 +124,7 @@ class ComponentManager(private val appComponent: AppComponent) : AppComponent {
 
     fun clearUsersComponent() = getMeetingComponent().clearUsersComponent()
 
-    override fun getSearchComponent(): SearchComponent =
+    fun getSearchComponent(): SearchComponent =
             searchComponent ?: appComponent.getSearchComponent()
                     .also { searchComponent = it }
 
@@ -144,7 +132,7 @@ class ComponentManager(private val appComponent: AppComponent) : AppComponent {
         searchComponent = null
     }
 
-    override fun getForgotComponent(): ForgotComponent =
+    fun getForgotComponent(): ForgotComponent =
             forgotComponent ?: appComponent.getForgotComponent()
                     .also { forgotComponent = it }
 
@@ -182,11 +170,8 @@ class ComponentManager(private val appComponent: AppComponent) : AppComponent {
 
     fun clearJoinComponent() = getMeetingComponent().clearJoinComponent()
 
-    override fun getNewMeetingComponent(): NewMeetingComponent =
-            newMeetingComponent ?: appComponent.getNewMeetingComponent()
-                    .also { newMeetingComponent = it }
-
-    fun clearNewMeetingComponent() {
-        newMeetingComponent = null
-    }
+    fun getNewMeetingComponentManager(): NewMeetingComponentManager =
+            newMeetingComponentManager ?: appComponent.getNewMeetingComponent()
+                    .also { newMeetingComponentManager = NewMeetingComponentManager { it } }
+                    .let { newMeetingComponentManager!! }
 }

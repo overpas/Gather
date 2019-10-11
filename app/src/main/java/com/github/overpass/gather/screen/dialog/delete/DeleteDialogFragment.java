@@ -27,7 +27,7 @@ public class DeleteDialogFragment extends BaseDialogFragment<DeleteMessageViewMo
 
     @Override
     protected void inject() {
-        App.Companion.getComponentManager(this)
+        App.Companion.getAppComponentManager(this)
                 .getDeleteMessageComponent()
                 .inject(this);
     }
@@ -58,7 +58,7 @@ public class DeleteDialogFragment extends BaseDialogFragment<DeleteMessageViewMo
     @Override
     protected void clearComponent() {
         super.clearComponent();
-        App.Companion.getComponentManager(this)
+        App.Companion.getAppComponentManager(this)
                 .clearDeleteMessageComponent();
     }
 

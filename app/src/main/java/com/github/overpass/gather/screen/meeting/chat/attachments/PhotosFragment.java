@@ -5,15 +5,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.github.overpass.gather.App;
 import com.github.overpass.gather.R;
-import com.github.overpass.gather.model.usecase.image.ImageSourceUseCase;
 import com.github.overpass.gather.screen.base.personal.DataFragment;
 import com.github.overpass.gather.screen.dialog.progress.determinate.ProgressPercentDialogFragment;
 import com.github.overpass.gather.screen.map.Meeting;
@@ -54,7 +51,7 @@ public class PhotosFragment extends DataFragment<PhotosViewModel> {
 
     @Override
     protected void inject() {
-        App.Companion.getComponentManager(this)
+        App.Companion.getAppComponentManager(this)
                 .getAttachmentsDetailsComponent()
                 .inject(this);
     }
@@ -73,7 +70,7 @@ public class PhotosFragment extends DataFragment<PhotosViewModel> {
     @Override
     protected void clearComponent() {
         super.clearComponent();
-        App.Companion.getComponentManager(this)
+        App.Companion.getAppComponentManager(this)
                 .clearAttachmentDetailsComponent();
     }
 

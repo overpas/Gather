@@ -5,8 +5,10 @@ import android.location.Location
 import android.os.Bundle
 import android.util.Log
 import androidx.lifecycle.Observer
-import com.github.overpass.gather.App.Companion.componentManager
+import com.github.overpass.gather.App.Companion.appComponentManager
 import com.github.overpass.gather.R
+import com.github.overpass.gather.di.ComponentManager
+import com.github.overpass.gather.di.map.detail.MapDetailComponent
 import com.github.overpass.gather.model.repo.icon.IconRepo
 import com.github.overpass.gather.screen.base.BackPressFragment
 import com.github.overpass.gather.screen.map.Meeting
@@ -18,15 +20,16 @@ import com.mapbox.mapboxsdk.maps.MapboxMap
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback
 import com.mapbox.mapboxsdk.maps.Style
 
-class MapFragment : BaseMapFragment<MapDetailViewModel>(), BackPressFragment, OnMapReadyCallback {
+class MapFragment : BaseMapFragment<MapDetailViewModel, MapDetailComponent>(), BackPressFragment,
+        OnMapReadyCallback {
 
-    override fun getLayoutRes(): Int {
-        return R.layout.fragment_map
-    }
+    override val layoutRes = R.layout.fragment_map
 
-    override fun inject() {
-        componentManager.getMapDetailComponent()
-                .inject(this)
+    override val componentManager: ComponentManager<MapDetailComponent> =
+            appComponentManager.getMapDetailComponentManager()
+
+    override fun onComponentCreated(component: MapDetailComponent) {
+        component.inject(this)
     }
 
     override fun createViewModel(): MapDetailViewModel {
@@ -43,11 +46,6 @@ class MapFragment : BaseMapFragment<MapDetailViewModel>(), BackPressFragment, On
             }
             false
         }
-    }
-
-    override fun clearComponent() {
-        super.clearComponent()
-        componentManager.clearMapDetailComponent()
     }
 
     override fun onLocationUpdated(location: Location, forceCameraMove: Boolean) {

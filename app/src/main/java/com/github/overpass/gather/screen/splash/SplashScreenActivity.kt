@@ -7,7 +7,7 @@ import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
 import android.view.animation.LinearInterpolator
 import androidx.lifecycle.Observer
-import com.github.overpass.gather.App.Companion.componentManager
+import com.github.overpass.gather.App.Companion.appComponentManager
 import com.github.overpass.gather.R
 import com.github.overpass.gather.screen.auth.login.LoginActivity
 import com.github.overpass.gather.screen.auth.register.RegisterActivity
@@ -26,7 +26,7 @@ class SplashScreenActivity : BaseActivityKt<SplashViewModel>() {
     }
 
     override fun inject() {
-        componentManager.getSplashComponent()
+        appComponentManager.getSplashComponent()
                 .inject(this)
     }
 
@@ -47,7 +47,7 @@ class SplashScreenActivity : BaseActivityKt<SplashViewModel>() {
 
     override fun clearComponent() {
         super.clearComponent()
-        componentManager.clearSplashComponent()
+        appComponentManager.clearSplashComponent()
     }
 
     private fun playAnimation() {

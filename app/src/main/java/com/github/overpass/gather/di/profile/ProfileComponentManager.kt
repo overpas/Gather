@@ -1,19 +1,15 @@
 package com.github.overpass.gather.di.profile
 
-import com.github.overpass.gather.di.profile.detail.ProfileDetailComponent
-import com.github.overpass.gather.screen.profile.ProfileActivity
+import com.github.overpass.gather.di.ComponentManager
+import com.github.overpass.gather.di.profile.detail.ProfileDetailComponentManager
 
-class ProfileComponentManager(private val profileComponent: ProfileComponent): ProfileComponent {
+class ProfileComponentManager(
+        creator: () -> ProfileComponent
+) : ComponentManager<ProfileComponent>(creator) {
 
-    private var profileDetailComponent: ProfileDetailComponent? = null
+    private var profileDetailComponentManager: ProfileDetailComponentManager? = null
 
-    override fun inject(profileActivity: ProfileActivity) = profileComponent.inject(profileActivity)
-
-    override fun getDetailComponent(): ProfileDetailComponent =
-            profileDetailComponent ?: profileComponent.getDetailComponent()
-                    .also { profileDetailComponent = it }
-
-    fun clearDetailComponent() {
-        profileDetailComponent = null
-    }
+    fun getDetailComponentManager(): ProfileDetailComponentManager =
+            profileDetailComponentManager ?: ProfileDetailComponentManager { get().getDetailComponent() }
+                    .also { profileDetailComponentManager = it }
 }

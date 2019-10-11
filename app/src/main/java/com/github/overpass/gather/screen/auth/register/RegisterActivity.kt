@@ -7,7 +7,7 @@ import android.os.Bundle
 import android.view.WindowManager
 import android.view.animation.AnimationUtils
 import androidx.lifecycle.Observer
-import com.github.overpass.gather.App.Companion.componentManager
+import com.github.overpass.gather.App.Companion.appComponentManager
 import com.github.overpass.gather.R
 import com.github.overpass.gather.screen.base.BaseActivityKt
 import com.github.overpass.gather.screen.dialog.PickImageDialogFragment
@@ -25,7 +25,7 @@ class RegisterActivity : BaseActivityKt<RegisterViewModel>(), RegistrationContro
 
     @SuppressLint("UseValueOf")
     override fun inject() {
-        componentManager.getRegisterComponentFactory()
+        appComponentManager.getRegisterComponentFactory()
                 .create(Integer(getStep()))
                 .inject(this)
     }
@@ -42,7 +42,7 @@ class RegisterActivity : BaseActivityKt<RegisterViewModel>(), RegistrationContro
 
     override fun clearComponent() {
         super.clearComponent()
-        componentManager.clearRegisterComponentFactory()
+        appComponentManager.clearRegisterComponentFactory()
     }
 
     override fun moveToNextStep() {

@@ -24,8 +24,8 @@ import static com.github.overpass.gather.model.commons.UIUtil.snackbar;
 import static com.github.overpass.gather.model.commons.UIUtil.textOf;
 
 // TODO: The hierarchy is messed up
-public abstract class DataFragment<VM extends DataViewModel>
-        extends RegistrationFragment<VM> {
+public abstract class DataFragment<VM extends DataViewModel, C>
+        extends RegistrationFragment<VM, C> {
 
     @Nullable
     @BindView(R.id.tietUsername)

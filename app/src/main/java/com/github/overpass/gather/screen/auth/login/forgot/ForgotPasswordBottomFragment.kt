@@ -3,7 +3,6 @@ package com.github.overpass.gather.screen.auth.login.forgot
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import com.github.overpass.gather.App.Companion.componentManager
 import com.github.overpass.gather.R
 import com.github.overpass.gather.model.commons.UIUtil.*
 import com.github.overpass.gather.screen.base.BaseBottomSheetDialogFragment

@@ -6,7 +6,6 @@ import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.github.overpass.gather.App.Companion.componentManager
 import com.github.overpass.gather.R
 import com.github.overpass.gather.model.repo.meeting.MeetingWithId
 import com.github.overpass.gather.screen.base.BaseBottomSheetDialogFragment

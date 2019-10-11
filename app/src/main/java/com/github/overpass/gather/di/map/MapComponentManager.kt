@@ -1,19 +1,16 @@
 package com.github.overpass.gather.di.map
 
-import com.github.overpass.gather.di.map.detail.MapDetailComponent
-import com.github.overpass.gather.screen.map.MapActivity
+import com.github.overpass.gather.di.ComponentManager
+import com.github.overpass.gather.di.map.detail.MapDetailComponentManager
 
-class MapComponentManager(private val mapComponent: MapComponent) : MapComponent {
+class MapComponentManager(
+        creator: () -> MapComponent
+) : ComponentManager<MapComponent>(creator) {
 
-    private var detailComponent: MapDetailComponent? = null
+    private var mapDetailComponentManager: MapDetailComponentManager? = null
 
-    override fun getDetailComponent(): MapDetailComponent =
-            detailComponent ?: mapComponent.getDetailComponent()
-                    .also { detailComponent = it }
-
-    fun clearDetailComponent() {
-        detailComponent = null
-    }
-
-    override fun inject(mapActivity: MapActivity) = mapComponent.inject(mapActivity)
+    fun getDetailComponentManager(): MapDetailComponentManager =
+            mapDetailComponentManager ?: get().getDetailComponent()
+                    .also { mapDetailComponentManager = MapDetailComponentManager { it } }
+                    .let { mapDetailComponentManager!! }
 }

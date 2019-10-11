@@ -2,7 +2,7 @@ package com.github.overpass.gather.screen.meeting.chat.attachments.closeup
 
 import android.content.Context
 import com.bumptech.glide.Glide
-import com.github.overpass.gather.App.Companion.componentManager
+import com.github.overpass.gather.App.Companion.appComponentManager
 import com.github.overpass.gather.R
 import com.github.overpass.gather.model.commons.getStringExtra
 import com.github.overpass.gather.screen.base.BaseActivityKt
@@ -19,7 +19,7 @@ class CloseupActivity : BaseActivityKt<CloseupViewModel>() {
     }
 
     override fun inject() {
-        componentManager.getCloseupComponent()
+        appComponentManager.getCloseupComponent()
                 .inject(this)
     }
 
@@ -32,7 +32,7 @@ class CloseupActivity : BaseActivityKt<CloseupViewModel>() {
 
     override fun clearComponent() {
         super.clearComponent()
-        componentManager.clearCloseupComponent()
+        appComponentManager.clearCloseupComponent()
     }
 
     companion object {
