@@ -1,70 +1,48 @@
 package com.github.overpass.gather.di.meeting
 
 import android.util.Log
+import com.github.overpass.gather.di.ComponentManager
 import com.github.overpass.gather.di.meeting.chat.ChatComponentManager
-import com.github.overpass.gather.di.meeting.chat.attachments.AttachmentsComponent
-import com.github.overpass.gather.di.meeting.chat.attachments.detail.AttachmentsDetailsComponent
-import com.github.overpass.gather.di.meeting.chat.delete.DeleteMessageComponent
-import com.github.overpass.gather.di.meeting.chat.details.MeetingDetailComponent
-import com.github.overpass.gather.di.meeting.chat.users.UsersComponent
-import com.github.overpass.gather.di.meeting.join.JoinComponent
-import com.github.overpass.gather.screen.meeting.MeetingActivity
+import com.github.overpass.gather.di.meeting.chat.attachments.AttachmentsComponentManager
+import com.github.overpass.gather.di.meeting.chat.attachments.detail.AttachmentDetailsComponentManager
+import com.github.overpass.gather.di.meeting.chat.delete.DeleteMessageComponentManager
+import com.github.overpass.gather.di.meeting.chat.details.MeetingDetailComponentManager
+import com.github.overpass.gather.di.meeting.chat.users.UsersComponentManager
+import com.github.overpass.gather.di.meeting.join.JoinComponentManager
 
 class MeetingComponentManager(
-        private val meetingComponent: MeetingComponent
-) : MeetingComponent {
+        meetingComponent: MeetingComponent
+) : ComponentManager<Unit, MeetingComponent>({ meetingComponent }) {
 
     init {
         Log.w(this::class.java.simpleName, "MeetingComponentManager Created")
     }
 
     private var chatComponentManager: ChatComponentManager? = null
-    private var joinComponent: JoinComponent? = null
+    private var joinComponentManager: JoinComponentManager? = null
 
-    override fun getChatComponent(): ChatComponentManager =
-            chatComponentManager ?: meetingComponent.getChatComponent()
-                    .also { chatComponentManager = ChatComponentManager(it) }
-                    .let { chatComponentManager!! }
+    fun getChatComponentManager(): ChatComponentManager = chatComponentManager
+            ?: ChatComponentManager(getOrCreate(Unit).getChatComponent())
+                    .also { chatComponentManager = it }
 
-    fun clearChatComponent() {
-        chatComponentManager = null
-    }
+    fun getJoinComponentManager(): JoinComponentManager = joinComponentManager
+            ?: JoinComponentManager(getOrCreate(Unit).getJoinComponent())
+                    .also { joinComponentManager = it }
 
-    override fun getJoinComponent(): JoinComponent =
-            joinComponent ?: meetingComponent.getJoinComponent()
-                    .also { joinComponent = it }
+    fun getUsersComponentManager(): UsersComponentManager =
+            getChatComponentManager().getUsersComponentManager()
 
-    fun clearJoinComponent() {
-        joinComponent = null
-    }
+    fun getMeetingDetailComponentManager(): MeetingDetailComponentManager =
+            getChatComponentManager().getMeetingDetailsComponentManager()
 
-    fun getUsersComponent(): UsersComponent = getChatComponent().getUsersComponent()
+    fun getDeleteMessageComponentManager(): DeleteMessageComponentManager =
+            getChatComponentManager().getDeleteMessageComponentManager()
 
-    fun clearUsersComponent() {
-        getChatComponent().clearUsersComponent()
-    }
+    fun getAttachmentsComponentManager(): AttachmentsComponentManager =
+            getChatComponentManager().getAttachmentsComponentManager()
 
-    fun getMeetingDetailComponent(): MeetingDetailComponent =
-            getChatComponent().getMeetingDetailsComponent()
-
-    fun clearMeetingDetailsComponent() = getChatComponent().clearMeetingDetailsComponent()
-
-    fun getDeleteMessageComponent(): DeleteMessageComponent =
-            getChatComponent().getDeleteMessageComponent()
-
-    fun clearDeleteMessageComponent() = getChatComponent().clearDeleteMessageComponent()
-
-    fun getAttachmentsComponent(): AttachmentsComponent =
-            getChatComponent().getAttachmentsComponent()
-
-    fun clearAttachmentsComponent() = getChatComponent().clearAttachmentsComponent()
-
-    fun getAttachmentDetailComponent(): AttachmentsDetailsComponent =
-            getChatComponent().getAttachmentDetailComponent()
-
-    fun cleatAttachmentDetailComponent() = getChatComponent().clearAttachmentDetailsComponent()
-
-    override fun inject(meetingActivity: MeetingActivity) = meetingComponent.inject(meetingActivity)
+    fun getAttachmentDetailComponentManager(): AttachmentDetailsComponentManager =
+            getChatComponentManager().getAttachmentDetailComponentManager()
 
     protected fun finalize() {
         Log.w(this::class.java.simpleName, "MeetingComponentManager Destroyed")

@@ -40,10 +40,10 @@ class App : Application() {
 
         val BaseFragment<*, *>.appComponentManager get() = instance.appComponentManager
 
-        val BaseBottomSheetDialogFragment<*>.appComponentManager get() = instance.appComponentManager
+        val BaseBottomSheetDialogFragment<*, *>.appComponentManager get() = instance.appComponentManager
 
-        val BaseDialogFragment<*>.appComponentManager get() = instance.appComponentManager
+        val BaseDialogFragment<*, *>.appComponentManager get() = instance.appComponentManager
 
-        val ComponentManager<*>.appComponentManager get() = instance.appComponentManager
+        val ComponentManager<*, *>.appComponentManager get() = instance.appComponentManager
     }
 }

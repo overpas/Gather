@@ -3,26 +3,30 @@ package com.github.overpass.gather.screen.auth.register.add
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import com.github.overpass.gather.App.Companion.appComponentManager
 import com.github.overpass.gather.R
+import com.github.overpass.gather.di.ComponentManager
+import com.github.overpass.gather.di.register.add.AddPersonalDataComponent
+import com.github.overpass.gather.di.register.add.AddPersonalDataComponentManager
 import com.github.overpass.gather.screen.base.personal.DataFragment
 import com.github.overpass.gather.screen.dialog.progress.indeterminate.ProgressDialogFragment
 import com.github.overpass.gather.screen.map.MapActivity
 import kotlinx.android.synthetic.main.fragment_add_personal_data.*
 
-class AddPersonalDataFragment : DataFragment<AddPersonalDataViewModel>() {
+class AddPersonalDataFragment : DataFragment<AddPersonalDataViewModel, AddPersonalDataComponent>() {
+
+    override val componentManager: AddPersonalDataComponentManager
+        get() = appComponentManager.getAddPersonalDataComponentManager()
+
+    override fun createComponent(): AddPersonalDataComponent = componentManager.getOrCreate(Unit)
+
+    override fun onComponentCreated(component: AddPersonalDataComponent) = component.inject(this)
 
     override fun createViewModel(): AddPersonalDataViewModel {
         return viewModelProvider.get(AddPersonalDataViewModel::class.java)
     }
 
-    override fun getLayoutRes(): Int {
-        return R.layout.fragment_add_personal_data
-    }
-
-    override fun inject() {
-        componentManager.getAddPersonalDataComponent()
-                .inject(this);
-    }
+    override val layoutRes: Int = R.layout.fragment_add_personal_data
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -32,11 +36,6 @@ class AddPersonalDataFragment : DataFragment<AddPersonalDataViewModel>() {
         ivPhotoPreview.setOnClickListener {
             super.onChooseImageClick()
         }
-    }
-
-    override fun clearComponent() {
-        super.clearComponent()
-        componentManager.clearAddPersonalDataComponent()
     }
 
     override fun handleSuccess(success: AddDataStatus.Success) {

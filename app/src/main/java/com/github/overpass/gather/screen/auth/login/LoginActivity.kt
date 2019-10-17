@@ -5,8 +5,8 @@ import android.os.Bundle
 import androidx.lifecycle.Observer
 import com.github.overpass.gather.App.Companion.appComponentManager
 import com.github.overpass.gather.R
-import com.github.overpass.gather.di.ComponentManager
 import com.github.overpass.gather.di.login.SignInComponent
+import com.github.overpass.gather.di.login.SignInComponentManager
 import com.github.overpass.gather.model.commons.UIUtil.snackbar
 import com.github.overpass.gather.model.commons.UIUtil.textOf
 import com.github.overpass.gather.screen.auth.login.forgot.ForgotPasswordBottomFragment
@@ -20,8 +20,10 @@ class LoginActivity : BaseActivity<SignInViewModel, SignInComponent>() {
 
     override val layoutRes: Int = R.layout.activity_sign_in
 
-    override val componentManager: ComponentManager<SignInComponent> =
+    override val componentManager: SignInComponentManager =
             appComponentManager.getSignInComponentManager()
+
+    override fun createComponent(): SignInComponent = componentManager.getOrCreate(Unit)
 
     override fun onComponentCreated(component: SignInComponent) {
         component.inject(this)

@@ -1,6 +1,5 @@
 package com.github.overpass.gather.screen.auth.register
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -9,25 +8,30 @@ import android.view.animation.AnimationUtils
 import androidx.lifecycle.Observer
 import com.github.overpass.gather.App.Companion.appComponentManager
 import com.github.overpass.gather.R
-import com.github.overpass.gather.screen.base.BaseActivityKt
+import com.github.overpass.gather.di.register.RegisterComponent
+import com.github.overpass.gather.di.register.RegisterComponentManager
+import com.github.overpass.gather.screen.base.BaseActivity
 import com.github.overpass.gather.screen.dialog.PickImageDialogFragment
 import kotlinx.android.synthetic.main.activity_register.*
 
-class RegisterActivity : BaseActivityKt<RegisterViewModel>(), RegistrationController, PickImageDialogFragment.OnClickListener {
+class RegisterActivity : BaseActivity<RegisterViewModel, RegisterComponent>(),
+        RegistrationController, PickImageDialogFragment.OnClickListener {
 
-    override fun getLayoutRes(): Int {
-        return R.layout.activity_register
+    override val componentManager: RegisterComponentManager =
+            appComponentManager.getRegisterComponentManager()
+
+    override val layoutRes: Int = R.layout.activity_register
+
+    override fun createComponent(): RegisterComponent {
+        return componentManager.getOrCreate(getStep())
+    }
+
+    override fun onComponentCreated(component: RegisterComponent) {
+        component.inject(this)
     }
 
     override fun createViewModel(): RegisterViewModel {
         return viewModelProvider.get(RegisterViewModel::class.java)
-    }
-
-    @SuppressLint("UseValueOf")
-    override fun inject() {
-        appComponentManager.getRegisterComponentFactory()
-                .create(Integer(getStep()))
-                .inject(this)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,11 +42,6 @@ class RegisterActivity : BaseActivityKt<RegisterViewModel>(), RegistrationContro
 
     override fun onBind() {
         viewModel.registrationProgressData.observe(this, Observer { this.moveToNextStep(it) })
-    }
-
-    override fun clearComponent() {
-        super.clearComponent()
-        appComponentManager.clearRegisterComponentFactory()
     }
 
     override fun moveToNextStep() {

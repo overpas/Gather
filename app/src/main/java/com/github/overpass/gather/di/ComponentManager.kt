@@ -1,10 +1,13 @@
 package com.github.overpass.gather.di
 
-abstract class ComponentManager<out C>(private val create: () -> C) {
+abstract class ComponentManager<in P, C>(
+        private val create: (P) -> C
+) {
 
-    private var component: C? = create()
+    protected var component: C? = null
 
-    fun get(): C = component ?: create()
+    fun getOrCreate(param: P): C = component ?: create(param)
+            .also { component = it }
 
     fun clear() {
         component = null

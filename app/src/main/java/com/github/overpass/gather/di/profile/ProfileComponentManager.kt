@@ -4,12 +4,12 @@ import com.github.overpass.gather.di.ComponentManager
 import com.github.overpass.gather.di.profile.detail.ProfileDetailComponentManager
 
 class ProfileComponentManager(
-        creator: () -> ProfileComponent
-) : ComponentManager<ProfileComponent>(creator) {
+        profileComponent: ProfileComponent
+) : ComponentManager<Unit, ProfileComponent>({ profileComponent }) {
 
     private var profileDetailComponentManager: ProfileDetailComponentManager? = null
 
-    fun getDetailComponentManager(): ProfileDetailComponentManager =
-            profileDetailComponentManager ?: ProfileDetailComponentManager { get().getDetailComponent() }
+    fun getDetailComponentManager(): ProfileDetailComponentManager = profileDetailComponentManager
+            ?: ProfileDetailComponentManager(component!!.getDetailComponent())
                     .also { profileDetailComponentManager = it }
 }

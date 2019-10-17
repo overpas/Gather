@@ -10,26 +10,41 @@ import androidx.fragment.app.FragmentManager;
 
 import com.github.overpass.gather.App;
 import com.github.overpass.gather.R;
+import com.github.overpass.gather.di.meeting.chat.delete.DeleteMessageComponent;
+import com.github.overpass.gather.di.meeting.chat.delete.DeleteMessageComponentManager;
 import com.github.overpass.gather.model.commons.Fragments;
 import com.github.overpass.gather.screen.base.BaseDialogFragment;
 import com.github.overpass.gather.screen.meeting.chat.DeleteStatus;
 
 import org.jetbrains.annotations.NotNull;
 
+import kotlin.Unit;
+
 import static com.github.overpass.gather.model.commons.AndroidParamsKt.getStringArg;
 import static com.github.overpass.gather.model.commons.UIUtil.toast;
 
-public class DeleteDialogFragment extends BaseDialogFragment<DeleteMessageViewModel> {
+public class DeleteDialogFragment extends BaseDialogFragment<DeleteMessageViewModel, DeleteMessageComponent> {
 
     private static final String TAG = "DeleteDialogFragment";
     private static final String MESSAGE_ID_KEY = "MESSAGE_ID_KEY";
     private static final String MEETING_ID_KEY = "MEETING_ID_KEY";
 
     @Override
-    protected void inject() {
-        App.Companion.getAppComponentManager(this)
-                .getDeleteMessageComponent()
-                .inject(this);
+    protected DeleteMessageComponent createComponent() {
+        return getComponentManager().getOrCreate(Unit.INSTANCE);
+    }
+
+    @Override
+    protected void onComponentCreated(DeleteMessageComponent component) {
+        component.inject(this);
+    }
+
+    @NotNull
+    @Override
+    protected DeleteMessageComponentManager getComponentManager() {
+        return App.Companion
+                .getAppComponentManager(this)
+                .getDeleteMessageComponentManager();
     }
 
     @NotNull
@@ -53,13 +68,6 @@ public class DeleteDialogFragment extends BaseDialogFragment<DeleteMessageViewMo
                     dismiss();
                 }))
                 .create();
-    }
-
-    @Override
-    protected void clearComponent() {
-        super.clearComponent();
-        App.Companion.getAppComponentManager(this)
-                .clearDeleteMessageComponent();
     }
 
     private void handleDeletion(DeleteStatus deleteStatus) {

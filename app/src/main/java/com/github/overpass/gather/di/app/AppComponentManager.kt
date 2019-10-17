@@ -1,31 +1,28 @@
 package com.github.overpass.gather.di.app
 
-import com.github.overpass.gather.di.ComponentManager
-import com.github.overpass.gather.di.closeup.CloseupComponent
-import com.github.overpass.gather.di.enrolled.EnrolledComponent
-import com.github.overpass.gather.di.forgot.ForgotComponent
-import com.github.overpass.gather.di.login.SignInComponent
+import com.github.overpass.gather.di.closeup.CloseupComponentManager
+import com.github.overpass.gather.di.enrolled.EnrolledComponentManager
+import com.github.overpass.gather.di.forgot.ForgotComponentManager
 import com.github.overpass.gather.di.login.SignInComponentManager
 import com.github.overpass.gather.di.map.MapComponentManager
 import com.github.overpass.gather.di.map.detail.MapDetailComponentManager
 import com.github.overpass.gather.di.meeting.MeetingComponentManager
-import com.github.overpass.gather.di.meeting.chat.ChatComponent
-import com.github.overpass.gather.di.meeting.chat.attachments.AttachmentsComponent
-import com.github.overpass.gather.di.meeting.chat.attachments.detail.AttachmentsDetailsComponent
-import com.github.overpass.gather.di.meeting.chat.delete.DeleteMessageComponent
-import com.github.overpass.gather.di.meeting.chat.details.MeetingDetailComponent
-import com.github.overpass.gather.di.meeting.chat.users.UsersComponent
-import com.github.overpass.gather.di.meeting.join.JoinComponent
+import com.github.overpass.gather.di.meeting.chat.ChatComponentManager
+import com.github.overpass.gather.di.meeting.chat.attachments.AttachmentsComponentManager
+import com.github.overpass.gather.di.meeting.chat.attachments.detail.AttachmentDetailsComponentManager
+import com.github.overpass.gather.di.meeting.chat.delete.DeleteMessageComponentManager
+import com.github.overpass.gather.di.meeting.chat.details.MeetingDetailComponentManager
+import com.github.overpass.gather.di.meeting.chat.users.UsersComponentManager
+import com.github.overpass.gather.di.meeting.join.JoinComponentManager
 import com.github.overpass.gather.di.newmeeting.NewMeetingComponentManager
 import com.github.overpass.gather.di.profile.ProfileComponentManager
-import com.github.overpass.gather.di.profile.detail.ProfileDetailComponent
 import com.github.overpass.gather.di.profile.detail.ProfileDetailComponentManager
 import com.github.overpass.gather.di.register.RegisterComponentManager
-import com.github.overpass.gather.di.register.add.AddPersonalDataComponent
-import com.github.overpass.gather.di.register.confirm.ConfirmationComponent
-import com.github.overpass.gather.di.register.signup.SignUpComponent
-import com.github.overpass.gather.di.search.SearchComponent
-import com.github.overpass.gather.di.splash.SplashComponent
+import com.github.overpass.gather.di.register.add.AddPersonalDataComponentManager
+import com.github.overpass.gather.di.register.confirm.ConfirmationComponentManager
+import com.github.overpass.gather.di.register.signup.SignUpComponentManager
+import com.github.overpass.gather.di.search.SearchComponentManager
+import com.github.overpass.gather.di.splash.SplashComponentManager
 
 class AppComponentManager(private val appComponent: AppComponent) {
 
@@ -33,145 +30,93 @@ class AppComponentManager(private val appComponent: AppComponent) {
     private var registerComponentManager: RegisterComponentManager? = null
     private var meetingComponentManager: MeetingComponentManager? = null
     private var newMeetingComponentManager: NewMeetingComponentManager? = null
-    private var forgotComponent: ForgotComponent? = null
-    private var searchComponent: SearchComponent? = null
-    private var splashComponent: SplashComponent? = null
-    private var closeupComponent: CloseupComponent? = null
-    private var enrolledComponent: EnrolledComponent? = null
+    private var forgotComponentManager: ForgotComponentManager? = null
+    private var searchComponentManager: SearchComponentManager? = null
+    private var splashComponentManager: SplashComponentManager? = null
+    private var closeupComponentManager: CloseupComponentManager? = null
+    private var enrolledComponentManager: EnrolledComponentManager? = null
     private var mapComponentManager: MapComponentManager? = null
     private var profileComponentManager: ProfileComponentManager? = null
 
-    fun getSignInComponentManager(): SignInComponentManager =
-            signInComponentManager ?: SignInComponentManager { appComponent.getSignInComponent() }
+    fun getSignInComponentManager(): SignInComponentManager = signInComponentManager
+            ?: SignInComponentManager(appComponent.getSignInComponent())
                     .also { signInComponentManager = it }
 
-    fun getMapComponentManager(): MapComponentManager =
-            mapComponentManager ?: appComponent.getMapComponent()
-                    .also { mapComponentManager = MapComponentManager { it } }
-                    .let { mapComponentManager!! }
+    fun getMapComponentManager(): MapComponentManager = mapComponentManager
+            ?: MapComponentManager(appComponent.getMapComponent())
+                    .also { mapComponentManager = it }
 
     fun getMapDetailComponentManager(): MapDetailComponentManager =
             getMapComponentManager().getDetailComponentManager()
 
     fun getProfileComponentManager(): ProfileComponentManager =
-            profileComponentManager ?: ProfileComponentManager { appComponent.getProfileComponent() }
-                    .also { profileComponentManager = it }
+            profileComponentManager
+                    ?: ProfileComponentManager(appComponent.getProfileComponent())
+                            .also { profileComponentManager = it }
 
     fun getProfileDetailComponentManager(): ProfileDetailComponentManager =
             getProfileComponentManager().getDetailComponentManager()
 
-    fun getRegisterComponentFactory(): RegisterComponentManager =
-            registerComponentManager ?: appComponent.getRegisterComponentFactory()
-                    .also { registerComponentManager = RegisterComponentManager(it) }
-                    .let { registerComponentManager!! }
+    fun getRegisterComponentManager(): RegisterComponentManager = registerComponentManager
+            ?: RegisterComponentManager { step ->
+                appComponent.getRegisterComponentFactory().create(Integer(step))
+            }.also { registerComponentManager = it }
 
-    fun clearRegisterComponentFactory() {
-        registerComponentManager = null
-    }
+    fun getSignUpComponentManager(): SignUpComponentManager =
+            getRegisterComponentManager().getSignUpComponentManager()
 
-    fun getAddPersonalDataComponent(): AddPersonalDataComponent =
-            getRegisterComponentFactory().getAddPersonalDataComponent()
+    fun getConfirmationComponentManager(): ConfirmationComponentManager =
+            getRegisterComponentManager().getConfirmationComponentManager()
 
-    fun clearAddPersonalDataComponent() =
-            getRegisterComponentFactory().clearAddPersonalDataComponent()
+    fun getAddPersonalDataComponentManager(): AddPersonalDataComponentManager =
+            getRegisterComponentManager().getAddPersonalDataComponentManager()
 
-    fun getConfirmationComponent(): ConfirmationComponent =
-            getRegisterComponentFactory().getConfirmationComponent()
+    fun getSplashComponentManager(): SplashComponentManager = splashComponentManager
+            ?: SplashComponentManager(appComponent.getSplashComponent())
+                    .also { splashComponentManager = it }
 
-    fun clearConfirmationComponent() =
-            getRegisterComponentFactory().clearConfirmationComponent()
+    fun getCloseupComponentManager(): CloseupComponentManager = closeupComponentManager
+            ?: CloseupComponentManager(appComponent.getCloseupComponent())
+                    .also { closeupComponentManager = it }
 
-    fun getSignUpComponent(): SignUpComponent =
-            getRegisterComponentFactory().getSignUpComponent()
+    fun getEnrolledComponentManager(): EnrolledComponentManager = enrolledComponentManager
+            ?: EnrolledComponentManager(appComponent.getEnrolledComponent())
+                    .also { enrolledComponentManager = it }
 
-    fun clearSignUpComponent() =
-            getRegisterComponentFactory().clearSignUpComponent()
+    fun getForgotComponentManager(): ForgotComponentManager = forgotComponentManager
+            ?: ForgotComponentManager(appComponent.getForgotComponent())
+                    .also { forgotComponentManager = it }
 
-    fun getSplashComponent(): SplashComponent =
-            splashComponent ?: appComponent.getSplashComponent()
-                    .also { splashComponent = it }
+    fun getSearchComponentManager(): SearchComponentManager = searchComponentManager
+            ?: SearchComponentManager(appComponent.getSearchComponent())
+                    .also { searchComponentManager = it }
 
-    fun clearSplashComponent() {
-        splashComponent = null
-    }
+    fun getMeetingComponentManager(): MeetingComponentManager = meetingComponentManager
+            ?: MeetingComponentManager(appComponent.getMeetingComponent())
+                    .also { meetingComponentManager = it }
 
-    fun getCloseupComponent(): CloseupComponent =
-            closeupComponent ?: appComponent.getCloseupComponent()
-                    .also { closeupComponent = it }
+    fun getUsersComponentManager(): UsersComponentManager =
+            getMeetingComponentManager().getUsersComponentManager()
 
-    fun clearCloseupComponent() {
-        closeupComponent = null
-    }
+    fun getChatComponentManager(): ChatComponentManager =
+            getMeetingComponentManager().getChatComponentManager()
 
-    fun getEnrolledComponent(): EnrolledComponent =
-            enrolledComponent ?: appComponent.getEnrolledComponent()
-                    .also { enrolledComponent = it }
+    fun getMeetingDetailsComponentManager(): MeetingDetailComponentManager =
+            getMeetingComponentManager().getMeetingDetailComponentManager()
 
-    fun clearEnrolledComponent() {
-        enrolledComponent = null
-    }
+    fun getDeleteMessageComponentManager(): DeleteMessageComponentManager =
+            getMeetingComponentManager().getDeleteMessageComponentManager()
 
-    fun getMeetingComponent(): MeetingComponentManager =
-            meetingComponentManager ?: appComponent.getMeetingComponent()
-                    .also { meetingComponentManager = MeetingComponentManager(it) }
-                    .let { meetingComponentManager!! }
+    fun getAttachmentsComponentManager(): AttachmentsComponentManager =
+            getMeetingComponentManager().getAttachmentsComponentManager()
 
-    fun clearMeetingComponent() {
-        meetingComponentManager = null
-    }
+    fun getAttachmentsDetailsComponentManager(): AttachmentDetailsComponentManager =
+            getMeetingComponentManager().getAttachmentDetailComponentManager()
 
-    fun getUsersComponent(): UsersComponent = getMeetingComponent().getUsersComponent()
+    fun getJoinComponentManager(): JoinComponentManager =
+            getMeetingComponentManager().getJoinComponentManager()
 
-    fun clearUsersComponent() = getMeetingComponent().clearUsersComponent()
-
-    fun getSearchComponent(): SearchComponent =
-            searchComponent ?: appComponent.getSearchComponent()
-                    .also { searchComponent = it }
-
-    fun clearSearchComponent() {
-        searchComponent = null
-    }
-
-    fun getForgotComponent(): ForgotComponent =
-            forgotComponent ?: appComponent.getForgotComponent()
-                    .also { forgotComponent = it }
-
-    fun clearForgotComponent() {
-        forgotComponent = null
-    }
-
-    fun getChatComponent(): ChatComponent = getMeetingComponent().getChatComponent()
-
-    fun clearChatComponent() {
-        getMeetingComponent().clearChatComponent()
-    }
-
-    fun getMeetingDetailsComponent(): MeetingDetailComponent =
-            getMeetingComponent().getMeetingDetailComponent()
-
-    fun clearMeetingDetailsComponent() = getMeetingComponent().clearMeetingDetailsComponent()
-
-    fun getDeleteMessageComponent(): DeleteMessageComponent =
-            getMeetingComponent().getDeleteMessageComponent()
-
-    fun clearDeleteMessageComponent() = getMeetingComponent().clearDeleteMessageComponent()
-
-    fun getAttachmentsComponent(): AttachmentsComponent =
-            getMeetingComponent().getAttachmentsComponent()
-
-    fun clearAttachmentsComponent() = getMeetingComponent().clearAttachmentsComponent()
-
-    fun getAttachmentsDetailsComponent(): AttachmentsDetailsComponent =
-            getMeetingComponent().getAttachmentDetailComponent()
-
-    fun clearAttachmentDetailsComponent() = getMeetingComponent().cleatAttachmentDetailComponent()
-
-    fun getJoinComponent(): JoinComponent = getMeetingComponent().getJoinComponent()
-
-    fun clearJoinComponent() = getMeetingComponent().clearJoinComponent()
-
-    fun getNewMeetingComponentManager(): NewMeetingComponentManager =
-            newMeetingComponentManager ?: appComponent.getNewMeetingComponent()
-                    .also { newMeetingComponentManager = NewMeetingComponentManager { it } }
-                    .let { newMeetingComponentManager!! }
+    fun getNewMeetingComponentManager(): NewMeetingComponentManager = newMeetingComponentManager
+            ?: NewMeetingComponentManager(appComponent.getNewMeetingComponent())
+                    .also { newMeetingComponentManager = it }
 }

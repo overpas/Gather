@@ -16,6 +16,8 @@ import androidx.fragment.app.FragmentManager;
 import com.airbnb.lottie.LottieAnimationView;
 import com.github.overpass.gather.App;
 import com.github.overpass.gather.R;
+import com.github.overpass.gather.di.meeting.chat.details.MeetingDetailComponent;
+import com.github.overpass.gather.di.meeting.chat.details.MeetingDetailComponentManager;
 import com.github.overpass.gather.model.commons.DateFormatting;
 import com.github.overpass.gather.model.commons.Fragments;
 import com.github.overpass.gather.screen.base.BaseDialogFragment;
@@ -27,9 +29,11 @@ import org.jetbrains.annotations.NotNull;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
+import kotlin.Unit;
+
 import static com.github.overpass.gather.model.commons.UIUtil.toast;
 
-public class MeetingDetailsDialogFragment extends BaseDialogFragment<MeetingDetailsViewModel> {
+public class MeetingDetailsDialogFragment extends BaseDialogFragment<MeetingDetailsViewModel, MeetingDetailComponent> {
 
     private static final String TAG = "MeetingDetailsDialogFra";
     private static final String MEETING_ID_KEY = "MEETING_ID_KEY";
@@ -39,11 +43,22 @@ public class MeetingDetailsDialogFragment extends BaseDialogFragment<MeetingDeta
     private TextView tvDate;
     private LottieAnimationView lavProgress;
 
+    @NotNull
     @Override
-    protected void inject() {
-        App.Companion.getAppComponentManager(this)
-                .getMeetingDetailsComponent()
-                .inject(this);
+    protected MeetingDetailComponentManager getComponentManager() {
+        return App.Companion
+                .getAppComponentManager(this)
+                .getMeetingDetailsComponentManager();
+    }
+
+    @Override
+    protected MeetingDetailComponent createComponent() {
+        return getComponentManager().getOrCreate(Unit.INSTANCE);
+    }
+
+    @Override
+    protected void onComponentCreated(MeetingDetailComponent component) {
+        component.inject(this);
     }
 
     @NotNull
@@ -70,13 +85,6 @@ public class MeetingDetailsDialogFragment extends BaseDialogFragment<MeetingDeta
     public void onBind() {
         super.onBind();
         viewModel.loadMeeting(getMeetingId()).observe(this, this::handleMeeting);
-    }
-
-    @Override
-    protected void clearComponent() {
-        super.clearComponent();
-        App.Companion.getAppComponentManager(this)
-                .clearMeetingDetailsComponent();
     }
 
     private void handleMeeting(LoadMeetingStatus loadMeetingStatus) {

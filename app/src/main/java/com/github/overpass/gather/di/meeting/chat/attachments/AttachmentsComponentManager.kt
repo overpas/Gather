@@ -1,29 +1,22 @@
 package com.github.overpass.gather.di.meeting.chat.attachments
 
 import android.util.Log
-import com.github.overpass.gather.di.meeting.chat.attachments.detail.AttachmentsDetailsComponent
-import com.github.overpass.gather.screen.meeting.chat.attachments.PhotosActivity
+import com.github.overpass.gather.di.ComponentManager
+import com.github.overpass.gather.di.meeting.chat.attachments.detail.AttachmentDetailsComponentManager
 
 class AttachmentsComponentManager(
-        private val attachmentsComponent: AttachmentsComponent
-) : AttachmentsComponent {
+        attachmentsComponent: AttachmentsComponent
+) : ComponentManager<Unit, AttachmentsComponent>({ attachmentsComponent }) {
 
     init {
         Log.w(this::class.java.simpleName, "AttachmentsComponentManager Created")
     }
 
-    private var detailsComponent: AttachmentsDetailsComponent? = null
+    private var detailsComponentManager: AttachmentDetailsComponentManager? = null
 
-    override fun getDetailComponent(): AttachmentsDetailsComponent =
-            detailsComponent ?: attachmentsComponent.getDetailComponent()
-                    .also { detailsComponent = it }
-
-    fun clearDetailComponent() {
-        detailsComponent = null
-    }
-
-    override fun inject(photosActivity: PhotosActivity) =
-            attachmentsComponent.inject(photosActivity)
+    fun getDetailComponentManager(): AttachmentDetailsComponentManager = detailsComponentManager
+            ?: AttachmentDetailsComponentManager(getOrCreate(Unit).getDetailComponent())
+                    .also { detailsComponentManager = it }
 
     protected fun finalize() {
         Log.w(this::class.java.simpleName, "AttachmentsComponentManager Destroyed")

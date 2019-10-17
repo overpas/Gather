@@ -7,26 +7,30 @@ import android.view.View
 import androidx.lifecycle.Observer
 import com.github.overpass.gather.App.Companion.appComponentManager
 import com.github.overpass.gather.R
+import com.github.overpass.gather.di.meeting.MeetingComponent
+import com.github.overpass.gather.di.meeting.MeetingComponentManager
 import com.github.overpass.gather.model.commons.Constants.MEETING_ID_KEY
 import com.github.overpass.gather.model.commons.FragmentUtils
-import com.github.overpass.gather.screen.base.BaseActivityKt
+import com.github.overpass.gather.screen.base.BaseActivity
 import com.github.overpass.gather.screen.meeting.chat.ChatFragment
 import com.github.overpass.gather.screen.meeting.join.JoinFragment
 import kotlinx.android.synthetic.main.activity_meeting.*
 
-class MeetingActivity : BaseActivityKt<MeetingViewModel>() {
+class MeetingActivity : BaseActivity<MeetingViewModel, MeetingComponent>() {
 
-    override fun getLayoutRes(): Int {
-        return R.layout.activity_meeting
+    override val componentManager: MeetingComponentManager
+        get() = appComponentManager.getMeetingComponentManager()
+
+    override fun createComponent(): MeetingComponent = componentManager.getOrCreate(Unit)
+
+    override fun onComponentCreated(component: MeetingComponent) {
+        component.inject(this)
     }
+
+    override val layoutRes: Int = R.layout.activity_meeting
 
     override fun createViewModel(): MeetingViewModel {
         return viewModelProvider.get(MeetingViewModel::class.java)
-    }
-
-    override fun inject() {
-        appComponentManager.getMeetingComponent()
-                .inject(this)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,11 +39,6 @@ class MeetingActivity : BaseActivityKt<MeetingViewModel>() {
             lavProgress.visibility = View.VISIBLE
             viewModel.isAllowed(getMeetingId()).observe(this, Observer<Boolean> { this.handleIsAllowed(it) })
         }
-    }
-
-    override fun clearComponent() {
-        super.clearComponent()
-        appComponentManager.clearMeetingComponent()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

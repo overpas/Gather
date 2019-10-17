@@ -10,8 +10,8 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import com.github.overpass.gather.App.Companion.appComponentManager
 import com.github.overpass.gather.R
-import com.github.overpass.gather.di.ComponentManager
 import com.github.overpass.gather.di.newmeeting.NewMeetingComponent
+import com.github.overpass.gather.di.newmeeting.NewMeetingComponentManager
 import com.github.overpass.gather.model.commons.UIUtil.*
 import com.github.overpass.gather.model.commons.getDoubleExtra
 import com.github.overpass.gather.screen.base.BaseActivity
@@ -22,10 +22,12 @@ import kotlinx.android.synthetic.main.activity_new_meeting.*
 
 class NewMeetingActivity : BaseActivity<NewMeetingViewModel, NewMeetingComponent>() {
 
-    override val componentManager: ComponentManager<NewMeetingComponent> =
+    override val componentManager: NewMeetingComponentManager =
             appComponentManager.getNewMeetingComponentManager()
 
     override val layoutRes: Int = R.layout.activity_new_meeting
+
+    override fun createComponent(): NewMeetingComponent = componentManager.getOrCreate(Unit)
 
     override fun onComponentCreated(component: NewMeetingComponent) {
         component.inject(this)

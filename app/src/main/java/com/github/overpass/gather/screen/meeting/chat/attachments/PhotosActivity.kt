@@ -8,25 +8,30 @@ import androidx.appcompat.app.ActionBar
 import androidx.core.content.ContextCompat
 import com.github.overpass.gather.App.Companion.appComponentManager
 import com.github.overpass.gather.R
+import com.github.overpass.gather.di.meeting.chat.attachments.AttachmentsComponent
+import com.github.overpass.gather.di.meeting.chat.attachments.AttachmentsComponentManager
 import com.github.overpass.gather.model.commons.Constants.MEETING_ID_KEY
 import com.github.overpass.gather.model.commons.FragmentUtils
 import com.github.overpass.gather.model.commons.getStringExtra
-import com.github.overpass.gather.screen.base.BaseActivityKt
+import com.github.overpass.gather.screen.base.BaseActivity
 import com.github.overpass.gather.screen.dialog.PickImageDialogFragment
 
-class PhotosActivity : BaseActivityKt<GeneralPhotoViewModel>(), PickImageDialogFragment.OnClickListener {
+class PhotosActivity : BaseActivity<GeneralPhotoViewModel, AttachmentsComponent>(),
+        PickImageDialogFragment.OnClickListener {
 
-    override fun getLayoutRes(): Int {
-        return R.layout.activity_photos
+    override val componentManager: AttachmentsComponentManager =
+            appComponentManager.getAttachmentsComponentManager()
+
+    override fun createComponent(): AttachmentsComponent = componentManager.getOrCreate(Unit)
+
+    override fun onComponentCreated(component: AttachmentsComponent) {
+        component.inject(this)
     }
+
+    override val layoutRes: Int = R.layout.activity_photos
 
     override fun createViewModel(): GeneralPhotoViewModel {
         return viewModelProvider.get(GeneralPhotoViewModel::class.java)
-    }
-
-    override fun inject() {
-        appComponentManager.getAttachmentsComponent()
-                .inject(this)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,11 +40,6 @@ class PhotosActivity : BaseActivityKt<GeneralPhotoViewModel>(), PickImageDialogF
             FragmentUtils.replace(supportFragmentManager, R.id.flPhotosContainer,
                     PhotosFragment.newInstance(getStringExtra(MEETING_ID_KEY)), false)
         }
-    }
-
-    override fun clearComponent() {
-        super.clearComponent()
-        appComponentManager.clearAttachmentsComponent()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

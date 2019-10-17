@@ -11,6 +11,8 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.github.overpass.gather.App;
 import com.github.overpass.gather.R;
+import com.github.overpass.gather.di.meeting.chat.attachments.detail.AttachmentDetailsComponentManager;
+import com.github.overpass.gather.di.meeting.chat.attachments.detail.AttachmentsDetailsComponent;
 import com.github.overpass.gather.screen.base.personal.DataFragment;
 import com.github.overpass.gather.screen.dialog.progress.determinate.ProgressPercentDialogFragment;
 import com.github.overpass.gather.screen.map.Meeting;
@@ -23,11 +25,12 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import kotlin.Unit;
 
 import static com.github.overpass.gather.model.commons.Constants.MEETING_ID_KEY;
 import static com.github.overpass.gather.model.commons.UIUtil.snackbar;
 
-public class PhotosFragment extends DataFragment<PhotosViewModel> {
+public class PhotosFragment extends DataFragment<PhotosViewModel, AttachmentsDetailsComponent> {
 
     @BindView(R.id.rvAttachments)
     RecyclerView rvAttachments;
@@ -40,6 +43,24 @@ public class PhotosFragment extends DataFragment<PhotosViewModel> {
 
     @NotNull
     @Override
+    protected AttachmentDetailsComponentManager getComponentManager() {
+        return App.Companion
+                .getAppComponentManager(this)
+                .getAttachmentsDetailsComponentManager();
+    }
+
+    @Override
+    protected AttachmentsDetailsComponent createComponent() {
+        return getComponentManager().getOrCreate(Unit.INSTANCE);
+    }
+
+    @Override
+    protected void onComponentCreated(AttachmentsDetailsComponent component) {
+        component.inject(this);
+    }
+
+    @NotNull
+    @Override
     protected PhotosViewModel createViewModel() {
         return getViewModelProvider().get(PhotosViewModel.class);
     }
@@ -47,13 +68,6 @@ public class PhotosFragment extends DataFragment<PhotosViewModel> {
     @Override
     protected int getLayoutRes() {
         return R.layout.fragment_photos;
-    }
-
-    @Override
-    protected void inject() {
-        App.Companion.getAppComponentManager(this)
-                .getAttachmentsDetailsComponent()
-                .inject(this);
     }
 
     @Override
@@ -68,10 +82,8 @@ public class PhotosFragment extends DataFragment<PhotosViewModel> {
     }
 
     @Override
-    protected void clearComponent() {
-        super.clearComponent();
-        App.Companion.getAppComponentManager(this)
-                .clearAttachmentDetailsComponent();
+    public void setRetainInstance(boolean retain) {
+        super.setRetainInstance(retain);
     }
 
     private void handleUploadProgress(int percent) {

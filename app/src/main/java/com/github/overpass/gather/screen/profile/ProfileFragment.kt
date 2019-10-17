@@ -9,6 +9,7 @@ import com.github.overpass.gather.App.Companion.appComponentManager
 import com.github.overpass.gather.R
 import com.github.overpass.gather.di.ComponentManager
 import com.github.overpass.gather.di.profile.detail.ProfileDetailComponent
+import com.github.overpass.gather.di.profile.detail.ProfileDetailComponentManager
 import com.github.overpass.gather.model.commons.UIUtil.snackbar
 import com.github.overpass.gather.screen.auth.login.LoginActivity
 import com.github.overpass.gather.screen.auth.register.add.AddDataStatus
@@ -21,8 +22,10 @@ import kotlinx.android.synthetic.main.fragment_profile.*
 
 class ProfileFragment : DataFragment<ProfileViewModel, ProfileDetailComponent>(), BackPressFragment {
 
-    override val componentManager: ComponentManager<ProfileDetailComponent> =
+    override val componentManager: ProfileDetailComponentManager =
             appComponentManager.getProfileDetailComponentManager()
+
+    override fun createComponent(): ProfileDetailComponent = componentManager.getOrCreate(Unit)
 
     override fun onComponentCreated(component: ProfileDetailComponent) {
         component.inject(this)

@@ -9,25 +9,29 @@ import android.view.animation.LinearInterpolator
 import androidx.lifecycle.Observer
 import com.github.overpass.gather.App.Companion.appComponentManager
 import com.github.overpass.gather.R
+import com.github.overpass.gather.di.splash.SplashComponent
+import com.github.overpass.gather.di.splash.SplashComponentManager
 import com.github.overpass.gather.screen.auth.login.LoginActivity
 import com.github.overpass.gather.screen.auth.register.RegisterActivity
-import com.github.overpass.gather.screen.base.BaseActivityKt
+import com.github.overpass.gather.screen.base.BaseActivity
 import com.github.overpass.gather.screen.map.MapActivity
 import kotlinx.android.synthetic.main.activity_splash_screen.*
 
-class SplashScreenActivity : BaseActivityKt<SplashViewModel>() {
+class SplashScreenActivity : BaseActivity<SplashViewModel, SplashComponent>() {
 
-    override fun getLayoutRes(): Int {
-        return R.layout.activity_splash_screen
+    override val componentManager: SplashComponentManager
+        get() = appComponentManager.getSplashComponentManager()
+
+    override fun createComponent(): SplashComponent = componentManager.getOrCreate(Unit)
+
+    override fun onComponentCreated(component: SplashComponent) {
+        component.inject(this)
     }
+
+    override val layoutRes: Int = R.layout.activity_splash_screen
 
     override fun createViewModel(): SplashViewModel {
         return viewModelProvider.get(SplashViewModel::class.java)
-    }
-
-    override fun inject() {
-        appComponentManager.getSplashComponent()
-                .inject(this)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,11 +47,6 @@ class SplashScreenActivity : BaseActivityKt<SplashViewModel>() {
         viewModel.unauthorized().observe(this, Observer { handleUnauthorized() })
         viewModel.notAddedData().observe(this, Observer { handleNotAddedData() })
         viewModel.unconfirmedEmail().observe(this, Observer { handleUnconfirmedEmail() })
-    }
-
-    override fun clearComponent() {
-        super.clearComponent()
-        appComponentManager.clearSplashComponent()
     }
 
     private fun playAnimation() {

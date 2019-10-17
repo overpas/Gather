@@ -22,7 +22,7 @@ abstract class BaseFragment<VM : ViewModel, C> : Fragment() {
 
     protected abstract val layoutRes: Int
 
-    protected abstract val componentManager: ComponentManager<C>
+    protected abstract val componentManager: ComponentManager<*, C>
 
     protected val viewModelProvider: ViewModelProvider
         get() = ViewModelProviders.of(this, viewModelFactory)
@@ -41,7 +41,7 @@ abstract class BaseFragment<VM : ViewModel, C> : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        onComponentCreated(componentManager.get())
+        onComponentCreated(createComponent())
         viewModel = createViewModel()
         onBind()
     }
@@ -52,6 +52,8 @@ abstract class BaseFragment<VM : ViewModel, C> : Fragment() {
             clearComponent()
         }
     }
+
+    protected abstract fun createComponent(): C
 
     protected abstract fun onComponentCreated(component: C)
 

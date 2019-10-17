@@ -22,14 +22,14 @@ abstract class BaseActivity<VM : ViewModel, C> : AppCompatActivity() {
     protected val viewModelProvider: ViewModelProvider
         get() = ViewModelProviders.of(this, viewModelFactory)
 
-    protected abstract val componentManager: ComponentManager<C>
+    protected abstract val componentManager: ComponentManager<*, C>
 
     protected abstract val layoutRes: Int
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        onComponentCreated(createComponent())
         super.onCreate(savedInstanceState)
         setContentView(layoutRes)
-        onComponentCreated(componentManager.get())
         ButterKnife.bind(this)
         setupToolbar()
         viewModel = createViewModel()
@@ -42,6 +42,8 @@ abstract class BaseActivity<VM : ViewModel, C> : AppCompatActivity() {
             clearComponent()
         }
     }
+
+    protected abstract fun createComponent(): C
 
     protected abstract fun onComponentCreated(component: C)
 

@@ -12,6 +12,8 @@ import com.annimon.stream.Stream;
 import com.bumptech.glide.Glide;
 import com.github.overpass.gather.App;
 import com.github.overpass.gather.R;
+import com.github.overpass.gather.di.meeting.chat.ChatComponent;
+import com.github.overpass.gather.di.meeting.chat.ChatComponentManager;
 import com.github.overpass.gather.screen.create.MeetingType;
 import com.github.overpass.gather.screen.dialog.delete.DeleteDialogFragment;
 import com.github.overpass.gather.screen.dialog.details.MeetingDetailsDialogFragment;
@@ -30,10 +32,11 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 import butterknife.BindView;
+import kotlin.Unit;
 
 import static com.github.overpass.gather.model.commons.UIUtil.snackbar;
 
-public class ChatFragment extends BaseMeetingFragment<ChatViewModel> {
+public class ChatFragment extends BaseMeetingFragment<ChatViewModel, ChatComponent> {
 
     @BindView(R.id.input)
     MessageInput messageInput;
@@ -48,6 +51,16 @@ public class ChatFragment extends BaseMeetingFragment<ChatViewModel> {
 
     private MessagesListAdapter<IMessageImpl> adapter;
 
+    @Override
+    protected ChatComponent createComponent() {
+        return getComponentManager().getOrCreate(Unit.INSTANCE);
+    }
+
+    @Override
+    protected void onComponentCreated(ChatComponent component) {
+        component.inject(this);
+    }
+
     @NotNull
     @Override
     protected ChatViewModel createViewModel() {
@@ -59,11 +72,11 @@ public class ChatFragment extends BaseMeetingFragment<ChatViewModel> {
         return R.layout.fragment_chat;
     }
 
+    @NotNull
     @Override
-    protected void inject() {
-        App.Companion.getAppComponentManager(this)
-                .getChatComponent()
-                .inject(this);
+    protected ChatComponentManager getComponentManager() {
+        return App.Companion.getAppComponentManager(this)
+                .getChatComponentManager();
     }
 
     @Override
@@ -86,13 +99,6 @@ public class ChatFragment extends BaseMeetingFragment<ChatViewModel> {
         });
         getViewModel().checkUserRole(getMeetingId()).observe(getViewLifecycleOwner(), this::handleRole);
         getViewModel().selectedItems().observe(getViewLifecycleOwner(), this::handleSelection);
-    }
-
-    @Override
-    protected void clearComponent() {
-        super.clearComponent();
-        App.Companion.getAppComponentManager(this)
-                .clearChatComponent();
     }
 
     @Override

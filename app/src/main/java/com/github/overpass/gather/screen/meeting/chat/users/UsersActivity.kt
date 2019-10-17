@@ -11,9 +11,11 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.overpass.gather.App.Companion.appComponentManager
 import com.github.overpass.gather.R
+import com.github.overpass.gather.di.meeting.chat.users.UsersComponent
+import com.github.overpass.gather.di.meeting.chat.users.UsersComponentManager
 import com.github.overpass.gather.model.commons.UIUtil.snackbar
 import com.github.overpass.gather.model.commons.UIUtil.toast
-import com.github.overpass.gather.screen.base.BaseActivityKt
+import com.github.overpass.gather.screen.base.BaseActivity
 import com.github.overpass.gather.screen.dialog.progress.indeterminate.ProgressDialogFragment
 import com.github.overpass.gather.screen.map.AuthUser
 import com.github.overpass.gather.screen.meeting.chat.users.list.PendingUsersAdapter
@@ -22,19 +24,21 @@ import com.github.overpass.gather.screen.meeting.chat.users.model.Acceptance
 import com.github.overpass.gather.screen.meeting.chat.users.model.LoadUsersStatus
 import kotlinx.android.synthetic.main.activity_users.*
 
-class UsersActivity : BaseActivityKt<UsersViewModel>() {
+class UsersActivity : BaseActivity<UsersViewModel, UsersComponent>() {
 
     private lateinit var membersAdapter: UsersAdapter
     private lateinit var pendingUsersAdapter: PendingUsersAdapter
 
-    override fun getLayoutRes(): Int {
-        return R.layout.activity_users
+    override val componentManager: UsersComponentManager
+        get() = appComponentManager.getUsersComponentManager()
+
+    override fun createComponent(): UsersComponent = componentManager.getOrCreate(Unit)
+
+    override fun onComponentCreated(component: UsersComponent) {
+        component.inject(this)
     }
 
-    override fun inject() {
-        appComponentManager.getUsersComponent()
-                .inject(this)
-    }
+    override val layoutRes: Int = R.layout.activity_users
 
     override fun createViewModel(): UsersViewModel {
         return viewModelProvider.get(UsersViewModel::class.java)
@@ -50,11 +54,6 @@ class UsersActivity : BaseActivityKt<UsersViewModel>() {
         viewModel.getMembers(getMeetingId()).observe(this, Observer<LoadUsersStatus> { this.handleUsers(it) })
         viewModel.getPendingUsers(getMeetingId()).observe(this, Observer<LoadUsersStatus> { this.handleUsers(it) })
         viewModel.checkUserRole(getMeetingId()).observe(this, Observer<AuthUser.Role> { this.handleRole(it) })
-    }
-
-    override fun clearComponent() {
-        super.clearComponent()
-        appComponentManager.clearUsersComponent()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

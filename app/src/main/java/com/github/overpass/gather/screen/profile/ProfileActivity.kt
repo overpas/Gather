@@ -3,8 +3,8 @@ package com.github.overpass.gather.screen.profile
 import android.os.Bundle
 import com.github.overpass.gather.App.Companion.appComponentManager
 import com.github.overpass.gather.R
-import com.github.overpass.gather.di.ComponentManager
 import com.github.overpass.gather.di.profile.ProfileComponent
+import com.github.overpass.gather.di.profile.ProfileComponentManager
 import com.github.overpass.gather.model.commons.FragmentUtils
 import com.github.overpass.gather.screen.base.BackPressActivity
 import com.github.overpass.gather.screen.dialog.PickImageDialogFragment
@@ -12,10 +12,12 @@ import com.github.overpass.gather.screen.dialog.PickImageDialogFragment
 class ProfileActivity : BackPressActivity<GeneralProfileViewModel, ProfileComponent>(),
         PickImageDialogFragment.OnClickListener {
 
-    override val componentManager: ComponentManager<ProfileComponent> =
+    override val componentManager: ProfileComponentManager =
             appComponentManager.getProfileComponentManager()
 
     override val layoutRes: Int = R.layout.activity_profile
+
+    override fun createComponent(): ProfileComponent = componentManager.getOrCreate(Unit)
 
     override fun onComponentCreated(component: ProfileComponent) {
         component.inject(this)

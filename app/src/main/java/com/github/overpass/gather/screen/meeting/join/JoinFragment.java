@@ -12,6 +12,8 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.github.overpass.gather.App;
 import com.github.overpass.gather.R;
+import com.github.overpass.gather.di.meeting.join.JoinComponent;
+import com.github.overpass.gather.di.meeting.join.JoinComponentManager;
 import com.github.overpass.gather.model.commons.DateFormatting;
 import com.github.overpass.gather.model.commons.FragmentUtils;
 import com.github.overpass.gather.screen.create.MeetingType;
@@ -28,10 +30,11 @@ import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import kotlin.Unit;
 
 import static com.github.overpass.gather.model.commons.UIUtil.snackbar;
 
-public class JoinFragment extends BaseMeetingFragment<JoinViewModel> {
+public class JoinFragment extends BaseMeetingFragment<JoinViewModel, JoinComponent> {
 
     @BindView(R.id.flProgress)
     FrameLayout flProgress;
@@ -54,6 +57,24 @@ public class JoinFragment extends BaseMeetingFragment<JoinViewModel> {
 
     @NotNull
     @Override
+    protected JoinComponentManager getComponentManager() {
+        return App.Companion
+                .getAppComponentManager(this)
+                .getJoinComponentManager();
+    }
+
+    @Override
+    protected JoinComponent createComponent() {
+        return getComponentManager().getOrCreate(Unit.INSTANCE);
+    }
+
+    @Override
+    protected void onComponentCreated(JoinComponent component) {
+        component.inject(this);
+    }
+
+    @NotNull
+    @Override
     protected JoinViewModel createViewModel() {
         return getViewModelProvider().get(JoinViewModel.class);
     }
@@ -64,24 +85,10 @@ public class JoinFragment extends BaseMeetingFragment<JoinViewModel> {
     }
 
     @Override
-    protected void inject() {
-        App.Companion.getAppComponentManager(this)
-                .getJoinComponent()
-                .inject(this);
-    }
-
-    @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         toolbarJoin.setNavigationOnClickListener(navIcon -> requireActivity().finish());
         flProgress.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    protected void clearComponent() {
-        super.clearComponent();
-        App.Companion.getAppComponentManager(this)
-                .clearJoinComponent();
     }
 
     @Override

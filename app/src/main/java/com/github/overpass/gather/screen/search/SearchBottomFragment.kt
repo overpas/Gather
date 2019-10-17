@@ -6,25 +6,29 @@ import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.github.overpass.gather.App.Companion.appComponentManager
 import com.github.overpass.gather.R
+import com.github.overpass.gather.di.search.SearchComponent
+import com.github.overpass.gather.di.search.SearchComponentManager
 import com.github.overpass.gather.model.repo.meeting.MeetingWithId
 import com.github.overpass.gather.screen.base.BaseBottomSheetDialogFragment
 import com.github.overpass.gather.screen.meeting.MeetingActivity
 import kotlinx.android.synthetic.main.fragment_bottom_search.*
 
-class SearchBottomFragment : BaseBottomSheetDialogFragment<SearchViewModel>() {
+class SearchBottomFragment : BaseBottomSheetDialogFragment<SearchViewModel, SearchComponent>() {
 
     private lateinit var meetingsAdapter: MeetingsAdapter
 
-    override fun getLayoutRes(): Int {
-        return R.layout.fragment_bottom_search
+    override val componentManager: SearchComponentManager
+        get() = appComponentManager.getSearchComponentManager()
+
+    override fun createComponent(): SearchComponent = componentManager.getOrCreate(Unit)
+
+    override fun onComponentCreated(component: SearchComponent) {
+        component.inject(this)
     }
 
-    override fun inject() {
-        componentManager
-                .getSearchComponent()
-                .inject(this)
-    }
+    override val layoutRes: Int = R.layout.fragment_bottom_search
 
     override fun createViewModel(): SearchViewModel {
         return viewModelProvider.get(SearchViewModel::class.java)
@@ -58,11 +62,6 @@ class SearchBottomFragment : BaseBottomSheetDialogFragment<SearchViewModel>() {
                 return false
             }
         })
-    }
-
-    override fun clearComponent() {
-        super.clearComponent()
-        componentManager.clearSearchComponent()
     }
 
     companion object {

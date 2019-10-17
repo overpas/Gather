@@ -7,8 +7,8 @@ import android.util.Log
 import androidx.lifecycle.Observer
 import com.github.overpass.gather.App.Companion.appComponentManager
 import com.github.overpass.gather.R
-import com.github.overpass.gather.di.ComponentManager
 import com.github.overpass.gather.di.map.detail.MapDetailComponent
+import com.github.overpass.gather.di.map.detail.MapDetailComponentManager
 import com.github.overpass.gather.model.repo.icon.IconRepo
 import com.github.overpass.gather.screen.base.BackPressFragment
 import com.github.overpass.gather.screen.map.Meeting
@@ -25,8 +25,10 @@ class MapFragment : BaseMapFragment<MapDetailViewModel, MapDetailComponent>(), B
 
     override val layoutRes = R.layout.fragment_map
 
-    override val componentManager: ComponentManager<MapDetailComponent> =
+    override val componentManager: MapDetailComponentManager =
             appComponentManager.getMapDetailComponentManager()
+
+    override fun createComponent(): MapDetailComponent = componentManager.getOrCreate(Unit)
 
     override fun onComponentCreated(component: MapDetailComponent) {
         component.inject(this)

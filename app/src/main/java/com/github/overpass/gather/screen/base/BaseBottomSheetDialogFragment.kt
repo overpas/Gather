@@ -8,10 +8,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import butterknife.ButterKnife
+import com.github.overpass.gather.di.ComponentManager
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import javax.inject.Inject
 
-abstract class BaseBottomSheetDialogFragment<VM : ViewModel> : BottomSheetDialogFragment() {
+abstract class BaseBottomSheetDialogFragment<VM : ViewModel, C> : BottomSheetDialogFragment() {
 
     @Inject
     protected lateinit var viewModelFactory: ViewModelFactory
@@ -21,10 +22,14 @@ abstract class BaseBottomSheetDialogFragment<VM : ViewModel> : BottomSheetDialog
     protected val viewModelProvider: ViewModelProvider
         get() = ViewModelProviders.of(this, viewModelFactory)
 
+    protected abstract val layoutRes: Int
+
+    protected abstract val componentManager: ComponentManager<*, C>
+
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(getLayoutRes(), container, false)
+        val view = inflater.inflate(layoutRes, container, false)
         // TODO: Remove Butterknife
         ButterKnife.bind(this, view)
         return view
@@ -32,7 +37,7 @@ abstract class BaseBottomSheetDialogFragment<VM : ViewModel> : BottomSheetDialog
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        inject()
+        onComponentCreated(createComponent())
         viewModel = createViewModel()
         onBind()
     }
@@ -44,13 +49,15 @@ abstract class BaseBottomSheetDialogFragment<VM : ViewModel> : BottomSheetDialog
         }
     }
 
-    protected abstract fun getLayoutRes(): Int
+    protected abstract fun createComponent(): C
 
-    protected abstract fun inject()
+    protected abstract fun onComponentCreated(component: C)
 
     protected abstract fun createViewModel(): VM
 
     protected open fun onBind() {}
 
-    protected open fun clearComponent() {}
+    protected open fun clearComponent() {
+        componentManager.clear()
+    }
 }

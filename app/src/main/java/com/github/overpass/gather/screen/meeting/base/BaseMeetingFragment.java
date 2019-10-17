@@ -4,10 +4,11 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 
+import com.github.overpass.gather.screen.base.BaseFragment;
 import com.github.overpass.gather.screen.base.BaseFragmentKt;
 
-public abstract class BaseMeetingFragment<VM extends BaseMeetingViewModel>
-        extends BaseFragmentKt<VM> {
+public abstract class BaseMeetingFragment<VM extends BaseMeetingViewModel, C>
+        extends BaseFragment<VM, C> {
 
     private static final String MEETING_ID_KEY = "MEETING_ID_KEY";
 
