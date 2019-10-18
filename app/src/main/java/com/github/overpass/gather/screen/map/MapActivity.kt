@@ -1,6 +1,7 @@
 package com.github.overpass.gather.screen.map
 
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 import com.github.overpass.gather.App.Companion.componentManager
 import com.github.overpass.gather.R
 import com.github.overpass.gather.model.commons.FragmentUtils
@@ -20,6 +21,10 @@ class MapActivity : BackPressActivity<MapViewModel>() {
     override fun inject() {
         componentManager.getMapComponent(lifecycle)
                 .inject(this)
+    }
+
+    override fun onAttachFragment(fragment: Fragment) {
+        super.onAttachFragment(fragment)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

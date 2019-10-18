@@ -3,10 +3,8 @@ package com.github.overpass.gather
 import android.app.Application
 import com.github.overpass.gather.di.app.ComponentManager
 import com.github.overpass.gather.di.app.DaggerAppComponent
-import com.github.overpass.gather.screen.base.BaseActivityKt
-import com.github.overpass.gather.screen.base.BaseBottomSheetDialogFragment
-import com.github.overpass.gather.screen.base.BaseDialogFragment
-import com.github.overpass.gather.screen.base.BaseFragmentKt
+import com.github.overpass.gather.screen.base.*
+import com.github.overpass.gather.screen.base.retain.RetainComponentActivity
 import com.mapbox.mapboxsdk.Mapbox
 
 class App : Application() {
@@ -35,6 +33,8 @@ class App : Application() {
         private lateinit var instance: App
 
         val BaseActivityKt<*>.componentManager get() = instance.componentManager
+
+        val RetainComponentActivity<*, *>.componentManager get() = instance.componentManager
 
         val BaseFragmentKt<*>.componentManager get() = instance.componentManager
 

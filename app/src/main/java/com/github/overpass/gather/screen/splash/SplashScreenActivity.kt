@@ -9,25 +9,25 @@ import android.view.animation.LinearInterpolator
 import androidx.lifecycle.Observer
 import com.github.overpass.gather.App.Companion.componentManager
 import com.github.overpass.gather.R
+import com.github.overpass.gather.di.splash.SplashComponent
 import com.github.overpass.gather.screen.auth.login.LoginActivity
 import com.github.overpass.gather.screen.auth.register.RegisterActivity
-import com.github.overpass.gather.screen.base.BaseActivityKt
+import com.github.overpass.gather.screen.base.retain.RetainComponentActivity
 import com.github.overpass.gather.screen.map.MapActivity
 import kotlinx.android.synthetic.main.activity_splash_screen.*
 
-class SplashScreenActivity : BaseActivityKt<SplashViewModel>() {
+class SplashScreenActivity : RetainComponentActivity<SplashViewModel, SplashComponent>() {
 
-    override fun getLayoutRes(): Int {
-        return R.layout.activity_splash_screen
-    }
+    override val layoutRes: Int = R.layout.activity_splash_screen
+
+    override fun createComponent(): SplashComponent = componentManager.getSplashComponent()
 
     override fun createViewModel(): SplashViewModel {
         return viewModelProvider.get(SplashViewModel::class.java)
     }
 
-    override fun inject() {
-        componentManager.getSplashComponent()
-                .inject(this)
+    override fun onComponentCreated(component: SplashComponent) {
+        component.inject(this)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

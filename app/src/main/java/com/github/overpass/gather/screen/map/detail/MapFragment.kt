@@ -1,5 +1,6 @@
 package com.github.overpass.gather.screen.map.detail
 
+import android.content.Context
 import android.content.Intent
 import android.location.Location
 import android.os.Bundle
@@ -31,6 +32,14 @@ class MapFragment : BaseMapFragment<MapDetailViewModel>(), BackPressFragment, On
 
     override fun createViewModel(): MapDetailViewModel {
         return viewModelProvider.get(MapDetailViewModel::class.java)
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
