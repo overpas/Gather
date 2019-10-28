@@ -1,6 +1,7 @@
 package com.github.overpass.gather.screen.meeting.chat.attachments
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.MenuItem
@@ -33,7 +34,7 @@ class PhotosActivity : BaseActivityKt<GeneralPhotoViewModel>(), PickImageDialogF
         super.onCreate(savedInstanceState)
         if (savedInstanceState == null) {
             FragmentUtils.replace(supportFragmentManager, R.id.flPhotosContainer,
-                    PhotosFragment.newInstance(getStringExtra(MEETING_ID_KEY)), false)
+                    PhotosFragment.newInstance(), false)
         }
     }
 
@@ -61,8 +62,8 @@ class PhotosActivity : BaseActivityKt<GeneralPhotoViewModel>(), PickImageDialogF
 
     companion object {
 
-        fun start(context: Context, meetingId: String) {
-            start(context, PhotosActivity::class.java, MEETING_ID_KEY, meetingId)
+        fun start(context: Context) {
+            context.startActivity(Intent(context, PhotosActivity::class.java))
         }
     }
 }

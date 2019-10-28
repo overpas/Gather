@@ -63,7 +63,7 @@ public class PhotosFragment extends DataFragment<PhotosViewModel> {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setupList();
-        getViewModel().getMeeting(getMeetingId()).observe(getViewLifecycleOwner(), this::handleMeeting);
+        getViewModel().getMeeting().observe(getViewLifecycleOwner(), this::handleMeeting);
         getViewModel().getSuggestToChooseData().observe(getViewLifecycleOwner(), this::handleChoose);
         getViewModel().photoUploadSuccess().observe(getViewLifecycleOwner(), v -> handleUploadSuccess());
         getViewModel().photoUploadProgress().observe(getViewLifecycleOwner(), this::handleUploadProgress);
@@ -93,7 +93,7 @@ public class PhotosFragment extends DataFragment<PhotosViewModel> {
 
     @OnClick(R.id.fabAttach)
     public void doAction() {
-        getViewModel().doAction(getMeetingId());
+        getViewModel().doAction();
     }
 
     @Override
@@ -123,22 +123,7 @@ public class PhotosFragment extends DataFragment<PhotosViewModel> {
         rvAttachments.setAdapter(adapter);
     }
 
-    protected String getMeetingId() {
-        String defaultId = "-1";
-        if (getArguments() != null) {
-            String id = getArguments().getString(MEETING_ID_KEY, defaultId);
-            if (id != null) {
-                return id;
-            }
-        }
-        return defaultId;
-    }
-
-    public static PhotosFragment newInstance(String meetingId) {
-        PhotosFragment fragment = new PhotosFragment();
-        Bundle args = new Bundle();
-        args.putString(MEETING_ID_KEY, meetingId);
-        fragment.setArguments(args);
-        return fragment;
+    public static PhotosFragment newInstance() {
+        return new PhotosFragment();
     }
 }

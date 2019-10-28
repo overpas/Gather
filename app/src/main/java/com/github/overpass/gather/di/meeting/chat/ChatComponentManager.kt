@@ -13,7 +13,7 @@ import com.github.overpass.gather.screen.meeting.chat.ChatFragment
 
 class ChatComponentManager(
         private val chatComponent: ChatComponent
-) : ChatComponent {
+) {
 
     init {
         Log.w(this::class.java.simpleName, "ChatComponentManager Created")
@@ -21,18 +21,13 @@ class ChatComponentManager(
 
     private lateinit var attachmentsComponentManagerDisposable: LifecycleDisposable<AttachmentsComponentManager>
 
-    override fun getDeleteMessageComponent(): DeleteMessageComponent =
+    fun getDeleteMessageComponent(): DeleteMessageComponent =
             chatComponent.getDeleteMessageComponent()
 
-    override fun getMeetingDetailsComponent(): MeetingDetailComponent =
+    fun getMeetingDetailsComponent(): MeetingDetailComponent =
             chatComponent.getMeetingDetailsComponent()
 
-    override fun getUsersComponent(): UsersComponent = chatComponent.getUsersComponent()
-
-    override fun getAttachmentsComponent(): AttachmentsComponent {
-        throw IllegalStateException("The subcomponent hasn't been initialized. Consider calling" +
-                "fun getAttachmentsComponent(lifecycle: Lifecycle) instead")
-    }
+    fun getUsersComponent(): UsersComponent = chatComponent.getUsersComponent()
 
     fun getAttachmentsComponent(lifecycle: Lifecycle): AttachmentsComponent {
         attachmentsComponentManagerDisposable = LifecycleDisposable(
@@ -45,7 +40,7 @@ class ChatComponentManager(
     fun getAttachmentDetailComponent(): AttachmentsDetailsComponent =
             attachmentsComponentManagerDisposable.value!!.getDetailComponent()
 
-    override fun inject(chatFragment: ChatFragment) = chatComponent.inject(chatFragment)
+    fun inject(chatFragment: ChatFragment) = chatComponent.inject(chatFragment)
 
     protected fun finalize() {
         Log.w(this::class.java.simpleName, "ChatComponentManager Destroyed")

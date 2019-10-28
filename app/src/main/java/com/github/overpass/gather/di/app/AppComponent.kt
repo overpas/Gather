@@ -47,7 +47,7 @@ interface AppComponent {
 
     fun getEnrolledComponent(): EnrolledComponent
 
-    fun getMeetingComponent(): MeetingComponent
+    fun getMeetingComponentFactory(): MeetingComponent.Factory
 
     fun getSearchComponent(): SearchComponent
 

@@ -4,6 +4,7 @@ package com.github.overpass.gather.screen.meeting.chat;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
+import androidx.lifecycle.ViewModel;
 
 import com.annimon.stream.Stream;
 import com.github.overpass.gather.model.repo.message.Message;
@@ -11,31 +12,35 @@ import com.github.overpass.gather.model.usecase.meeting.MeetingUseCase;
 import com.github.overpass.gather.model.usecase.message.MessagesUseCase;
 import com.github.overpass.gather.model.usecase.userdata.RoleUseCase;
 import com.github.overpass.gather.screen.map.AuthUser;
-import com.github.overpass.gather.screen.meeting.base.BaseMeetingViewModel;
+import com.github.overpass.gather.screen.meeting.base.LoadMeetingStatus;
 
 import java.util.List;
 
 import javax.inject.Inject;
 
-public class ChatViewModel extends BaseMeetingViewModel {
+public class ChatViewModel extends ViewModel {
 
+    private final MeetingUseCase meetingUseCase;
     private final MessagesUseCase messagesUseCase;
     private final RoleUseCase roleUseCase;
     private final MutableLiveData<Integer> selectedItemsData;
+    private final String meetingId;
 
     @Inject
     public ChatViewModel(MeetingUseCase meetingUseCase,
                          RoleUseCase roleUseCase,
                          MessagesUseCase messagesUseCase,
-                         MutableLiveData<Integer> selectedItemsData) {
-        super(meetingUseCase);
+                         MutableLiveData<Integer> selectedItemsData,
+                         String meetingId) {
+        this.meetingUseCase = meetingUseCase;
         this.roleUseCase = roleUseCase;
         this.messagesUseCase = messagesUseCase;
         this.selectedItemsData = selectedItemsData;
+        this.meetingId = meetingId;
     }
 
-    public LiveData<MessageModel> messages(String messageId) {
-        return Transformations.map(messagesUseCase.messages(messageId), status -> {
+    public LiveData<MessageModel> messages() {
+        return Transformations.map(messagesUseCase.messages(meetingId), status -> {
             if (status.tag().equals(MessageStatus.ERROR)) {
                 return new MessageModel.Error(status.as(MessageStatus.Error.class));
             } else {
@@ -64,11 +69,11 @@ public class ChatViewModel extends BaseMeetingViewModel {
         return messagesUseCase.getCurrentUser();
     }
 
-    public void send(String meetingId, String input) {
+    public void send(String input) {
         messagesUseCase.send(meetingId, input);
     }
 
-    public LiveData<AuthUser.Role> checkUserRole(String meetingId) {
+    public LiveData<AuthUser.Role> checkUserRole() {
         return roleUseCase.getCurrentUserRole(meetingId);
     }
 
@@ -80,7 +85,11 @@ public class ChatViewModel extends BaseMeetingViewModel {
         return selectedItemsData;
     }
 
-    public LiveData<DeleteStatus> delete(String meetingId, List<String> ids) {
+    public LiveData<DeleteStatus> delete(List<String> ids) {
         return messagesUseCase.delete(meetingId, ids);
+    }
+
+    public LiveData<LoadMeetingStatus> loadMeeting() {
+        return meetingUseCase.loadMeeting(meetingId);
     }
 }

@@ -9,11 +9,10 @@ class LifecycleDisposable<T>(
         value: T
 ) {
 
-    var value: T? = null
+    var value: T? = value
         private set
 
     init {
-        this.value = value
         lifecycle.addObserver(object : LifecycleObserver {
             @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
             fun onDestroy() {

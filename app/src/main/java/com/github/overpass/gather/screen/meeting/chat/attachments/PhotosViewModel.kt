@@ -25,7 +25,8 @@ class PhotosViewModel @Inject constructor(
         private val photoUploadProgressData: SingleLiveEvent<Int>,
         private val photoUploadErrorData: SingleLiveEvent<String>,
         private val suggestToChooseData: SingleLiveEvent<Boolean>,
-        private val imageConverter: ImageConverter
+        private val imageConverter: ImageConverter,
+        private val meetingId: String
 ) : DataViewModel(application) {
 
     init {
@@ -40,14 +41,14 @@ class PhotosViewModel @Inject constructor(
 
     fun getSuggestToChooseData(): LiveData<Boolean> = suggestToChooseData
 
-    fun getMeeting(meetingId: String): LiveData<Meeting> = attachmentsUseCase.getMeeting(meetingId)
+    fun getMeeting(): LiveData<Meeting> = attachmentsUseCase.getMeeting(meetingId)
 
     @FlowPreview
     @ExperimentalCoroutinesApi
-    fun doAction(meetingId: String) {
+    fun doAction() {
         val imageUri = selectedUri
         if (imageUri != null) {
-            sendImage2(imageUri, meetingId)
+            sendImage2(imageUri)
         } else {
             chooseImage()
         }
@@ -59,7 +60,7 @@ class PhotosViewModel @Inject constructor(
 
     @FlowPreview
     @ExperimentalCoroutinesApi
-    private fun sendImage2(imageUri: Uri, meetingId: String) = viewModelScope.launch {
+    private fun sendImage2(imageUri: Uri) = viewModelScope.launch {
         val imageBytes = imageConverter.getImageBytes(imageUri)
         attachmentsUseCase.uploadPhoto(imageBytes, meetingId)
 //                // Omit multiple Result.Loading values

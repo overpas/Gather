@@ -23,7 +23,6 @@ public class DeleteDialogFragment extends BaseDialogFragment<DeleteMessageViewMo
 
     private static final String TAG = "DeleteDialogFragment";
     private static final String MESSAGE_ID_KEY = "MESSAGE_ID_KEY";
-    private static final String MEETING_ID_KEY = "MEETING_ID_KEY";
 
     @Override
     protected void inject() {
@@ -44,7 +43,7 @@ public class DeleteDialogFragment extends BaseDialogFragment<DeleteMessageViewMo
         return new AlertDialog.Builder(requireContext())
                 .setTitle(R.string.should_delete)
                 .setPositiveButton(R.string.delete, (dialog, id) -> {
-                    viewModel.delete(getMeetingId(), getMessageId()).observe(
+                    viewModel.delete(getMessageId()).observe(
                             DeleteDialogFragment.this,
                             DeleteDialogFragment.this::handleDeletion
                     );
@@ -80,13 +79,8 @@ public class DeleteDialogFragment extends BaseDialogFragment<DeleteMessageViewMo
         return getStringArg(this, MESSAGE_ID_KEY);
     }
 
-    private String getMeetingId() {
-        return getStringArg(this, MEETING_ID_KEY);
-    }
-
-    public static void show(String meetingId, String messageId, FragmentManager fragmentManager) {
+    public static void show(String messageId, FragmentManager fragmentManager) {
         Bundle args = new Bundle();
-        args.putString(MEETING_ID_KEY, meetingId);
         args.putString(MESSAGE_ID_KEY, messageId);
         Fragments.Dialog.show(TAG, fragmentManager, true, args, DeleteDialogFragment::new);
     }

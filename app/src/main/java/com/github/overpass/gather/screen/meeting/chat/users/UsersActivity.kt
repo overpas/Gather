@@ -47,9 +47,9 @@ class UsersActivity : BaseActivityKt<UsersViewModel>() {
 
     override fun onBind() {
         super.onBind()
-        viewModel.getMembers(getMeetingId()).observe(this, Observer<LoadUsersStatus> { this.handleUsers(it) })
-        viewModel.getPendingUsers(getMeetingId()).observe(this, Observer<LoadUsersStatus> { this.handleUsers(it) })
-        viewModel.checkUserRole(getMeetingId()).observe(this, Observer<AuthUser.Role> { this.handleRole(it) })
+        viewModel.members.observe(this, Observer<LoadUsersStatus> { this.handleUsers(it) })
+        viewModel.pendingUsers.observe(this, Observer<LoadUsersStatus> { this.handleUsers(it) })
+        viewModel.checkUserRole().observe(this, Observer<AuthUser.Role> { this.handleRole(it) })
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -112,7 +112,7 @@ class UsersActivity : BaseActivityKt<UsersViewModel>() {
     }
 
     private fun handleAcceptPendingUser(id: String) {
-        viewModel.acceptUser(getMeetingId(), id)
+        viewModel.acceptUser(id)
                 .observe(this, Observer { this.handleAcceptance(it) })
     }
 
@@ -138,15 +138,10 @@ class UsersActivity : BaseActivityKt<UsersViewModel>() {
         snackbar(rvMembers, getString(R.string.couldnt_accept))
     }
 
-    private fun getMeetingId(): String = intent.getStringExtra(MEETING_ID_KEY) ?: "-1"
-
     companion object {
 
-        private const val MEETING_ID_KEY = "MEETING_ID_KEY"
-
-        fun start(context: Context, meetingId: String) {
+        fun start(context: Context) {
             val intent = Intent(context, UsersActivity::class.java)
-            intent.putExtra(MEETING_ID_KEY, meetingId)
             context.startActivity(intent)
         }
     }

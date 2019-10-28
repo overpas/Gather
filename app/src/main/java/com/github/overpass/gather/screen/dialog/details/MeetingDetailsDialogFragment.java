@@ -33,7 +33,6 @@ import static com.github.overpass.gather.model.commons.UIUtil.toast;
 public class MeetingDetailsDialogFragment extends BaseDialogFragment<MeetingDetailsViewModel> {
 
     private static final String TAG = "MeetingDetailsDialogFra";
-    private static final String MEETING_ID_KEY = "MEETING_ID_KEY";
 
     private TextView tvAddress;
     private TextView tvRatio;
@@ -70,7 +69,7 @@ public class MeetingDetailsDialogFragment extends BaseDialogFragment<MeetingDeta
     @Override
     public void onBind() {
         super.onBind();
-        viewModel.loadMeeting(getMeetingId()).observe(this, this::handleMeeting);
+        viewModel.loadMeeting().observe(this, this::handleMeeting);
     }
 
     private void handleMeeting(LoadMeetingStatus loadMeetingStatus) {
@@ -117,26 +116,15 @@ public class MeetingDetailsDialogFragment extends BaseDialogFragment<MeetingDeta
     }
 
     private void handleExportEvent(MeetingAndRatio meetingAndRatio) {
-        viewModel.exportEvent(meetingAndRatio, getContext());
+        viewModel.exportEvent(meetingAndRatio);
     }
 
     private void handleProgress() {
         lavProgress.setVisibility(View.VISIBLE);
     }
 
-    @NonNull
-    private String getMeetingId() {
-        Bundle arguments = getArguments();
-        String meetingId = "-1";
-        if (arguments != null) {
-            meetingId = arguments.getString(MEETING_ID_KEY, "-1");
-        }
-        return meetingId;
-    }
-
-    public static void show(String meetingId, @Nullable FragmentManager fragmentManager) {
+    public static void show(@Nullable FragmentManager fragmentManager) {
         Bundle arguments = new Bundle();
-        arguments.putString(MEETING_ID_KEY, meetingId);
         Fragments.Dialog.show(TAG, fragmentManager, true, arguments, MeetingDetailsDialogFragment::new);
     }
 

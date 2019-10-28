@@ -14,9 +14,9 @@ import com.github.overpass.gather.App;
 import com.github.overpass.gather.R;
 import com.github.overpass.gather.model.commons.DateFormatting;
 import com.github.overpass.gather.model.commons.FragmentUtils;
+import com.github.overpass.gather.screen.base.BaseFragmentKt;
 import com.github.overpass.gather.screen.create.MeetingType;
 import com.github.overpass.gather.screen.dialog.progress.indeterminate.ProgressDialogFragment;
-import com.github.overpass.gather.screen.meeting.base.BaseMeetingFragment;
 import com.github.overpass.gather.screen.meeting.base.LoadMeetingStatus;
 import com.github.overpass.gather.screen.meeting.chat.ChatFragment;
 import com.github.overpass.gather.screen.meeting.enrolled.EnrolledActivity;
@@ -31,7 +31,7 @@ import butterknife.OnClick;
 
 import static com.github.overpass.gather.model.commons.UIUtil.snackbar;
 
-public class JoinFragment extends BaseMeetingFragment<JoinViewModel> {
+public class JoinFragment extends BaseFragmentKt<JoinViewModel> {
 
     @BindView(R.id.flProgress)
     FrameLayout flProgress;
@@ -75,17 +75,13 @@ public class JoinFragment extends BaseMeetingFragment<JoinViewModel> {
         super.onActivityCreated(savedInstanceState);
         toolbarJoin.setNavigationOnClickListener(navIcon -> requireActivity().finish());
         flProgress.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    protected void onLoadMeetingData() {
-        getViewModel().loadMeetingCheckEnrolled(getMeetingId())
+        getViewModel().loadMeetingCheckEnrolled()
                 .observe(getViewLifecycleOwner(), this::handleLoadStatus);
     }
 
     @OnClick(R.id.btnJoin)
     public void onJoinClick() {
-        getViewModel().join(getMeetingId()).observe(getViewLifecycleOwner(), this::handleJoin);
+        getViewModel().join().observe(getViewLifecycleOwner(), this::handleJoin);
     }
 
     private void handleJoin(JoinStatus status) {
@@ -112,7 +108,7 @@ public class JoinFragment extends BaseMeetingFragment<JoinViewModel> {
     private void handleJoined(JoinStatus.Joined joined) {
         ProgressDialogFragment.Companion.hide(getFragmentManager());
         FragmentUtils.replace(requireFragmentManager(), R.id.flMeetingContainer,
-                ChatFragment.newInstance(getMeetingId()), false);
+                ChatFragment.newInstance(), false);
     }
 
     private void handleJoinError(JoinStatus.Error error) {
@@ -126,7 +122,6 @@ public class JoinFragment extends BaseMeetingFragment<JoinViewModel> {
         requireActivity().finish();
     }
 
-    @Override
     protected void handleLoadStatus(LoadMeetingStatus loadMeetingStatus) {
         switch (loadMeetingStatus.tag()) {
             case LoadPrivateMeetingStatus.ERROR:
@@ -176,7 +171,7 @@ public class JoinFragment extends BaseMeetingFragment<JoinViewModel> {
         flProgress.setVisibility(View.GONE);
     }
 
-    public static JoinFragment newInstance(String meetingId) {
-        return newInstance(meetingId, new JoinFragment());
+    public static JoinFragment newInstance() {
+        return new JoinFragment();
     }
 }

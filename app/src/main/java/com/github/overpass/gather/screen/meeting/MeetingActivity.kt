@@ -25,7 +25,8 @@ class MeetingActivity : BaseActivityKt<MeetingViewModel>() {
     }
 
     override fun inject() {
-        componentManager.getMeetingComponent(lifecycle)
+        componentManager.getMeetingComponentFactory(lifecycle)
+                .create(getMeetingId())
                 .inject(this)
     }
 
@@ -33,7 +34,7 @@ class MeetingActivity : BaseActivityKt<MeetingViewModel>() {
         super.onCreate(savedInstanceState)
         if (savedInstanceState == null) {
             lavProgress.visibility = View.VISIBLE
-            viewModel.isAllowed(getMeetingId()).observe(this, Observer<Boolean> { this.handleIsAllowed(it) })
+            viewModel.isAllowed.observe(this, Observer<Boolean> { this.handleIsAllowed(it) })
         }
     }
 
@@ -49,10 +50,10 @@ class MeetingActivity : BaseActivityKt<MeetingViewModel>() {
         lavProgress.visibility = View.GONE
         if (!isAllowed) {
             FragmentUtils.replace(supportFragmentManager, R.id.flMeetingContainer,
-                    JoinFragment.newInstance(getMeetingId()), false)
+                    JoinFragment.newInstance(), false)
         } else {
             FragmentUtils.replace(supportFragmentManager, R.id.flMeetingContainer,
-                    ChatFragment.newInstance(getMeetingId()), false)
+                    ChatFragment.newInstance(), false)
         }
     }
 
