@@ -6,7 +6,7 @@ apply plugin: 'kotlin-kapt'
 android {
     compileSdkVersion 28
     defaultConfig {
-        applicationId "com.github.overpass.gather"
+        applicationId "by.overpass.gather"
         minSdkVersion 21
         targetSdkVersion 28
         versionCode 1
