@@ -1,32 +1,37 @@
 package com.github.overpass.gather.screen.meeting.join;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.ViewModel;
 
-import com.github.overpass.gather.model.data.HttpClient;
-import com.github.overpass.gather.model.repo.geocode.GeocodeRepo;
 import com.github.overpass.gather.model.usecase.geo.GeoUseCase;
-import com.github.overpass.gather.screen.meeting.base.BaseMeetingViewModel;
-import com.github.overpass.gather.screen.meeting.base.LoadMeetingStatus;
-import com.google.gson.Gson;
+import com.github.overpass.gather.model.usecase.meeting.MeetingUseCase;
 
-public class JoinViewModel extends BaseMeetingViewModel {
+import javax.inject.Inject;
 
+public class JoinViewModel extends ViewModel {
+
+    private final MeetingUseCase meetingUseCase;
     private final GeoUseCase geoUseCase;
+    private final String meetingId;
 
-    public JoinViewModel() {
-        super();
-        geoUseCase = new GeoUseCase(new GeocodeRepo(HttpClient.getInstance(), new Gson()));
+    @Inject
+    public JoinViewModel(MeetingUseCase meetingUseCase,
+                         GeoUseCase geoUseCase,
+                         String meetingId) {
+        this.meetingUseCase = meetingUseCase;
+        this.geoUseCase = geoUseCase;
+        this.meetingId = meetingId;
     }
 
     public LiveData<String> getAddress(double latitude, double longitude) {
         return geoUseCase.geoDecode(latitude, longitude);
     }
 
-    public LiveData<JoinStatus> join(String meetingId) {
+    public LiveData<JoinStatus> join() {
         return meetingUseCase.join(meetingId);
     }
 
-    public LiveData<LoadPrivateMeetingStatus> loadMeetingCheckEnrolled(String meetingId) {
+    public LiveData<LoadPrivateMeetingStatus> loadMeetingCheckEnrolled() {
         return meetingUseCase.loadMeetingCheckEnrolled(meetingId);
     }
 }

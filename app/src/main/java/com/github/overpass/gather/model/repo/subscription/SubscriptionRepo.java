@@ -6,6 +6,8 @@ import androidx.lifecycle.MutableLiveData;
 import com.github.overpass.gather.screen.map.AuthUser;
 import com.google.firebase.messaging.FirebaseMessaging;
 
+import javax.inject.Inject;
+
 public class SubscriptionRepo {
 
     private static final String POSTFIX_PENDING_USERS = "_pending_users";
@@ -13,6 +15,7 @@ public class SubscriptionRepo {
 
     private final FirebaseMessaging messaging;
 
+    @Inject
     public SubscriptionRepo(FirebaseMessaging messaging) {
         this.messaging = messaging;
     }

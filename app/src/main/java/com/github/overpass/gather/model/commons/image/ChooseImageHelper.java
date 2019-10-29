@@ -21,8 +21,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-import javax.annotation.CheckReturnValue;
-
 @SuppressWarnings("SameParameterValue")
 public class ChooseImageHelper {
 

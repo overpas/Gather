@@ -5,14 +5,12 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.core.util.Consumer;
 
-import com.github.overpass.gather.model.repo.login.AuthRepo;
-import com.github.overpass.gather.model.repo.pref.PreferenceRepo;
-import com.github.overpass.gather.model.repo.user.UserDataRepo;
+import com.github.overpass.gather.model.usecase.image.ImageSourceUseCase;
 import com.github.overpass.gather.model.usecase.userdata.ProfileUseCase;
 import com.github.overpass.gather.screen.base.personal.DataViewModel;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.FirebaseFirestore;
+
+import javax.inject.Inject;
 
 public class ProfileViewModel extends DataViewModel {
 
@@ -20,13 +18,13 @@ public class ProfileViewModel extends DataViewModel {
 
     private boolean isEditMode = false;
 
-    public ProfileViewModel(@NonNull Application application) {
+    @Inject
+    public ProfileViewModel(@NonNull Application application,
+                            ProfileUseCase profileUseCase,
+                            ImageSourceUseCase imageSourceUseCase) {
         super(application);
-        profileUseCase = new ProfileUseCase(
-                new UserDataRepo(FirebaseAuth.getInstance(), FirebaseFirestore.getInstance()),
-                new AuthRepo(FirebaseAuth.getInstance()),
-                new PreferenceRepo(application)
-        );
+        setImageSourceUseCase(imageSourceUseCase);
+        this.profileUseCase = profileUseCase;
     }
 
     public void getUserData(Consumer<FirebaseUser> onSuccess, Runnable onError) {

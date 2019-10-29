@@ -7,14 +7,14 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 
-import com.github.overpass.gather.screen.map.Meeting;
-import com.github.overpass.gather.model.repo.meeting.MeetingRepo;
 import com.github.overpass.gather.model.usecase.meeting.MeetingsUseCase;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.FirebaseFirestore;
+import com.github.overpass.gather.model.usecase.permission.LocationPermissionUseCase;
+import com.github.overpass.gather.screen.map.Meeting;
 import com.mapbox.mapboxsdk.annotations.Marker;
 
 import java.util.Map;
+
+import javax.inject.Inject;
 
 public class MapDetailViewModel extends BaseMapDetailViewModel {
 
@@ -23,9 +23,12 @@ public class MapDetailViewModel extends BaseMapDetailViewModel {
     private final MeetingsUseCase meetingsUseCase;
     private MarkersHelper markersHelper;
 
-    public MapDetailViewModel() {
+    @Inject
+    public MapDetailViewModel(MeetingsUseCase meetingsUseCase,
+                              LocationPermissionUseCase locationPermissionUseCase) {
         super();
-        meetingsUseCase = new MeetingsUseCase(new MeetingRepo(FirebaseFirestore.getInstance()));
+        this.meetingsUseCase = meetingsUseCase;
+        setLocationPermissionUseCase(locationPermissionUseCase);
     }
 
     public LiveData<Map<String, Meeting>> scanArea(Location location) {

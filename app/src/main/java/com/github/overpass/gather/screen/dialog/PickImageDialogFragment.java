@@ -4,19 +4,17 @@ import android.app.Dialog;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.github.overpass.gather.R;
-import com.github.overpass.gather.screen.base.BaseDialogFragment;
+import com.github.overpass.gather.model.commons.Fragments;
 
-public class PickImageDialogFragment extends BaseDialogFragment {
+public class PickImageDialogFragment extends DialogFragment {
 
     private static final String TAG = "PickImageDialogFragment";
 
@@ -38,7 +36,7 @@ public class PickImageDialogFragment extends BaseDialogFragment {
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         Drawable gallery = getResources().getDrawable(R.drawable.ic_gallery, null);
         Drawable camera = getResources().getDrawable(R.drawable.ic_camera, null);
-        return new AlertDialog.Builder(getContext())
+        return new AlertDialog.Builder(requireContext())
                 .setTitle(R.string.choose_image)
                 .setPositiveButton(R.string.gallery, (dialog, which) -> {
                     listener.onGallery();
@@ -58,11 +56,11 @@ public class PickImageDialogFragment extends BaseDialogFragment {
     }
 
     public static void show(@Nullable FragmentManager fragmentManager) {
-        show(TAG, fragmentManager, true, PickImageDialogFragment::new);
+        Fragments.Dialog.show(TAG, fragmentManager, true, PickImageDialogFragment::new);
     }
 
     public static void hide(@Nullable FragmentManager fragmentManager) {
-        hide(TAG, fragmentManager, PickImageDialogFragment.class);
+        Fragments.Dialog.hide(TAG, fragmentManager, PickImageDialogFragment.class);
     }
 
     public interface OnClickListener {

@@ -17,15 +17,16 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.github.overpass.gather.di.app.modules.DispatcherModule;
 import com.github.overpass.gather.model.commons.SingleLiveEvent;
 import com.github.overpass.gather.model.commons.image.ChooseImageHelper;
 import com.github.overpass.gather.model.commons.image.ImageConverter;
-import com.github.overpass.gather.screen.auth.register.RegistrationStepViewModel;
 import com.github.overpass.gather.model.data.validator.UsernameValidator;
 import com.github.overpass.gather.model.repo.upload.UploadImageRepo;
 import com.github.overpass.gather.model.repo.user.UserAuthRepo;
 import com.github.overpass.gather.model.usecase.image.ImageSourceUseCase;
 import com.github.overpass.gather.model.usecase.userdata.PersonalDataUseCase;
+import com.github.overpass.gather.screen.auth.register.RegistrationStepViewModel;
 import com.github.overpass.gather.screen.auth.register.add.AddDataStatus;
 import com.github.overpass.gather.screen.auth.register.add.ImageSource;
 import com.google.firebase.auth.FirebaseAuth;
@@ -57,7 +58,8 @@ public abstract class DataViewModel extends RegistrationStepViewModel {
                 new UserAuthRepo(FirebaseAuth.getInstance(), FirebaseFirestore.getInstance()),
                 new UploadImageRepo(
                         FirebaseStorage.getInstance(),
-                        new ImageConverter(application.getContentResolver())
+                        new ImageConverter(application.getContentResolver(),
+                                DispatcherModule.provideDefault())
                 ),
                 new UsernameValidator(),
                 FirebaseAuth.getInstance()

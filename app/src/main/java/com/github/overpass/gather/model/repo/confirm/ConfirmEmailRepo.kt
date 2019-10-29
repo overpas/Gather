@@ -4,8 +4,9 @@ import com.github.overpass.gather.model.commons.exception.NotAuthorized
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.auth.FirebaseAuth
+import javax.inject.Inject
 
-class ConfirmEmailRepo(private val firebaseAuth: FirebaseAuth) {
+class ConfirmEmailRepo @Inject constructor(private val firebaseAuth: FirebaseAuth) {
 
     fun isEmailVerified(): Boolean {
         return firebaseAuth.currentUser

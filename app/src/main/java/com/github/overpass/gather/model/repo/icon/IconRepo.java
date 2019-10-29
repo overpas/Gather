@@ -7,10 +7,13 @@ import com.github.overpass.gather.screen.create.MeetingType;
 import com.mapbox.mapboxsdk.annotations.Icon;
 import com.mapbox.mapboxsdk.annotations.IconFactory;
 
+import javax.inject.Inject;
+
 public class IconRepo {
 
     private final Context context;
 
+    @Inject
     public IconRepo(Context context) {
         this.context = context.getApplicationContext();
     }

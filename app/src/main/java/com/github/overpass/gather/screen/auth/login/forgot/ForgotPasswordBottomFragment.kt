@@ -1,38 +1,28 @@
 package com.github.overpass.gather.screen.auth.login.forgot
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-
+import com.github.overpass.gather.App.Companion.componentManager
 import com.github.overpass.gather.R
+import com.github.overpass.gather.model.commons.UIUtil.*
+import com.github.overpass.gather.screen.base.BaseBottomSheetDialogFragment
 import com.github.overpass.gather.screen.dialog.progress.indeterminate.ProgressDialogFragment
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-
-import butterknife.ButterKnife
-
-import com.github.overpass.gather.model.commons.UIUtil.snackbar
-import com.github.overpass.gather.model.commons.UIUtil.textOf
-import com.github.overpass.gather.model.commons.UIUtil.toast
 import kotlinx.android.synthetic.main.fragment_bottom_forgot_password.*
 
-class ForgotPasswordBottomFragment : BottomSheetDialogFragment() {
+class ForgotPasswordBottomFragment : BaseBottomSheetDialogFragment<ForgotPasswordViewModel>() {
 
-    private lateinit var viewModel: ForgotPasswordViewModel
+    override fun getLayoutRes(): Int = R.layout.fragment_bottom_forgot_password
 
-    override fun onCreateView(inflater: LayoutInflater,
-                              container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.fragment_bottom_forgot_password, container, false)
-        ButterKnife.bind(this, view)
-        return view
+    override fun inject() {
+        componentManager.getForgotComponent()
+                .inject(this)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun createViewModel(): ForgotPasswordViewModel =
+            viewModelProvider.get(ForgotPasswordViewModel::class.java)
+
+    override fun onBind() {
         viewModel = ViewModelProviders.of(this).get(ForgotPasswordViewModel::class.java)
         tietEmail.setOnClickListener {
             viewModel.sendForgotPassword(textOf(tietEmail))

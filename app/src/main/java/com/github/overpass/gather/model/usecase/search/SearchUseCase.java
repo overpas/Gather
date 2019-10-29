@@ -7,10 +7,13 @@ import com.github.overpass.gather.model.repo.meeting.MeetingWithId;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 public class SearchUseCase {
 
     private final MeetingRepo meetingRepo;
 
+    @Inject
     public SearchUseCase(MeetingRepo meetingRepo) {
         this.meetingRepo = meetingRepo;
     }

@@ -7,34 +7,31 @@ import androidx.lifecycle.viewModelScope
 import com.github.overpass.gather.model.commons.Result
 import com.github.overpass.gather.model.commons.SingleLiveEvent
 import com.github.overpass.gather.model.commons.image.ImageConverter
-import com.github.overpass.gather.model.repo.meeting.MeetingRepo
-import com.github.overpass.gather.model.repo.meeting.MeetingRepo2
-import com.github.overpass.gather.model.repo.upload.UploadImageRepo
 import com.github.overpass.gather.model.usecase.attachment.PhotosUseCase
+import com.github.overpass.gather.model.usecase.image.ImageSourceUseCase
 import com.github.overpass.gather.screen.base.personal.DataViewModel
 import com.github.overpass.gather.screen.map.Meeting
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class PhotosViewModel(application: Application) : DataViewModel(application) {
+class PhotosViewModel @Inject constructor(
+        application: Application,
+        imageSourceUseCase: ImageSourceUseCase,
+        private val attachmentsUseCase: PhotosUseCase,
+        private val photoUploadSuccessData: SingleLiveEvent<Void>,
+        private val photoUploadProgressData: SingleLiveEvent<Int>,
+        private val photoUploadErrorData: SingleLiveEvent<String>,
+        private val suggestToChooseData: SingleLiveEvent<Boolean>,
+        private val imageConverter: ImageConverter,
+        private val meetingId: String
+) : DataViewModel(application) {
 
-    private val attachmentsUseCase: PhotosUseCase = PhotosUseCase(
-            MeetingRepo(FirebaseFirestore.getInstance()),
-            MeetingRepo2(FirebaseFirestore.getInstance()),
-            UploadImageRepo(
-                    FirebaseStorage.getInstance(),
-                    ImageConverter(application.contentResolver)
-            )
-    )
-    private val photoUploadSuccessData = SingleLiveEvent<Void>()
-    private val photoUploadProgressData = SingleLiveEvent<Int>()
-    private val photoUploadErrorData = SingleLiveEvent<String>()
-    private val suggestToChooseData: SingleLiveEvent<Boolean> = SingleLiveEvent()
-    private val imageConverter: ImageConverter = ImageConverter(application.contentResolver)
+    init {
+        setImageSourceUseCase(imageSourceUseCase)
+    }
 
     fun photoUploadSuccess(): LiveData<Void> = photoUploadSuccessData
 
@@ -44,14 +41,14 @@ class PhotosViewModel(application: Application) : DataViewModel(application) {
 
     fun getSuggestToChooseData(): LiveData<Boolean> = suggestToChooseData
 
-    fun getMeeting(meetingId: String): LiveData<Meeting> = attachmentsUseCase.getMeeting(meetingId)
+    fun getMeeting(): LiveData<Meeting> = attachmentsUseCase.getMeeting(meetingId)
 
     @FlowPreview
     @ExperimentalCoroutinesApi
-    fun doAction(meetingId: String) {
+    fun doAction() {
         val imageUri = selectedUri
         if (imageUri != null) {
-            sendImage2(imageUri, meetingId)
+            sendImage2(imageUri)
         } else {
             chooseImage()
         }
@@ -63,7 +60,7 @@ class PhotosViewModel(application: Application) : DataViewModel(application) {
 
     @FlowPreview
     @ExperimentalCoroutinesApi
-    private fun sendImage2(imageUri: Uri, meetingId: String) = viewModelScope.launch {
+    private fun sendImage2(imageUri: Uri) = viewModelScope.launch {
         val imageBytes = imageConverter.getImageBytes(imageUri)
         attachmentsUseCase.uploadPhoto(imageBytes, meetingId)
 //                // Omit multiple Result.Loading values

@@ -227,11 +227,11 @@ public class MessageInput extends RelativeLayout
     private void init(Context context) {
         inflate(context, R.layout.view_message_input, this);
 
-        messageInput = (EditText) findViewById(R.id.messageInput);
-        messageSendButton = (ImageButton) findViewById(R.id.messageSendButton);
-        attachmentButton = (ImageButton) findViewById(R.id.attachmentButton);
-        sendButtonSpace = (Space) findViewById(R.id.sendButtonSpace);
-        attachmentButtonSpace = (Space) findViewById(R.id.attachmentButtonSpace);
+        messageInput = findViewById(R.id.messageInput);
+        messageSendButton = findViewById(R.id.messageSendButton);
+        attachmentButton = findViewById(R.id.attachmentButton);
+        sendButtonSpace = findViewById(R.id.sendButtonSpace);
+        attachmentButtonSpace = findViewById(R.id.attachmentButtonSpace);
 
         messageSendButton.setOnClickListener(this);
         attachmentButton.setOnClickListener(this);

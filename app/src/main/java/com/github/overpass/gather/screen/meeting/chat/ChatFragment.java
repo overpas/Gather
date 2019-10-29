@@ -2,24 +2,22 @@ package com.github.overpass.gather.screen.meeting.chat;
 
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
-import androidx.lifecycle.ViewModelProviders;
 
 import com.annimon.stream.Stream;
 import com.bumptech.glide.Glide;
+import com.github.overpass.gather.App;
 import com.github.overpass.gather.R;
+import com.github.overpass.gather.screen.base.BaseFragmentKt;
 import com.github.overpass.gather.screen.create.MeetingType;
-import com.github.overpass.gather.screen.dialog.progress.indeterminate.ProgressDialogFragment;
 import com.github.overpass.gather.screen.dialog.delete.DeleteDialogFragment;
 import com.github.overpass.gather.screen.dialog.details.MeetingDetailsDialogFragment;
+import com.github.overpass.gather.screen.dialog.progress.indeterminate.ProgressDialogFragment;
 import com.github.overpass.gather.screen.map.AuthUser;
-import com.github.overpass.gather.screen.meeting.base.BaseMeetingFragment;
 import com.github.overpass.gather.screen.meeting.base.LoadMeetingStatus;
 import com.github.overpass.gather.screen.meeting.chat.attachments.PhotosActivity;
 import com.github.overpass.gather.screen.meeting.chat.users.UsersActivity;
@@ -27,14 +25,15 @@ import com.stfalcon.chatkit.messages.MessageInput;
 import com.stfalcon.chatkit.messages.MessagesList;
 import com.stfalcon.chatkit.messages.MessagesListAdapter;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
 
 import butterknife.BindView;
 
 import static com.github.overpass.gather.model.commons.UIUtil.snackbar;
-import static com.github.overpass.gather.model.commons.UIUtil.toast;
 
-public class ChatFragment extends BaseMeetingFragment<ChatViewModel> {
+public class ChatFragment extends BaseFragmentKt<ChatViewModel> {
 
     @BindView(R.id.input)
     MessageInput messageInput;
@@ -47,11 +46,12 @@ public class ChatFragment extends BaseMeetingFragment<ChatViewModel> {
     @BindView(R.id.tvMeetingName)
     TextView tvMeetingName;
 
-    MessagesListAdapter<IMessageImpl> adapter;
+    private MessagesListAdapter<IMessageImpl> adapter;
 
+    @NotNull
     @Override
     protected ChatViewModel createViewModel() {
-        return ViewModelProviders.of(getActivity()).get(ChatViewModel.class);
+        return getViewModelProvider().get(ChatViewModel.class);
     }
 
     @Override
@@ -60,32 +60,59 @@ public class ChatFragment extends BaseMeetingFragment<ChatViewModel> {
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    protected void inject() {
+        App.Companion.getComponentManager(this)
+                .getChatComponent(getLifecycle())
+                .inject(this);
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
         setupToolbar();
         setupList();
-        getViewModel().messages(getMeetingId()).observe(getViewLifecycleOwner(), this::handleMessages);
+        getViewModel().loadMeeting().observe(getViewLifecycleOwner(), this::handleLoadStatus);
+    }
+
+    private void handleLoadStatus(LoadMeetingStatus loadMeetingStatus) {
+        switch (loadMeetingStatus.tag()) {
+            case LoadMeetingStatus.ERROR:
+                handleLoadError(loadMeetingStatus.as(LoadMeetingStatus.Error.class));
+                break;
+            case LoadMeetingStatus.PROGRESS:
+                handleProgress(loadMeetingStatus.as(LoadMeetingStatus.Progress.class));
+                break;
+            case LoadMeetingStatus.SUCCESS:
+                handleLoadSuccess(loadMeetingStatus.as(LoadMeetingStatus.Success.class));
+                break;
+        }
+    }
+
+    @Override
+    protected void onBind() {
+        super.onBind();
+        getViewModel().messages().observe(getViewLifecycleOwner(), this::handleMessages);
         messageInput.setInputListener(input -> {
             if (TextUtils.isEmpty(input)) {
                 return false;
             }
-            getViewModel().send(getMeetingId(), input.toString());
+            getViewModel().send(input.toString());
             return true;
         });
-        getViewModel().checkUserRole(getMeetingId()).observe(getViewLifecycleOwner(), this::handleRole);
+        getViewModel().checkUserRole().observe(getViewLifecycleOwner(), this::handleRole);
         getViewModel().selectedItems().observe(getViewLifecycleOwner(), this::handleSelection);
     }
 
-    @Override
-    protected void handleLoadSuccess(LoadMeetingStatus.Success success) {
+    private void handleLoadSuccess(LoadMeetingStatus.Success success) {
         setMeetingTypeIcon(success.getMeetingAndRatio().getMeeting().getType());
         tvMeetingName.setText(success.getMeetingAndRatio().getMeeting().getName());
     }
 
-    @Override
-    protected void handleLoadError(LoadMeetingStatus.Error error) {
+    private void handleLoadError(LoadMeetingStatus.Error error) {
         snackbar(ivMeetingType, getString(R.string.couldnt_load_data));
     }
+
+    private void handleProgress(LoadMeetingStatus.Progress progress) {}
 
     private void setupList() {
         getViewModel().getCurrentUser().observe(getViewLifecycleOwner(), user -> {
@@ -106,7 +133,7 @@ public class ChatFragment extends BaseMeetingFragment<ChatViewModel> {
     private void handleOnLongClick(IMessageImpl message) {
         getViewModel().getCurrentUser().observe(getViewLifecycleOwner(), user -> {
             if (user != null && message.getUser().getId().equals(user.getId())) {
-                DeleteDialogFragment.show(getMeetingId(), message.getId(), getFragmentManager());
+                DeleteDialogFragment.show(message.getId(), getFragmentManager());
             }
         });
     }
@@ -124,18 +151,18 @@ public class ChatFragment extends BaseMeetingFragment<ChatViewModel> {
     }
 
     private void setupToolbar() {
-        toolbarChat.setNavigationOnClickListener(navIcon -> getActivity().finish());
+        toolbarChat.setNavigationOnClickListener(navIcon -> requireActivity().finish());
         toolbarChat.inflateMenu(R.menu.menu_chat);
         toolbarChat.setOnMenuItemClickListener(item -> false);
         toolbarChat.setOnMenuItemClickListener(item -> {
             if (item.getItemId() == R.id.action_users) {
-                UsersActivity.start(getContext(), getMeetingId());
+                UsersActivity.Companion.start(requireContext());
                 return true;
             } else if (item.getItemId() == R.id.action_attachments) {
-                PhotosActivity.start(getContext(), getMeetingId());
+                PhotosActivity.Companion.start(requireContext());
                 return true;
             } else if (item.getItemId() == R.id.action_details) {
-                MeetingDetailsDialogFragment.show(getMeetingId(), getFragmentManager());
+                MeetingDetailsDialogFragment.show(getFragmentManager());
                 return true;
             } else if (item.getItemId() == R.id.action_delete) {
                 deleteMessages();
@@ -189,7 +216,7 @@ public class ChatFragment extends BaseMeetingFragment<ChatViewModel> {
             List<String> ids = Stream.of(adapter.getSelectedMessages())
                     .map(IMessageImpl::getId)
                     .toList();
-            getViewModel().delete(getMeetingId(), ids)
+            getViewModel().delete(ids)
                     .observe(getViewLifecycleOwner(), this::handleDeletion);
         }
     }
@@ -228,7 +255,7 @@ public class ChatFragment extends BaseMeetingFragment<ChatViewModel> {
         setDefaultToolbar();
     }
 
-    public static ChatFragment newInstance(String meetingId) {
-        return newInstance(meetingId, new ChatFragment());
+    public static ChatFragment newInstance() {
+        return new ChatFragment();
     }
 }

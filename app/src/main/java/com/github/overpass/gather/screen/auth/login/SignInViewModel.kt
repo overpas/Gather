@@ -1,31 +1,21 @@
 package com.github.overpass.gather.screen.auth.login
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.ViewModel
 import com.github.overpass.gather.model.commons.SingleLiveEvent
 import com.github.overpass.gather.model.commons.toLiveData
 import com.github.overpass.gather.model.data.entity.signin.SignInStatus
-import com.github.overpass.gather.model.data.validator.EmailValidator
-import com.github.overpass.gather.model.data.validator.PasswordValidator
-import com.github.overpass.gather.model.repo.login.AuthRepo
-import com.github.overpass.gather.model.repo.pref.PreferenceRepo
 import com.github.overpass.gather.model.usecase.login.SignInUseCase
-import com.google.firebase.auth.FirebaseAuth
+import javax.inject.Inject
 
-class SignInViewModel(application: Application) : AndroidViewModel(application) {
-
-    private val signInUseCase: SignInUseCase = SignInUseCase(
-            AuthRepo(FirebaseAuth.getInstance()),
-            EmailValidator(),
-            PasswordValidator(),
-            PreferenceRepo(application)
-    )
-    private val signInErrorData: SingleLiveEvent<String> = SingleLiveEvent()
-    private val signInSuccessData: SingleLiveEvent<Void> = SingleLiveEvent()
-    private val signInProgressData: SingleLiveEvent<Void> = SingleLiveEvent()
-    private val invalidEmailData: SingleLiveEvent<String> = SingleLiveEvent()
-    private val invalidPasswordData: SingleLiveEvent<String> = SingleLiveEvent()
+class SignInViewModel @Inject constructor(
+        private val signInUseCase: SignInUseCase,
+        private val signInErrorData: SingleLiveEvent<String>,
+        private val signInSuccessData: SingleLiveEvent<Void>,
+        private val signInProgressData: SingleLiveEvent<Void>,
+        private val invalidEmailData: SingleLiveEvent<String>,
+        private val invalidPasswordData: SingleLiveEvent<String>
+) : ViewModel() {
 
     fun signIn(email: String, password: String) {
         signInUseCase.signIn(email, password)

@@ -6,10 +6,13 @@ import com.github.overpass.gather.model.repo.user.UserDataRepo;
 import com.github.overpass.gather.screen.meeting.chat.users.model.Acceptance;
 import com.github.overpass.gather.screen.meeting.chat.users.model.LoadUsersStatus;
 
+import javax.inject.Inject;
+
 public class UsersUseCase {
 
     private final UserDataRepo userDataRepo;
 
+    @Inject
     public UsersUseCase(UserDataRepo userDataRepo) {
         this.userDataRepo = userDataRepo;
     }

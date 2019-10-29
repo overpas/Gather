@@ -7,17 +7,20 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.provider.MediaStore
 import androidx.annotation.WorkerThread
+import com.github.overpass.gather.di.DEFAULT_DISPATCHER
 import com.github.overpass.gather.model.commons.exception.ImageConversionException
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import java.io.ByteArrayOutputStream
+import javax.inject.Inject
+import javax.inject.Named
 
-private const val MAX_QUALITY = 100
-private val imageDataColumns = arrayOf(MediaStore.Images.Media.DATA)
+class ImageConverter @Inject constructor(
+        private val contentResolver: ContentResolver,
+        @Named(DEFAULT_DISPATCHER) private val defaultDispatcher: CoroutineDispatcher
+) {
 
-class ImageConverter(private val contentResolver: ContentResolver) {
-
-    suspend fun getImageBytes(imageUri: Uri): ByteArray = withContext(Dispatchers.Default) {
+    suspend fun getImageBytes(imageUri: Uri): ByteArray = withContext(defaultDispatcher) {
         resolveBytesFromImageUri(imageUri)
     }
 
@@ -46,5 +49,10 @@ class ImageConverter(private val contentResolver: ContentResolver) {
         cursor.close()
         // Set the Image in ImageView after decoding the String
         return BitmapFactory.decodeFile(imgDecodableString)
+    }
+
+    companion object {
+        private const val MAX_QUALITY = 100
+        private val imageDataColumns = arrayOf(MediaStore.Images.Media.DATA)
     }
 }

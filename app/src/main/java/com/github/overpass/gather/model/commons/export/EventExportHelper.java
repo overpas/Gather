@@ -8,11 +8,20 @@ import com.github.overpass.gather.R;
 import com.github.overpass.gather.screen.create.MeetingType;
 import com.github.overpass.gather.screen.meeting.MeetingAndRatio;
 
+import javax.inject.Inject;
+
 public class EventExportHelper {
 
     private static final String MAPS_LINK_TEMPLATE = "http://www.google.com/maps/place/%s,%s";
 
-    public void exportEventToCalendar(MeetingAndRatio meetingAndRatio, Context context) {
+    private final Context context;
+
+    @Inject
+    public EventExportHelper(Context context) {
+        this.context = context;
+    }
+
+    public void exportEventToCalendar(MeetingAndRatio meetingAndRatio) {
         Intent intent = new Intent(Intent.ACTION_EDIT);
         intent.setType("vnd.android.cursor.item/event");
         addTime(intent, meetingAndRatio);

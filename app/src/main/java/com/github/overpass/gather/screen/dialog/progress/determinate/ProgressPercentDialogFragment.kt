@@ -5,23 +5,20 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import com.github.overpass.gather.R
-import com.github.overpass.gather.screen.base.BaseDialogFragment
-import com.github.overpass.gather.screen.base.BaseDialogFragment.show
+import com.github.overpass.gather.model.commons.Fragments
 
-class ProgressPercentDialogFragment : BaseDialogFragment() {
+class ProgressPercentDialogFragment : DialogFragment() {
 
     private lateinit var tvPercent: TextView
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        return LayoutInflater.from(context!!)
+        return LayoutInflater.from(requireContext())
                 .inflate(R.layout.fragment_dialog_percent_progress, null)
                 .also { tvPercent = it.findViewById(R.id.tvPercent) }
-                .run {
-                    AlertDialog.Builder(context)
-                            .setView(this)
-                }
+                .run { AlertDialog.Builder(context).setView(this) }
                 .setCancelable(false)
                 .create()
     }
@@ -36,20 +33,17 @@ class ProgressPercentDialogFragment : BaseDialogFragment() {
         private const val TAG = "ProgressPercentDialogFragment"
 
         @JvmStatic
-        fun show(fragmentManager: FragmentManager?) {
-            show(TAG, fragmentManager, false) { ProgressPercentDialogFragment() }
+        fun show(fragmentManager: FragmentManager) {
+            Fragments.Dialog.show(TAG, fragmentManager, false) { ProgressPercentDialogFragment() }
         }
 
         @JvmStatic
-        fun hide(fragmentManager: FragmentManager?) {
-            hide(TAG, fragmentManager, ProgressPercentDialogFragment::class.java)
+        fun hide(fragmentManager: FragmentManager) {
+            Fragments.Dialog.hide(TAG, fragmentManager, ProgressPercentDialogFragment::class.java)
         }
 
         @JvmStatic
-        fun progress(manager: FragmentManager?, progress: Int) {
-            if (manager == null) {
-                throw IllegalArgumentException("Passed FragmentManager is null")
-            }
+        fun progress(manager: FragmentManager, progress: Int) {
             val fragment = manager.findFragmentByTag(TAG)
             if (fragment != null && fragment is ProgressPercentDialogFragment) {
                 fragment.setProgress(progress)

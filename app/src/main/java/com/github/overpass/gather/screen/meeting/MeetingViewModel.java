@@ -3,25 +3,22 @@ package com.github.overpass.gather.screen.meeting;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.github.overpass.gather.model.repo.meeting.MeetingRepo;
-import com.github.overpass.gather.model.repo.user.UserAuthRepo;
 import com.github.overpass.gather.model.usecase.meeting.AllowedUseCase;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.FirebaseFirestore;
 
+import javax.inject.Inject;
 
 public class MeetingViewModel extends ViewModel {
 
     private final AllowedUseCase allowedUseCase;
+    private final String meetingId;
 
-    public MeetingViewModel() {
-        allowedUseCase = new AllowedUseCase(
-                new MeetingRepo(FirebaseFirestore.getInstance()),
-                new UserAuthRepo(FirebaseAuth.getInstance(), FirebaseFirestore.getInstance())
-        );
+    @Inject
+    public MeetingViewModel(AllowedUseCase allowedUseCase, String meetingId) {
+        this.allowedUseCase = allowedUseCase;
+        this.meetingId = meetingId;
     }
 
-    public LiveData<Boolean> isAllowed(String meetingId) {
+    public LiveData<Boolean> isAllowed() {
         return allowedUseCase.isAllowed(meetingId);
     }
 }

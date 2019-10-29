@@ -15,11 +15,14 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import javax.inject.Inject;
+
 public class UserAuthRepo implements UsersData {
 
     private final FirebaseAuth firebaseAuth;
     private final FirebaseFirestore firestore;
 
+    @Inject
     public UserAuthRepo(FirebaseAuth firebaseAuth, FirebaseFirestore firestore) {
         this.firebaseAuth = firebaseAuth;
         this.firestore = firestore;

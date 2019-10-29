@@ -1,5 +1,7 @@
 package com.github.overpass.gather.model.usecase.register
 
+import com.github.overpass.gather.di.EMAIL_VALIDATOR
+import com.github.overpass.gather.di.PASSWORD_VALIDATOR
 import com.github.overpass.gather.model.commons.Result
 import com.github.overpass.gather.model.data.validator.Validator
 import com.github.overpass.gather.model.repo.register.SignUpRepo
@@ -8,11 +10,13 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
+import javax.inject.Named
 
-class SignUpUseCase(
+class SignUpUseCase @Inject constructor(
         private val signUpRepo: SignUpRepo,
-        private val emailValidator: Validator<String>,
-        private val passwordValidator: Validator<String>
+        @Named(EMAIL_VALIDATOR) private val emailValidator: Validator<String>,
+        @Named(PASSWORD_VALIDATOR) private val passwordValidator: Validator<String>
 ) {
 
     @ExperimentalCoroutinesApi

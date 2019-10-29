@@ -8,10 +8,13 @@ import com.github.overpass.gather.screen.map.AuthUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import javax.inject.Inject;
+
 public class UserRoleRepo implements MeetingsMetadata {
 
     private final FirebaseFirestore firestore;
 
+    @Inject
     public UserRoleRepo(FirebaseFirestore firestore) {
         this.firestore = firestore;
     }

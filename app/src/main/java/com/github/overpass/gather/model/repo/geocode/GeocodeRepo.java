@@ -6,8 +6,6 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.github.overpass.gather.App;
-import com.github.overpass.gather.R;
 import com.github.overpass.gather.model.data.HttpClient;
 import com.github.overpass.gather.model.data.entity.geo.Feature;
 import com.github.overpass.gather.model.data.entity.geo.GeoDecode;
@@ -16,22 +14,31 @@ import com.google.gson.Gson;
 import java.io.IOException;
 import java.util.List;
 
+import javax.inject.Inject;
+import javax.inject.Named;
+
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
+
+import static com.github.overpass.gather.di.NamedKt.MAPBOX_TOKEN;
 
 public class GeocodeRepo {
 
     private static final String TAG = "GeocodeRepo";
     private static final String GEO_BASE_URL = "https://api.mapbox.com/geocoding/v5/mapbox.places";
     private static final String DEFAULT_DECODED = "Fail";
+
     private final Gson gson;
     private final HttpClient httpClient;
+    private final String mapboxToken;
 
-    public GeocodeRepo(HttpClient httpClient, Gson gson) {
+    @Inject
+    public GeocodeRepo(HttpClient httpClient, Gson gson, @Named(MAPBOX_TOKEN) String mapboxToken) {
         this.httpClient = httpClient;
         this.gson = gson;
+        this.mapboxToken = mapboxToken;
     }
 
     public LiveData<String> reverseGeocode(double longitude, double latitude) {
@@ -57,7 +64,7 @@ public class GeocodeRepo {
             }
         };
         httpClient.get(url, callback, null, "access_token",
-                App.getAppContext().getString(R.string.mapbox_token));
+                mapboxToken);
         return resultData;
     }
 

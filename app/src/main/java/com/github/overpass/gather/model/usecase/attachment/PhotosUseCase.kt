@@ -14,8 +14,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import java.util.*
+import javax.inject.Inject
 
-class PhotosUseCase(
+class PhotosUseCase @Inject constructor(
         private val meetingRepo: MeetingRepo,
         private val meetingRepo2: MeetingRepo2,
         private val uploadImageRepo: UploadImageRepo

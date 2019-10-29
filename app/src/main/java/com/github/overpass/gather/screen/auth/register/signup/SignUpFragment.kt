@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.view.View
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import com.github.overpass.gather.App.Companion.componentManager
 import com.github.overpass.gather.R
 import com.github.overpass.gather.model.commons.UIUtil.snackbar
 import com.github.overpass.gather.model.commons.UIUtil.textOf
@@ -14,10 +14,15 @@ import kotlinx.android.synthetic.main.fragment_sign_up.*
 
 class SignUpFragment : RegistrationFragment<SignUpViewModel>() {
 
-    override val layoutRes: Int = R.layout.fragment_sign_up
+    override fun getLayoutRes(): Int = R.layout.fragment_sign_up
 
     override fun createViewModel(): SignUpViewModel {
-        return ViewModelProviders.of(this).get(SignUpViewModel::class.java)
+        return viewModelProvider.get(SignUpViewModel::class.java)
+    }
+
+    override fun inject() {
+        componentManager.getSignUpComponent()
+                .inject(this)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
