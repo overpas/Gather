@@ -7,9 +7,8 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 
 import com.github.overpass.gather.model.commons.SingleLiveEvent;
-import com.github.overpass.gather.screen.map.Meeting;
 import com.github.overpass.gather.model.repo.icon.IconRepo;
-import com.mapbox.mapboxsdk.annotations.Annotation;
+import com.github.overpass.gather.screen.map.Meeting;
 import com.mapbox.mapboxsdk.annotations.Marker;
 import com.mapbox.mapboxsdk.annotations.MarkerOptions;
 import com.mapbox.mapboxsdk.geometry.LatLng;

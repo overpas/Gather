@@ -4,10 +4,8 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.github.overpass.gather.model.repo.meeting.MeetingRepo;
 import com.github.overpass.gather.model.repo.meeting.MeetingWithId;
 import com.github.overpass.gather.model.usecase.search.SearchUseCase;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
 

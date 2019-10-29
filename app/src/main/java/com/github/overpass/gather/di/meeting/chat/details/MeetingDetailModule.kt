@@ -3,9 +3,7 @@ package com.github.overpass.gather.di.meeting.chat.details
 import androidx.lifecycle.ViewModel
 import com.github.overpass.gather.di.ViewScope
 import com.github.overpass.gather.di.app.vm.ViewModelKey
-import com.github.overpass.gather.screen.dialog.delete.DeleteMessageViewModel
 import com.github.overpass.gather.screen.dialog.details.MeetingDetailsViewModel
-import com.github.overpass.gather.screen.splash.SplashViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap

@@ -967,7 +967,7 @@ public class MessagesListAdapter<MESSAGE extends IMessage>
 
         public DefaultDateHeaderViewHolder(View itemView) {
             super(itemView);
-            text = (TextView) itemView.findViewById(R.id.messageText);
+            text = itemView.findViewById(R.id.messageText);
         }
 
         @Override

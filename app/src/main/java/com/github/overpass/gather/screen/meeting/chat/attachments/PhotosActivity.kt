@@ -9,9 +9,7 @@ import androidx.appcompat.app.ActionBar
 import androidx.core.content.ContextCompat
 import com.github.overpass.gather.App.Companion.componentManager
 import com.github.overpass.gather.R
-import com.github.overpass.gather.model.commons.Constants.MEETING_ID_KEY
 import com.github.overpass.gather.model.commons.FragmentUtils
-import com.github.overpass.gather.model.commons.getStringExtra
 import com.github.overpass.gather.screen.base.BaseActivityKt
 import com.github.overpass.gather.screen.dialog.PickImageDialogFragment
 

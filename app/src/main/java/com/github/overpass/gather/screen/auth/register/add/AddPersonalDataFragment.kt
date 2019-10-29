@@ -22,7 +22,7 @@ class AddPersonalDataFragment : DataFragment<AddPersonalDataViewModel>() {
 
     override fun inject() {
         componentManager.getAddPersonalDataComponent()
-                .inject(this);
+                .inject(this)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

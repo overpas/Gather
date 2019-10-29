@@ -3,7 +3,6 @@ package com.github.overpass.gather.di.meeting.join
 import androidx.lifecycle.ViewModel
 import com.github.overpass.gather.di.ViewScope
 import com.github.overpass.gather.di.app.vm.ViewModelKey
-import com.github.overpass.gather.screen.map.detail.MapDetailViewModel
 import com.github.overpass.gather.screen.meeting.join.JoinViewModel
 import dagger.Binds
 import dagger.Module

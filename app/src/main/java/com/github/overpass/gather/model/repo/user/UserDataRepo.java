@@ -90,7 +90,6 @@ public class UserDataRepo implements MeetingsMetadata, UsersData {
                 .addOnFailureListener(e -> {
                     acceptanceData.setValue(Acceptance.ERROR);
                 });
-        ;
         return acceptanceData;
     }
 

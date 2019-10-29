@@ -1,7 +1,7 @@
 package com.github.overpass.gather.di.register.signup
 
-import com.github.overpass.gather.di.validator.ValidatorModule
 import com.github.overpass.gather.di.ViewScope
+import com.github.overpass.gather.di.validator.ValidatorModule
 import com.github.overpass.gather.screen.auth.register.signup.SignUpFragment
 import dagger.Subcomponent
 

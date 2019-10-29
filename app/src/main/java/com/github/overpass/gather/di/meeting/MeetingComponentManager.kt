@@ -2,7 +2,6 @@ package com.github.overpass.gather.di.meeting
 
 import android.util.Log
 import androidx.lifecycle.Lifecycle
-import com.github.overpass.gather.di.meeting.chat.ChatComponent
 import com.github.overpass.gather.di.meeting.chat.ChatComponentManager
 import com.github.overpass.gather.di.meeting.chat.attachments.AttachmentsComponent
 import com.github.overpass.gather.di.meeting.chat.attachments.detail.AttachmentsDetailsComponent

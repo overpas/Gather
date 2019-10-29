@@ -2,7 +2,6 @@ package com.github.overpass.gather.screen.base
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import java.lang.RuntimeException
 import javax.inject.Inject
 import javax.inject.Provider
 

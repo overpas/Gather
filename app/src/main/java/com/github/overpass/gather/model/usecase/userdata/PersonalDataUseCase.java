@@ -9,12 +9,11 @@ import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.Transformations;
 
 import com.github.overpass.gather.model.data.validator.Validator;
+import com.github.overpass.gather.model.repo.upload.UploadImageRepo;
+import com.github.overpass.gather.model.repo.user.UserAuthRepo;
 import com.github.overpass.gather.screen.auth.register.add.AddDataStatus;
 import com.github.overpass.gather.screen.auth.register.add.ImageUploadStatus;
 import com.github.overpass.gather.screen.auth.register.add.SaveUserStatus;
-import com.github.overpass.gather.model.data.validator.UsernameValidator;
-import com.github.overpass.gather.model.repo.upload.UploadImageRepo;
-import com.github.overpass.gather.model.repo.user.UserAuthRepo;
 import com.google.firebase.auth.FirebaseAuth;
 
 import javax.inject.Inject;

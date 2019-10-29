@@ -5,15 +5,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.github.overpass.gather.App;
 import com.github.overpass.gather.R;
-import com.github.overpass.gather.model.usecase.image.ImageSourceUseCase;
 import com.github.overpass.gather.screen.base.personal.DataFragment;
 import com.github.overpass.gather.screen.dialog.progress.determinate.ProgressPercentDialogFragment;
 import com.github.overpass.gather.screen.map.Meeting;
@@ -27,7 +24,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-import static com.github.overpass.gather.model.commons.Constants.MEETING_ID_KEY;
 import static com.github.overpass.gather.model.commons.UIUtil.snackbar;
 
 public class PhotosFragment extends DataFragment<PhotosViewModel> {

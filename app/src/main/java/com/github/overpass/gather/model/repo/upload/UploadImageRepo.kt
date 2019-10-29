@@ -34,7 +34,7 @@ class UploadImageRepo @Inject constructor(
                   folder: String,
                   imageName: String): LiveData<ImageUploadStatus> {
         val data = MutableLiveData<ImageUploadStatus>()
-        data.setValue(ImageUploadStatus.Progress(0))
+        data.value = ImageUploadStatus.Progress(0)
         Runners.io().execute {
             val path = "$bucket/$folder/$imageName$IMAGE_EXTENSION"
             val storageReference = storage.reference.child(path)

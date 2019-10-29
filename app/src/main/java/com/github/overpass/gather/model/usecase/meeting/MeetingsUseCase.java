@@ -4,9 +4,9 @@ import android.location.Location;
 
 import androidx.lifecycle.LiveData;
 
+import com.github.overpass.gather.model.repo.meeting.MeetingRepo;
 import com.github.overpass.gather.screen.map.Meeting;
 import com.github.overpass.gather.screen.map.detail.Current2MaxPeopleRatio;
-import com.github.overpass.gather.model.repo.meeting.MeetingRepo;
 
 import java.util.Map;
 

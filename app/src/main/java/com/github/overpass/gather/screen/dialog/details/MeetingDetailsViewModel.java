@@ -1,7 +1,5 @@
 package com.github.overpass.gather.screen.dialog.details;
 
-import android.content.Context;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
