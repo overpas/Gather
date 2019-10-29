@@ -1,7 +1,7 @@
 package com.github.overpass.gather.di.meeting.chat.attachments.detail
 
 import com.github.overpass.gather.di.ViewScope
-import com.github.overpass.gather.screen.meeting.chat.attachments.PhotosFragment
+import com.github.overpass.gather.ui.meeting.chat.attachments.PhotosFragment
 import dagger.Subcomponent
 
 @ViewScope

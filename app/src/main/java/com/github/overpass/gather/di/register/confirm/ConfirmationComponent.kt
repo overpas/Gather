@@ -1,7 +1,7 @@
 package com.github.overpass.gather.di.register.confirm
 
 import com.github.overpass.gather.di.ViewScope
-import com.github.overpass.gather.screen.auth.register.confirm.ConfirmEmailFragment
+import com.github.overpass.gather.ui.auth.register.confirm.ConfirmEmailFragment
 import dagger.Subcomponent
 
 @ViewScope

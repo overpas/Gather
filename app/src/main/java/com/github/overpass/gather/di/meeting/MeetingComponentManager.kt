@@ -9,7 +9,7 @@ import com.github.overpass.gather.di.meeting.chat.delete.DeleteMessageComponent
 import com.github.overpass.gather.di.meeting.chat.details.MeetingDetailComponent
 import com.github.overpass.gather.di.meeting.chat.users.UsersComponent
 import com.github.overpass.gather.di.meeting.join.JoinComponent
-import com.github.overpass.gather.model.commons.LifecycleDisposable
+import com.github.overpass.gather.commons.android.lifecycle.LifecycleDisposable
 
 class MeetingComponentManager(
         private val meetingComponentFactory: MeetingComponent.Factory

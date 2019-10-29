@@ -1,7 +1,7 @@
 package com.github.overpass.gather.di.meeting.chat.users
 
 import com.github.overpass.gather.di.ViewScope
-import com.github.overpass.gather.screen.meeting.chat.users.UsersActivity
+import com.github.overpass.gather.ui.meeting.chat.users.UsersActivity
 import dagger.Subcomponent
 
 @ViewScope

@@ -5,7 +5,7 @@ import com.github.overpass.gather.di.image.ImageSourceModule
 import com.github.overpass.gather.di.register.add.AddPersonalDataComponent
 import com.github.overpass.gather.di.register.confirm.ConfirmationComponent
 import com.github.overpass.gather.di.register.signup.SignUpComponent
-import com.github.overpass.gather.screen.auth.register.RegisterActivity
+import com.github.overpass.gather.ui.auth.register.RegisterActivity
 import dagger.BindsInstance
 import dagger.Subcomponent
 

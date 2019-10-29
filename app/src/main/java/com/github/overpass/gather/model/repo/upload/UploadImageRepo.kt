@@ -4,10 +4,10 @@ import android.content.ContentResolver
 import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.github.overpass.gather.model.commons.Result
-import com.github.overpass.gather.model.commons.Runners
-import com.github.overpass.gather.model.commons.image.ImageConverter
-import com.github.overpass.gather.screen.auth.register.add.ImageUploadStatus
+import com.github.overpass.gather.commons.abstractions.Result
+import com.github.overpass.gather.commons.concurrency.Runners
+import com.github.overpass.gather.commons.image.ImageConverter
+import com.github.overpass.gather.ui.auth.register.add.ImageUploadStatus
 import com.google.android.gms.tasks.SuccessContinuation
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.ExperimentalCoroutinesApi

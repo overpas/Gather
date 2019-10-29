@@ -3,10 +3,10 @@ package com.github.overpass.gather.model.usecase.userdata;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Transformations;
 
-import com.github.overpass.gather.model.commons.LiveDataUtils;
+import com.github.overpass.gather.commons.android.lifecycle.LiveDataUtils;
 import com.github.overpass.gather.model.repo.meeting.UserRoleRepo;
 import com.github.overpass.gather.model.repo.user.UserAuthRepo;
-import com.github.overpass.gather.screen.map.AuthUser;
+import com.github.overpass.gather.ui.map.AuthUser;
 
 import javax.inject.Inject;
 

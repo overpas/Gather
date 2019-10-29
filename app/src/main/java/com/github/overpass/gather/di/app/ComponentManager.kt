@@ -26,7 +26,8 @@ import com.github.overpass.gather.di.register.confirm.ConfirmationComponent
 import com.github.overpass.gather.di.register.signup.SignUpComponent
 import com.github.overpass.gather.di.search.SearchComponent
 import com.github.overpass.gather.di.splash.SplashComponent
-import com.github.overpass.gather.model.commons.LifecycleDisposable
+import com.github.overpass.gather.commons.android.lifecycle.LifecycleDisposable
+import com.github.overpass.gather.di.messaging.MessagingComponent
 
 class ComponentManager(private val appComponent: AppComponent) {
 
@@ -119,4 +120,6 @@ class ComponentManager(private val appComponent: AppComponent) {
 
     fun getNewMeetingComponent(): NewMeetingComponent =
             appComponent.getNewMeetingComponent()
+
+    fun getMessagingComponent(): MessagingComponent = appComponent.getMessagingComponent()
 }

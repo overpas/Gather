@@ -17,36 +17,36 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
         <activity
-            android:name=".screen.auth.register.RegisterActivity"
+            android:name=".ui.auth.register.RegisterActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".screen.map.MapActivity" />
+        <activity android:name=".ui.map.MapActivity" />
         <activity
-            android:name=".screen.profile.ProfileActivity"
+            android:name=".ui.profile.ProfileActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".screen.splash.SplashScreenActivity">
+        <activity android:name=".ui.splash.SplashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".screen.auth.login.LoginActivity" />
+        <activity android:name=".ui.auth.login.LoginActivity" />
         <activity
-            android:name=".screen.create.NewMeetingActivity"
+            android:name=".ui.create.NewMeetingActivity"
             android:theme="@style/AppTheme.WithActionBar" />
         <activity
-            android:name=".screen.meeting.MeetingActivity"
-            android:parentActivityName=".screen.map.MapActivity" />
-        <activity android:name=".screen.meeting.enrolled.EnrolledActivity" />
+            android:name=".ui.meeting.MeetingActivity"
+            android:parentActivityName=".ui.map.MapActivity" />
+        <activity android:name=".ui.meeting.enrolled.EnrolledActivity" />
         <activity
-            android:name=".screen.meeting.chat.users.UsersActivity"
-            android:parentActivityName=".screen.meeting.MeetingActivity"
+            android:name=".ui.meeting.chat.users.UsersActivity"
+            android:parentActivityName=".ui.meeting.MeetingActivity"
             android:theme="@style/AppTheme.WithActionBar" />
         <activity
-            android:name=".screen.meeting.chat.attachments.PhotosActivity"
+            android:name=".ui.meeting.chat.attachments.PhotosActivity"
             android:theme="@style/AppTheme.WithActionBar" />
         <activity
-            android:name=".screen.meeting.chat.attachments.closeup.CloseupActivity"
+            android:name=".ui.meeting.chat.attachments.closeup.CloseupActivity"
             android:theme="@style/AppTheme.Fullscreen" />
 
         <service

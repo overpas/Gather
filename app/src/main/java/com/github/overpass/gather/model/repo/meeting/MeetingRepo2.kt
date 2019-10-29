@@ -1,11 +1,11 @@
 package com.github.overpass.gather.model.repo.meeting
 
-import com.github.overpass.gather.model.commons.SimpleResult
-import com.github.overpass.gather.model.commons.await
-import com.github.overpass.gather.model.commons.exception.DefaultException
+import com.github.overpass.gather.commons.abstractions.SimpleResult
+import com.github.overpass.gather.commons.firebase.await
+import com.github.overpass.gather.commons.exception.DefaultException
 import com.github.overpass.gather.model.repo.meeting.MeetingsMetadata.COLLECTION_MEETINGS
 import com.github.overpass.gather.model.repo.meeting.MeetingsMetadata.FIELD_PHOTOS
-import com.github.overpass.gather.screen.map.Meeting
+import com.github.overpass.gather.ui.map.Meeting
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.Dispatchers

@@ -1,7 +1,7 @@
 package com.github.overpass.gather.di.search
 
 import com.github.overpass.gather.di.ViewScope
-import com.github.overpass.gather.screen.search.SearchBottomFragment
+import com.github.overpass.gather.ui.search.SearchBottomFragment
 import dagger.Subcomponent
 
 @ViewScope

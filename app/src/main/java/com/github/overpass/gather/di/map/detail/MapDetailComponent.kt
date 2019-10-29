@@ -1,7 +1,7 @@
 package com.github.overpass.gather.di.map.detail
 
 import com.github.overpass.gather.di.ViewScope
-import com.github.overpass.gather.screen.map.detail.MapFragment
+import com.github.overpass.gather.ui.map.detail.MapFragment
 import dagger.Subcomponent
 
 @ViewScope

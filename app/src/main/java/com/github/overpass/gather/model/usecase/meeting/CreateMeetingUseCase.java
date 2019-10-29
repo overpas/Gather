@@ -6,13 +6,13 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 
-import com.github.overpass.gather.model.commons.exception.FailedToSubscribe;
+import com.github.overpass.gather.commons.exception.FailedToSubscribe;
 import com.github.overpass.gather.model.repo.meeting.MeetingRepo;
 import com.github.overpass.gather.model.repo.subscription.SubscriptionRepo;
 import com.github.overpass.gather.model.repo.user.UserAuthRepo;
-import com.github.overpass.gather.screen.create.MeetingType;
-import com.github.overpass.gather.screen.map.AuthUser;
-import com.github.overpass.gather.screen.map.SaveMeetingStatus;
+import com.github.overpass.gather.ui.create.MeetingType;
+import com.github.overpass.gather.ui.map.AuthUser;
+import com.github.overpass.gather.ui.map.SaveMeetingStatus;
 
 import java.util.Date;
 

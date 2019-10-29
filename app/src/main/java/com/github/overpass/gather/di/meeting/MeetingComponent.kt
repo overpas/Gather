@@ -2,7 +2,7 @@ package com.github.overpass.gather.di.meeting
 
 import com.github.overpass.gather.di.meeting.chat.ChatComponent
 import com.github.overpass.gather.di.meeting.join.JoinComponent
-import com.github.overpass.gather.screen.meeting.MeetingActivity
+import com.github.overpass.gather.ui.meeting.MeetingActivity
 import dagger.BindsInstance
 import dagger.Subcomponent
 

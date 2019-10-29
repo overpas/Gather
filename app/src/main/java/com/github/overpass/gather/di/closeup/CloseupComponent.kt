@@ -1,7 +1,7 @@
 package com.github.overpass.gather.di.closeup
 
 import com.github.overpass.gather.di.ViewScope
-import com.github.overpass.gather.screen.meeting.chat.attachments.closeup.CloseupActivity
+import com.github.overpass.gather.ui.meeting.chat.attachments.closeup.CloseupActivity
 import dagger.Subcomponent
 
 @ViewScope

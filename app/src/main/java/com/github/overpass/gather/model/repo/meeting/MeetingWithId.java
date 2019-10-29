@@ -1,6 +1,6 @@
 package com.github.overpass.gather.model.repo.meeting;
 
-import com.github.overpass.gather.screen.map.Meeting;
+import com.github.overpass.gather.ui.map.Meeting;
 
 public class MeetingWithId {
 

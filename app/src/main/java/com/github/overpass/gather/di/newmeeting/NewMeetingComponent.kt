@@ -1,7 +1,7 @@
 package com.github.overpass.gather.di.newmeeting
 
 import com.github.overpass.gather.di.ViewScope
-import com.github.overpass.gather.screen.create.NewMeetingActivity
+import com.github.overpass.gather.ui.create.NewMeetingActivity
 import dagger.Subcomponent
 
 @ViewScope

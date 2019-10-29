@@ -8,8 +8,8 @@ import com.github.overpass.gather.di.meeting.chat.attachments.detail.Attachments
 import com.github.overpass.gather.di.meeting.chat.delete.DeleteMessageComponent
 import com.github.overpass.gather.di.meeting.chat.details.MeetingDetailComponent
 import com.github.overpass.gather.di.meeting.chat.users.UsersComponent
-import com.github.overpass.gather.model.commons.LifecycleDisposable
-import com.github.overpass.gather.screen.meeting.chat.ChatFragment
+import com.github.overpass.gather.commons.android.lifecycle.LifecycleDisposable
+import com.github.overpass.gather.ui.meeting.chat.ChatFragment
 
 class ChatComponentManager(
         private val chatComponent: ChatComponent

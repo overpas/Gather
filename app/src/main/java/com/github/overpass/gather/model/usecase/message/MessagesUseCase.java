@@ -4,9 +4,9 @@ import androidx.lifecycle.LiveData;
 
 import com.github.overpass.gather.model.repo.message.MessageRepo;
 import com.github.overpass.gather.model.repo.user.UserAuthRepo;
-import com.github.overpass.gather.screen.map.AuthUser;
-import com.github.overpass.gather.screen.meeting.chat.DeleteStatus;
-import com.github.overpass.gather.screen.meeting.chat.MessageStatus;
+import com.github.overpass.gather.ui.map.AuthUser;
+import com.github.overpass.gather.ui.meeting.chat.DeleteStatus;
+import com.github.overpass.gather.ui.meeting.chat.MessageStatus;
 
 import java.util.List;
 

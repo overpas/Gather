@@ -2,7 +2,7 @@ package com.github.overpass.gather.di.meeting.chat.attachments
 
 import android.util.Log
 import com.github.overpass.gather.di.meeting.chat.attachments.detail.AttachmentsDetailsComponent
-import com.github.overpass.gather.screen.meeting.chat.attachments.PhotosActivity
+import com.github.overpass.gather.ui.meeting.chat.attachments.PhotosActivity
 
 class AttachmentsComponentManager(
         private val attachmentsComponent: AttachmentsComponent

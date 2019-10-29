@@ -1,6 +1,6 @@
 package com.github.overpass.gather.model.repo.login
 
-import com.github.overpass.gather.model.commons.mapToSuccess
+import com.github.overpass.gather.commons.firebase.mapToSuccess
 import com.github.overpass.gather.model.data.entity.signin.SignInStatus
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth

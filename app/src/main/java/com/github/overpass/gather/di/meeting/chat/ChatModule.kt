@@ -2,7 +2,7 @@ package com.github.overpass.gather.di.meeting.chat
 
 import androidx.lifecycle.ViewModel
 import com.github.overpass.gather.di.app.vm.ViewModelKey
-import com.github.overpass.gather.screen.meeting.chat.ChatViewModel
+import com.github.overpass.gather.ui.meeting.chat.ChatViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap

@@ -1,9 +1,9 @@
 package com.github.overpass.gather.model.repo.register
 
 import com.github.overpass.gather.di.IO_DISPATCHER
-import com.github.overpass.gather.model.commons.Result
-import com.github.overpass.gather.model.commons.asResultFlow
-import com.github.overpass.gather.model.commons.map
+import com.github.overpass.gather.commons.abstractions.Result
+import com.github.overpass.gather.commons.firebase.asResultFlow
+import com.github.overpass.gather.commons.firebase.map
 import com.github.overpass.gather.model.data.entity.user.User
 import com.github.overpass.gather.model.repo.user.UsersData
 import com.google.firebase.auth.FirebaseAuth

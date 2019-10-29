@@ -7,9 +7,9 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.github.overpass.gather.model.commons.Runners;
-import com.github.overpass.gather.screen.auth.register.add.SaveUserStatus;
-import com.github.overpass.gather.screen.map.AuthUser;
+import com.github.overpass.gather.commons.concurrency.Runners;
+import com.github.overpass.gather.ui.auth.register.add.SaveUserStatus;
+import com.github.overpass.gather.ui.map.AuthUser;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;

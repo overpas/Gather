@@ -3,8 +3,8 @@ package com.github.overpass.gather.model.usecase.userdata;
 import androidx.lifecycle.LiveData;
 
 import com.github.overpass.gather.model.repo.user.UserDataRepo;
-import com.github.overpass.gather.screen.meeting.chat.users.model.Acceptance;
-import com.github.overpass.gather.screen.meeting.chat.users.model.LoadUsersStatus;
+import com.github.overpass.gather.ui.meeting.chat.users.model.Acceptance;
+import com.github.overpass.gather.ui.meeting.chat.users.model.LoadUsersStatus;
 
 import javax.inject.Inject;
 

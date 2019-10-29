@@ -4,7 +4,7 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.github.overpass.gather.screen.map.AuthUser;
+import com.github.overpass.gather.ui.map.AuthUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 

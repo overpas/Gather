@@ -1,7 +1,7 @@
 package com.github.overpass.gather.model.usecase.permission
 
-import com.github.overpass.gather.model.commons.SingleLiveEvent
-import com.github.overpass.gather.screen.map.PermissionRequestResult
+import com.github.overpass.gather.commons.android.lifecycle.SingleLiveEvent
+import com.github.overpass.gather.ui.map.PermissionRequestResult
 
 class LocationPermissionUseCase(
         val permissionRequestResultData: SingleLiveEvent<PermissionRequestResult>

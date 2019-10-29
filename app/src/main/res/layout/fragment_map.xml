@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.github.overpass.gather.screen.map.MapActivity">
+    tools:context="com.github.overpass.gather.ui.map.MapActivity">
 
     <ImageButton
         android:elevation="10dp"

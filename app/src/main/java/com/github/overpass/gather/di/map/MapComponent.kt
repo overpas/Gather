@@ -2,7 +2,7 @@ package com.github.overpass.gather.di.map
 
 import com.github.overpass.gather.di.ParentScope
 import com.github.overpass.gather.di.map.detail.MapDetailComponent
-import com.github.overpass.gather.screen.map.MapActivity
+import com.github.overpass.gather.ui.map.MapActivity
 import dagger.Subcomponent
 
 @ParentScope

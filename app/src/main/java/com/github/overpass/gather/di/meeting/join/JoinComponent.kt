@@ -1,7 +1,7 @@
 package com.github.overpass.gather.di.meeting.join
 
 import com.github.overpass.gather.di.ViewScope
-import com.github.overpass.gather.screen.meeting.join.JoinFragment
+import com.github.overpass.gather.ui.meeting.join.JoinFragment
 import dagger.Subcomponent
 
 @ViewScope

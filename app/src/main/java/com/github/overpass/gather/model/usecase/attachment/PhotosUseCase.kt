@@ -1,12 +1,12 @@
 package com.github.overpass.gather.model.usecase.attachment
 
 import androidx.lifecycle.LiveData
-import com.github.overpass.gather.model.commons.Result
-import com.github.overpass.gather.model.commons.SimpleResult
+import com.github.overpass.gather.commons.abstractions.Result
+import com.github.overpass.gather.commons.abstractions.SimpleResult
 import com.github.overpass.gather.model.repo.meeting.MeetingRepo
 import com.github.overpass.gather.model.repo.meeting.MeetingRepo2
 import com.github.overpass.gather.model.repo.upload.UploadImageRepo
-import com.github.overpass.gather.screen.map.Meeting
+import com.github.overpass.gather.ui.map.Meeting
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview

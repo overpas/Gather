@@ -1,7 +1,7 @@
 package com.github.overpass.gather.di.app.vm
 
 import androidx.lifecycle.ViewModelProvider
-import com.github.overpass.gather.screen.base.ViewModelFactory
+import com.github.overpass.gather.ui.base.ViewModelFactory
 import dagger.Binds
 import dagger.Module
 

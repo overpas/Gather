@@ -22,17 +22,17 @@
 
         <fragment
             android:id="@+id/fragmentSignUp"
-            class="com.github.overpass.gather.screen.auth.register.signup.SignUpFragment"
+            class="com.github.overpass.gather.ui.auth.register.signup.SignUpFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
         <fragment
             android:id="@+id/fragmentConfirm"
-            class="com.github.overpass.gather.screen.auth.register.confirm.ConfirmEmailFragment"
+            class="com.github.overpass.gather.ui.auth.register.confirm.ConfirmEmailFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
         <fragment
             android:id="@+id/fragmentAddPersonalData"
-            class="com.github.overpass.gather.screen.auth.register.add.AddPersonalDataFragment"
+            class="com.github.overpass.gather.ui.auth.register.add.AddPersonalDataFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </ViewFlipper>

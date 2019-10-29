@@ -14,6 +14,7 @@ import com.github.overpass.gather.di.forgot.ForgotComponent
 import com.github.overpass.gather.di.login.SignInComponent
 import com.github.overpass.gather.di.map.MapComponent
 import com.github.overpass.gather.di.meeting.MeetingComponent
+import com.github.overpass.gather.di.messaging.MessagingComponent
 import com.github.overpass.gather.di.newmeeting.NewMeetingComponent
 import com.github.overpass.gather.di.profile.ProfileComponent
 import com.github.overpass.gather.di.register.RegisterComponent
@@ -55,14 +56,19 @@ interface AppComponent {
 
     fun getNewMeetingComponent(): NewMeetingComponent
 
-    @Component.Factory
-    interface Factory {
+    fun getMessagingComponent(): MessagingComponent
 
-        fun create(
-                @BindsInstance context: Context,
-                @BindsInstance app: Application,
-                @BindsInstance @Named(MAPBOX_TOKEN) mapboxToken: String,
-                @BindsInstance contentResolver: ContentResolver
-        ): AppComponent
+    @Component.Builder
+    interface Builder {
+
+        fun withContext(@BindsInstance context: Context): Builder
+
+        fun withApp(@BindsInstance app: Application): Builder
+
+        fun withMapboxToken(@BindsInstance @Named(MAPBOX_TOKEN) mapboxToken: String): Builder
+
+        fun withContentResolver(@BindsInstance contentResolver: ContentResolver): Builder
+
+        fun build(): AppComponent
     }
 }

@@ -5,7 +5,7 @@ import androidx.lifecycle.Transformations;
 
 import com.github.overpass.gather.model.repo.meeting.MeetingRepo;
 import com.github.overpass.gather.model.repo.user.UserAuthRepo;
-import com.github.overpass.gather.screen.map.AuthUser;
+import com.github.overpass.gather.ui.map.AuthUser;
 
 import javax.inject.Inject;
 

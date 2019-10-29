@@ -6,11 +6,11 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 
 import com.annimon.stream.Stream;
-import com.github.overpass.gather.model.commons.LiveDataUtils;
+import com.github.overpass.gather.commons.android.lifecycle.LiveDataUtils;
 import com.github.overpass.gather.model.repo.meeting.MeetingsMetadata;
 import com.github.overpass.gather.model.repo.user.UserData;
-import com.github.overpass.gather.screen.meeting.chat.DeleteStatus;
-import com.github.overpass.gather.screen.meeting.chat.MessageStatus;
+import com.github.overpass.gather.ui.meeting.chat.DeleteStatus;
+import com.github.overpass.gather.ui.meeting.chat.MessageStatus;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;

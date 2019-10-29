@@ -3,9 +3,9 @@ package com.github.overpass.gather.model.repo.meeting;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.github.overpass.gather.model.commons.exception.NotAuthorized;
-import com.github.overpass.gather.screen.map.AuthUser;
-import com.github.overpass.gather.screen.meeting.join.JoinStatus;
+import com.github.overpass.gather.commons.exception.NotAuthorized;
+import com.github.overpass.gather.ui.map.AuthUser;
+import com.github.overpass.gather.ui.meeting.join.JoinStatus;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import javax.annotation.Nullable;
