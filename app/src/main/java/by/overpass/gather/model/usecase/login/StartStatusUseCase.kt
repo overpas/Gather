@@ -1,8 +1,8 @@
 package by.overpass.gather.model.usecase.login
 
-import by.overpass.gather.model.data.entity.splash.StartStatus
-import by.overpass.gather.model.repo.pref.PreferenceRepo
-import by.overpass.gather.model.repo.register.SignUpRepo
+import by.overpass.gather.model.entity.splash.StartStatus
+import by.overpass.gather.data.repo.pref.PreferenceRepo
+import by.overpass.gather.data.repo.register.SignUpRepo
 import javax.inject.Inject
 
 class StartStatusUseCase @Inject constructor(

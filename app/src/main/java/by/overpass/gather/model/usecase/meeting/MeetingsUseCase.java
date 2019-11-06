@@ -4,7 +4,7 @@ import android.location.Location;
 
 import androidx.lifecycle.LiveData;
 
-import by.overpass.gather.model.repo.meeting.MeetingRepo;
+import by.overpass.gather.data.repo.meeting.MeetingRepo;
 import by.overpass.gather.ui.map.Meeting;
 import by.overpass.gather.ui.map.detail.Current2MaxPeopleRatio;
 

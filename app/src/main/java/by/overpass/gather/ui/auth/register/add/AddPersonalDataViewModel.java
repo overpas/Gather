@@ -4,7 +4,7 @@ import android.app.Application;
 
 import androidx.annotation.NonNull;
 
-import by.overpass.gather.model.data.entity.splash.StartStatus;
+import by.overpass.gather.model.entity.splash.StartStatus;
 import by.overpass.gather.model.usecase.image.ImageSourceUseCase;
 import by.overpass.gather.model.usecase.login.StartStatusUseCase;
 import by.overpass.gather.ui.base.personal.DataViewModel;

@@ -2,8 +2,8 @@ package by.overpass.gather.model.usecase.message;
 
 import androidx.lifecycle.LiveData;
 
-import by.overpass.gather.model.repo.message.MessageRepo;
-import by.overpass.gather.model.repo.user.UserAuthRepo;
+import by.overpass.gather.data.repo.message.MessageRepo;
+import by.overpass.gather.data.repo.user.UserAuthRepo;
 import by.overpass.gather.ui.map.AuthUser;
 import by.overpass.gather.ui.meeting.chat.DeleteStatus;
 import by.overpass.gather.ui.meeting.chat.MessageStatus;

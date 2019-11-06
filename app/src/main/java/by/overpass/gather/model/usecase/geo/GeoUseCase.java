@@ -2,7 +2,7 @@ package by.overpass.gather.model.usecase.geo;
 
 import androidx.lifecycle.LiveData;
 
-import by.overpass.gather.model.repo.geocode.GeocodeRepo;
+import by.overpass.gather.data.repo.geocode.GeocodeRepo;
 
 import javax.inject.Inject;
 

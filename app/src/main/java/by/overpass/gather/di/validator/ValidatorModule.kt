@@ -3,9 +3,9 @@ package by.overpass.gather.di.validator
 import by.overpass.gather.di.EMAIL_VALIDATOR
 import by.overpass.gather.di.PASSWORD_VALIDATOR
 import by.overpass.gather.di.ViewScope
-import by.overpass.gather.model.data.validator.EmailValidator
-import by.overpass.gather.model.data.validator.PasswordValidator
-import by.overpass.gather.model.data.validator.Validator
+import by.overpass.gather.model.validator.EmailValidator
+import by.overpass.gather.model.validator.PasswordValidator
+import by.overpass.gather.model.validator.Validator
 import dagger.Binds
 import dagger.Module
 import javax.inject.Named

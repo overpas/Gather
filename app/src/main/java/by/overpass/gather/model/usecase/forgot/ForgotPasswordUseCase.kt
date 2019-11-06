@@ -2,8 +2,8 @@ package by.overpass.gather.model.usecase.forgot
 
 import by.overpass.gather.di.EMAIL_VALIDATOR
 import by.overpass.gather.commons.exception.InvalidCredentialsException
-import by.overpass.gather.model.data.validator.Validator
-import by.overpass.gather.model.repo.password.PasswordResetRepo
+import by.overpass.gather.model.validator.Validator
+import by.overpass.gather.data.repo.password.PasswordResetRepo
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.Tasks
 import javax.inject.Inject

@@ -3,8 +3,8 @@ package by.overpass.gather.model.usecase.meeting;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Transformations;
 
-import by.overpass.gather.model.repo.meeting.MeetingRepo;
-import by.overpass.gather.model.repo.user.UserAuthRepo;
+import by.overpass.gather.data.repo.meeting.MeetingRepo;
+import by.overpass.gather.data.repo.user.UserAuthRepo;
 import by.overpass.gather.ui.map.AuthUser;
 
 import javax.inject.Inject;

@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import by.overpass.gather.R;
 import by.overpass.gather.commons.date.FormatKt;
-import by.overpass.gather.model.repo.meeting.MeetingWithId;
+import by.overpass.gather.data.repo.meeting.MeetingWithId;
 import by.overpass.gather.ui.create.MeetingType;
 
 import java.util.ArrayList;

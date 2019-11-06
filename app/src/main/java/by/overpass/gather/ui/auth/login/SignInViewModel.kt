@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import by.overpass.gather.commons.android.lifecycle.SingleLiveEvent
 import by.overpass.gather.commons.firebase.toLiveData
-import by.overpass.gather.model.data.entity.signin.SignInStatus
+import by.overpass.gather.model.entity.signin.SignInStatus
 import by.overpass.gather.model.usecase.login.SignInUseCase
 import javax.inject.Inject
 

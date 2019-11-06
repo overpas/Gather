@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import by.overpass.gather.commons.android.lifecycle.SingleLiveEvent
 import by.overpass.gather.commons.exception.InvalidCredentialsException
 import by.overpass.gather.commons.firebase.toLiveData
-import by.overpass.gather.model.data.entity.forgot.ForgotStatus
+import by.overpass.gather.model.entity.forgot.ForgotStatus
 import by.overpass.gather.model.usecase.forgot.ForgotPasswordUseCase
 import javax.inject.Inject
 

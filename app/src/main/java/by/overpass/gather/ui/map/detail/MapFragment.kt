@@ -7,7 +7,7 @@ import android.util.Log
 import androidx.lifecycle.Observer
 import by.overpass.gather.App.Companion.componentManager
 import by.overpass.gather.R
-import by.overpass.gather.model.repo.icon.IconRepo
+import by.overpass.gather.data.repo.icon.IconRepo
 import by.overpass.gather.ui.base.BackPressFragment
 import by.overpass.gather.ui.map.Meeting
 import by.overpass.gather.ui.meeting.MeetingActivity

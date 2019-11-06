@@ -4,7 +4,7 @@ import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import by.overpass.gather.commons.android.lifecycle.SingleLiveEvent
-import by.overpass.gather.model.data.entity.splash.StartStatus
+import by.overpass.gather.model.entity.splash.StartStatus
 import by.overpass.gather.model.usecase.login.StartStatusUseCase
 import by.overpass.gather.model.usecase.register.SignUpUseCase
 import by.overpass.gather.ui.auth.register.RegistrationStepViewModel

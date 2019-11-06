@@ -1,6 +1,6 @@
 package by.overpass.gather.model.usecase.confirm
 
-import by.overpass.gather.model.repo.confirm.ConfirmEmailRepo
+import by.overpass.gather.data.repo.confirm.ConfirmEmailRepo
 import com.google.android.gms.tasks.Task
 import javax.inject.Inject
 

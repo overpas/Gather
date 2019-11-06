@@ -6,6 +6,7 @@ import android.content.Context
 import by.overpass.gather.di.MAPBOX_TOKEN
 import by.overpass.gather.di.app.modules.DispatcherModule
 import by.overpass.gather.di.app.modules.FirebaseModule
+import by.overpass.gather.di.app.modules.LiveEventModule
 import by.overpass.gather.di.app.modules.NetworkModule
 import by.overpass.gather.di.app.vm.ViewModelFactoryModule
 import by.overpass.gather.di.closeup.CloseupComponent
@@ -30,7 +31,8 @@ import javax.inject.Singleton
     FirebaseModule::class,
     ViewModelFactoryModule::class,
     DispatcherModule::class,
-    NetworkModule::class
+    NetworkModule::class,
+    LiveEventModule::class
 ])
 interface AppComponent {
 

@@ -2,35 +2,36 @@ package by.overpass.gather.ui.splash
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import by.overpass.gather.commons.android.lifecycle.SingleLiveEvent
-import by.overpass.gather.model.data.entity.splash.StartStatus
+import by.overpass.gather.commons.android.lifecycle.JustLiveData
+import by.overpass.gather.commons.android.lifecycle.SimpleLiveEvent
+import by.overpass.gather.commons.android.lifecycle.trigger
+import by.overpass.gather.model.entity.splash.StartStatus
 import by.overpass.gather.model.usecase.login.StartStatusUseCase
 import javax.inject.Inject
 
 class SplashViewModel @Inject constructor(
         application: Application,
         private val startStatusUseCase: StartStatusUseCase,
-        private val authorizedData: SingleLiveEvent<Void>,
-        private val unauthorizedData: SingleLiveEvent<Void>,
-        private val notAddedDataData: SingleLiveEvent<Void>,
-        private val unconfirmedEmailData: SingleLiveEvent<Void>
+        private val authorizedData: SimpleLiveEvent,
+        private val unauthorizedData: SimpleLiveEvent,
+        private val notAddedDataData: SimpleLiveEvent,
+        private val unconfirmedEmailData: SimpleLiveEvent
 ) : AndroidViewModel(application) {
 
     fun onSplashAnimationComplete() {
         when (startStatusUseCase.getStartStatus()) {
-            StartStatus.AUTHORIZED -> authorizedData.call()
-            StartStatus.UNAUTHORIZED -> unauthorizedData.call()
-            StartStatus.NOT_ADDED_DATA -> notAddedDataData.call()
-            StartStatus.UNCONFIRMED_EMAIL -> unconfirmedEmailData.call()
+            StartStatus.AUTHORIZED -> authorizedData.trigger()
+            StartStatus.UNAUTHORIZED -> unauthorizedData.trigger()
+            StartStatus.NOT_ADDED_DATA -> notAddedDataData.trigger()
+            StartStatus.UNCONFIRMED_EMAIL -> unconfirmedEmailData.trigger()
         }
     }
 
-    fun authorized(): LiveData<Void> = authorizedData
+    fun authorized(): JustLiveData = authorizedData
 
-    fun unauthorized(): LiveData<Void> = unauthorizedData
+    fun unauthorized(): JustLiveData = unauthorizedData
 
-    fun notAddedData(): LiveData<Void> = notAddedDataData
+    fun notAddedData(): JustLiveData = notAddedDataData
 
-    fun unconfirmedEmail(): LiveData<Void> = unconfirmedEmailData
+    fun unconfirmedEmail(): JustLiveData = unconfirmedEmailData
 }

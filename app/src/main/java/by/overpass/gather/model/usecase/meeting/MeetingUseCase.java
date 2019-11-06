@@ -5,10 +5,10 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Transformations;
 
 import by.overpass.gather.commons.exception.SubscriptionException;
-import by.overpass.gather.model.repo.meeting.JoinRepo;
-import by.overpass.gather.model.repo.meeting.MeetingRepo;
-import by.overpass.gather.model.repo.subscription.SubscriptionRepo;
-import by.overpass.gather.model.repo.user.UserAuthRepo;
+import by.overpass.gather.data.repo.meeting.JoinRepo;
+import by.overpass.gather.data.repo.meeting.MeetingRepo;
+import by.overpass.gather.data.repo.subscription.SubscriptionRepo;
+import by.overpass.gather.data.repo.user.UserAuthRepo;
 import by.overpass.gather.ui.map.AuthUser;
 import by.overpass.gather.ui.meeting.MeetingAndRatio;
 import by.overpass.gather.ui.meeting.base.LoadMeetingStatus;
@@ -16,8 +16,6 @@ import by.overpass.gather.ui.meeting.join.JoinStatus;
 import by.overpass.gather.ui.meeting.join.LoadPrivateMeetingStatus;
 
 import javax.inject.Inject;
-
-import by.overpass.gather.commons.exception.SubscriptionException;
 
 public class MeetingUseCase {
 

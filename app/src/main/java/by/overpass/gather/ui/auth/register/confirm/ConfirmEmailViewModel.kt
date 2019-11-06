@@ -5,8 +5,8 @@ import androidx.lifecycle.LiveData
 import by.overpass.gather.commons.android.lifecycle.SingleLiveEvent
 import by.overpass.gather.commons.exception.NotAuthorized
 import by.overpass.gather.commons.firebase.toLiveData
-import by.overpass.gather.model.data.entity.confirm.ConfirmEmailStatus
-import by.overpass.gather.model.data.entity.splash.StartStatus
+import by.overpass.gather.model.entity.confirm.ConfirmEmailStatus
+import by.overpass.gather.model.entity.splash.StartStatus
 import by.overpass.gather.model.usecase.confirm.ConfirmEmailUseCase
 import by.overpass.gather.model.usecase.login.StartStatusUseCase
 import by.overpass.gather.ui.auth.register.RegistrationStepViewModel

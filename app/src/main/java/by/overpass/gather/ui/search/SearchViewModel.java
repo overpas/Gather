@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.ViewModel;
 
-import by.overpass.gather.model.repo.meeting.MeetingWithId;
+import by.overpass.gather.data.repo.meeting.MeetingWithId;
 import by.overpass.gather.model.usecase.search.SearchUseCase;
 
 import java.util.List;

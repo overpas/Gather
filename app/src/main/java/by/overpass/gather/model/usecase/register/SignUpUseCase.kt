@@ -3,8 +3,8 @@ package by.overpass.gather.model.usecase.register
 import by.overpass.gather.di.EMAIL_VALIDATOR
 import by.overpass.gather.di.PASSWORD_VALIDATOR
 import by.overpass.gather.commons.abstractions.Result
-import by.overpass.gather.model.data.validator.Validator
-import by.overpass.gather.model.repo.register.SignUpRepo
+import by.overpass.gather.model.validator.Validator
+import by.overpass.gather.data.repo.register.SignUpRepo
 import by.overpass.gather.ui.auth.register.signup.SignUpStatus
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow

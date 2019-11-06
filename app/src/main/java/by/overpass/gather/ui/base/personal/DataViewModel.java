@@ -21,9 +21,9 @@ import by.overpass.gather.di.app.modules.DispatcherModule;
 import by.overpass.gather.commons.android.lifecycle.SingleLiveEvent;
 import by.overpass.gather.commons.image.ChooseImageHelper;
 import by.overpass.gather.commons.image.ImageConverter;
-import by.overpass.gather.model.data.validator.UsernameValidator;
-import by.overpass.gather.model.repo.upload.UploadImageRepo;
-import by.overpass.gather.model.repo.user.UserAuthRepo;
+import by.overpass.gather.model.validator.UsernameValidator;
+import by.overpass.gather.data.repo.upload.UploadImageRepo;
+import by.overpass.gather.data.repo.user.UserAuthRepo;
 import by.overpass.gather.model.usecase.image.ImageSourceUseCase;
 import by.overpass.gather.model.usecase.userdata.PersonalDataUseCase;
 import by.overpass.gather.ui.auth.register.RegistrationStepViewModel;
@@ -34,8 +34,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 
 import java.io.File;
-
-import by.overpass.gather.di.app.modules.DispatcherModule;
 
 // TODO: It shouldn't be a subclass of RegistrationStepViewModel, but there's no time to refactor
 //  the whole hierarchy

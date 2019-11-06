@@ -8,7 +8,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.overpass.gather.App.Companion.componentManager
 import by.overpass.gather.R
-import by.overpass.gather.model.repo.meeting.MeetingWithId
+import by.overpass.gather.data.repo.meeting.MeetingWithId
 import by.overpass.gather.ui.base.BaseBottomSheetDialogFragment
 import by.overpass.gather.ui.meeting.MeetingActivity
 import kotlinx.android.synthetic.main.fragment_bottom_search.*

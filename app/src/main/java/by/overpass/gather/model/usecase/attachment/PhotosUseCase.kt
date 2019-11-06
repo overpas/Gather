@@ -3,9 +3,9 @@ package by.overpass.gather.model.usecase.attachment
 import androidx.lifecycle.LiveData
 import by.overpass.gather.commons.abstractions.Result
 import by.overpass.gather.commons.abstractions.SimpleResult
-import by.overpass.gather.model.repo.meeting.MeetingRepo
-import by.overpass.gather.model.repo.meeting.MeetingRepo2
-import by.overpass.gather.model.repo.upload.UploadImageRepo
+import by.overpass.gather.data.repo.meeting.MeetingRepo
+import by.overpass.gather.data.repo.meeting.MeetingRepo2
+import by.overpass.gather.data.repo.upload.UploadImageRepo
 import by.overpass.gather.ui.map.Meeting
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi

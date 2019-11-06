@@ -6,7 +6,7 @@ import android.content.Context
 import android.os.Build
 import androidx.core.app.NotificationManagerCompat
 import by.overpass.gather.R
-import by.overpass.gather.model.repo.notifications.NotificationResource
+import by.overpass.gather.data.repo.notifications.NotificationResource
 import javax.inject.Inject
 
 class NotificationsManager @Inject constructor(

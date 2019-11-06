@@ -2,8 +2,8 @@ package by.overpass.gather.model.usecase.search;
 
 import androidx.lifecycle.LiveData;
 
-import by.overpass.gather.model.repo.meeting.MeetingRepo;
-import by.overpass.gather.model.repo.meeting.MeetingWithId;
+import by.overpass.gather.data.repo.meeting.MeetingRepo;
+import by.overpass.gather.data.repo.meeting.MeetingWithId;
 
 import java.util.List;
 

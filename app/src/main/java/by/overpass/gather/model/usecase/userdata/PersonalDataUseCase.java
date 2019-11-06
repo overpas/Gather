@@ -8,17 +8,15 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.Transformations;
 
-import by.overpass.gather.model.data.validator.Validator;
-import by.overpass.gather.model.repo.upload.UploadImageRepo;
-import by.overpass.gather.model.repo.user.UserAuthRepo;
+import by.overpass.gather.model.validator.Validator;
+import by.overpass.gather.data.repo.upload.UploadImageRepo;
+import by.overpass.gather.data.repo.user.UserAuthRepo;
 import by.overpass.gather.ui.auth.register.add.AddDataStatus;
 import by.overpass.gather.ui.auth.register.add.ImageUploadStatus;
 import by.overpass.gather.ui.auth.register.add.SaveUserStatus;
 import com.google.firebase.auth.FirebaseAuth;
 
 import javax.inject.Inject;
-
-import by.overpass.gather.model.data.validator.Validator;
 
 public class PersonalDataUseCase {
 

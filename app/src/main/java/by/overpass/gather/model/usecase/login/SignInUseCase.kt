@@ -2,11 +2,11 @@ package by.overpass.gather.model.usecase.login
 
 import by.overpass.gather.di.EMAIL_VALIDATOR
 import by.overpass.gather.di.PASSWORD_VALIDATOR
-import by.overpass.gather.model.data.entity.signin.SignInStatus
-import by.overpass.gather.model.data.entity.splash.StartStatus
-import by.overpass.gather.model.data.validator.Validator
-import by.overpass.gather.model.repo.login.AuthRepo
-import by.overpass.gather.model.repo.pref.PreferenceRepo
+import by.overpass.gather.model.entity.signin.SignInStatus
+import by.overpass.gather.model.entity.splash.StartStatus
+import by.overpass.gather.model.validator.Validator
+import by.overpass.gather.data.repo.login.AuthRepo
+import by.overpass.gather.data.repo.pref.PreferenceRepo
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.Tasks
 import javax.inject.Inject

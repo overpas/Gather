@@ -7,7 +7,7 @@ import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 
 import com.annimon.stream.Stream;
-import by.overpass.gather.model.repo.message.Message;
+import by.overpass.gather.data.repo.message.Message;
 import by.overpass.gather.model.usecase.meeting.MeetingUseCase;
 import by.overpass.gather.model.usecase.message.MessagesUseCase;
 import by.overpass.gather.model.usecase.userdata.RoleUseCase;

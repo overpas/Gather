@@ -1,7 +1,7 @@
 package by.overpass.gather.ui.meeting.chat;
 
 import by.overpass.gather.commons.abstractions.Sealed;
-import by.overpass.gather.model.repo.message.Message;
+import by.overpass.gather.data.repo.message.Message;
 
 import java.util.List;
 

@@ -2,7 +2,7 @@ package by.overpass.gather.model.usecase.userdata;
 
 import androidx.lifecycle.LiveData;
 
-import by.overpass.gather.model.repo.user.UserDataRepo;
+import by.overpass.gather.data.repo.user.UserDataRepo;
 import by.overpass.gather.ui.meeting.chat.users.model.Acceptance;
 import by.overpass.gather.ui.meeting.chat.users.model.LoadUsersStatus;
 

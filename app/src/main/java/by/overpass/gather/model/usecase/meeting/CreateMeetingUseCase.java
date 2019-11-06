@@ -7,9 +7,9 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 
 import by.overpass.gather.commons.exception.FailedToSubscribe;
-import by.overpass.gather.model.repo.meeting.MeetingRepo;
-import by.overpass.gather.model.repo.subscription.SubscriptionRepo;
-import by.overpass.gather.model.repo.user.UserAuthRepo;
+import by.overpass.gather.data.repo.meeting.MeetingRepo;
+import by.overpass.gather.data.repo.subscription.SubscriptionRepo;
+import by.overpass.gather.data.repo.user.UserAuthRepo;
 import by.overpass.gather.ui.create.MeetingType;
 import by.overpass.gather.ui.map.AuthUser;
 import by.overpass.gather.ui.map.SaveMeetingStatus;
@@ -17,8 +17,6 @@ import by.overpass.gather.ui.map.SaveMeetingStatus;
 import java.util.Date;
 
 import javax.inject.Inject;
-
-import by.overpass.gather.commons.exception.FailedToSubscribe;
 
 public class CreateMeetingUseCase {
 
