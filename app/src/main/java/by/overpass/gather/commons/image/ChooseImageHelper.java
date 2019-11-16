@@ -21,8 +21,14 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import javax.inject.Inject;
+
 @SuppressWarnings("SameParameterValue")
 public class ChooseImageHelper {
+
+    @Inject
+    public ChooseImageHelper() {
+    }
 
     private static final String TAG = "ChooseImageHelper";
 

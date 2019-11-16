@@ -8,15 +8,19 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.Transformations;
 
-import by.overpass.gather.model.validator.Validator;
-import by.overpass.gather.data.repo.upload.UploadImageRepo;
-import by.overpass.gather.data.repo.user.UserAuthRepo;
-import by.overpass.gather.ui.auth.register.add.AddDataStatus;
-import by.overpass.gather.ui.auth.register.add.ImageUploadStatus;
-import by.overpass.gather.ui.auth.register.add.SaveUserStatus;
 import com.google.firebase.auth.FirebaseAuth;
 
 import javax.inject.Inject;
+import javax.inject.Named;
+
+import by.overpass.gather.data.repo.upload.UploadImageRepo;
+import by.overpass.gather.data.repo.user.UserAuthRepo;
+import by.overpass.gather.model.validator.Validator;
+import by.overpass.gather.ui.auth.register.add.AddDataStatus;
+import by.overpass.gather.ui.auth.register.add.ImageUploadStatus;
+import by.overpass.gather.ui.auth.register.add.SaveUserStatus;
+
+import static by.overpass.gather.di.NamedKt.USERNAME_VALIDATOR;
 
 public class PersonalDataUseCase {
 
@@ -28,7 +32,7 @@ public class PersonalDataUseCase {
     @Inject
     public PersonalDataUseCase(UserAuthRepo userAuthRepo,
                                UploadImageRepo uploadImageRepo,
-                               Validator<String> validator,
+                               @Named(USERNAME_VALIDATOR) Validator<String> validator,
                                FirebaseAuth firebaseAuth) {
         this.userAuthRepo = userAuthRepo;
         this.uploadImageRepo = uploadImageRepo;

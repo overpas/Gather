@@ -1,20 +1,18 @@
 package by.overpass.gather.ui.auth.register.signup
 
-import android.app.Application
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import by.overpass.gather.commons.android.lifecycle.SingleLiveEvent
 import by.overpass.gather.model.entity.splash.StartStatus
 import by.overpass.gather.model.usecase.login.StartStatusUseCase
 import by.overpass.gather.model.usecase.register.SignUpUseCase
-import by.overpass.gather.ui.auth.register.RegistrationStepViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class SignUpViewModel @Inject constructor(
-        application: Application,
         private val signUpUseCase: SignUpUseCase,
         private val startStatusUseCase: StartStatusUseCase,
         private val signUpErrorData: SingleLiveEvent<String>,
@@ -22,7 +20,7 @@ class SignUpViewModel @Inject constructor(
         private val signUpProgressData: SingleLiveEvent<Void>,
         private val invalidEmailData: SingleLiveEvent<String>,
         private val invalidPasswordData: SingleLiveEvent<String>
-) : RegistrationStepViewModel(application) {
+) : ViewModel() {
 
     @ExperimentalCoroutinesApi
     fun signUp(email: String, password: String) = viewModelScope.launch {

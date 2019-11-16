@@ -5,7 +5,7 @@ import by.overpass.gather.ui.map.detail.MapFragment
 import dagger.Subcomponent
 
 @ViewScope
-@Subcomponent(modules = [MapDetailModule::class])
+@Subcomponent(modules = [MapDetailModule::class, MapDetailsModule::class])
 interface MapDetailComponent {
 
     fun inject(mapFragment: MapFragment)

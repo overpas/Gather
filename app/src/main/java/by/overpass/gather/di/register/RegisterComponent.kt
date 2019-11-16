@@ -5,6 +5,7 @@ import by.overpass.gather.di.image.ImageSourceModule
 import by.overpass.gather.di.register.add.AddPersonalDataComponent
 import by.overpass.gather.di.register.confirm.ConfirmationComponent
 import by.overpass.gather.di.register.signup.SignUpComponent
+import by.overpass.gather.di.validator.ValidatorModule
 import by.overpass.gather.ui.auth.register.RegisterActivity
 import dagger.BindsInstance
 import dagger.Subcomponent

@@ -2,9 +2,11 @@ package by.overpass.gather.di.validator
 
 import by.overpass.gather.di.EMAIL_VALIDATOR
 import by.overpass.gather.di.PASSWORD_VALIDATOR
+import by.overpass.gather.di.USERNAME_VALIDATOR
 import by.overpass.gather.di.ViewScope
 import by.overpass.gather.model.validator.EmailValidator
 import by.overpass.gather.model.validator.PasswordValidator
+import by.overpass.gather.model.validator.UsernameValidator
 import by.overpass.gather.model.validator.Validator
 import dagger.Binds
 import dagger.Module
@@ -22,4 +24,9 @@ abstract class ValidatorModule {
     @ViewScope
     @Named(PASSWORD_VALIDATOR)
     abstract fun bindPasswordValidator(passwordValidator: PasswordValidator): Validator<String>
+
+    @Binds
+    @ViewScope
+    @Named(USERNAME_VALIDATOR)
+    abstract fun bindUserNameValidator(usernameValidator: UsernameValidator): Validator<String>
 }

@@ -2,19 +2,22 @@ package by.overpass.gather.ui.auth.login
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import by.overpass.gather.commons.android.lifecycle.SingleLiveEvent
+import by.overpass.gather.commons.android.lifecycle.JustLiveData
+import by.overpass.gather.commons.android.lifecycle.SimpleLiveEvent
+import by.overpass.gather.commons.android.lifecycle.trigger
 import by.overpass.gather.commons.firebase.toLiveData
 import by.overpass.gather.model.entity.signin.SignInStatus
 import by.overpass.gather.model.usecase.login.SignInUseCase
+import com.hadilq.liveevent.LiveEvent
 import javax.inject.Inject
 
 class SignInViewModel @Inject constructor(
         private val signInUseCase: SignInUseCase,
-        private val signInErrorData: SingleLiveEvent<String>,
-        private val signInSuccessData: SingleLiveEvent<Void>,
-        private val signInProgressData: SingleLiveEvent<Void>,
-        private val invalidEmailData: SingleLiveEvent<String>,
-        private val invalidPasswordData: SingleLiveEvent<String>
+        private val signInErrorData: LiveEvent<String>,
+        private val signInSuccessData: SimpleLiveEvent,
+        private val signInProgressData: SimpleLiveEvent,
+        private val invalidEmailData: LiveEvent<String>,
+        private val invalidPasswordData: LiveEvent<String>
 ) : ViewModel() {
 
     fun signIn(email: String, password: String) {
@@ -27,8 +30,8 @@ class SignInViewModel @Inject constructor(
                 .observeForever { status ->
                     when (status) {
                         is SignInStatus.Error -> signInErrorData.value = status.throwable.localizedMessage
-                        is SignInStatus.Success -> signInSuccessData.call()
-                        is SignInStatus.Progress -> signInProgressData.call()
+                        is SignInStatus.Success -> signInSuccessData.trigger()
+                        is SignInStatus.Progress -> signInProgressData.trigger()
                         is SignInStatus.InvalidEmail -> invalidEmailData.value = status.message
                         is SignInStatus.InvalidPassword -> invalidPasswordData.value = status.message
                     }
@@ -37,9 +40,9 @@ class SignInViewModel @Inject constructor(
 
     fun signInError(): LiveData<String> = signInErrorData
 
-    fun signInSuccess(): LiveData<Void> = signInSuccessData
+    fun signInSuccess(): JustLiveData = signInSuccessData
 
-    fun signInProgress(): LiveData<Void> = signInProgressData
+    fun signInProgress(): JustLiveData = signInProgressData
 
     fun invalidEmail(): LiveData<String> = invalidEmailData
 

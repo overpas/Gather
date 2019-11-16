@@ -3,8 +3,7 @@ package by.overpass.gather.ui.profile
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import butterknife.OnClick
-import com.bumptech.glide.Glide
+import androidx.core.util.Consumer
 import by.overpass.gather.App.Companion.componentManager
 import by.overpass.gather.R
 import by.overpass.gather.commons.android.snackbar
@@ -12,6 +11,7 @@ import by.overpass.gather.ui.auth.login.LoginActivity
 import by.overpass.gather.ui.auth.register.add.AddDataStatus
 import by.overpass.gather.ui.base.BackPressFragment
 import by.overpass.gather.ui.base.personal.DataFragment
+import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.android.synthetic.main.content_personal_data.*
 import kotlinx.android.synthetic.main.content_profile.*
@@ -35,14 +35,29 @@ class ProfileFragment : DataFragment<ProfileViewModel>(), BackPressFragment {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         changeUIMode(false)
+        tvSignOut.setOnClickListener {
+            viewModel.signOut(Runnable {
+                val intent = Intent(context, LoginActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                startActivity(intent)
+            })
+        }
+        ivPhotoPreview.setOnClickListener {
+            super.onChooseImageClick()
+        }
+        fabEdit.setOnClickListener {
+            viewModel.onProfileModeChanged(Consumer {
+                this.handleEditModeChange(it)
+            })
+        }
     }
 
     override fun onBind() {
         super.onBind()
         toolbarProfile.setNavigationOnClickListener { navIcon -> requireActivity().finish() }
         viewModel.getUserData(
-                { this.onUserDataLoaded(it) },
-                { this.onUserNotFound() }
+                Consumer { this.onUserDataLoaded(it) },
+                Runnable { this.onUserNotFound() }
         )
     }
 
@@ -52,27 +67,6 @@ class ProfileFragment : DataFragment<ProfileViewModel>(), BackPressFragment {
             return true
         }
         return false
-    }
-
-    @OnClick(R.id.tvSignOut)
-    fun onSignOutClick() {
-        viewModel.signOut {
-            val intent = Intent(context, LoginActivity::class.java)
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-            startActivity(intent)
-        }
-    }
-
-    @OnClick(R.id.ivPhotoPreview)
-    public override fun onChooseImageClick() {
-        super.onChooseImageClick()
-    }
-
-    @OnClick(R.id.fabEdit)
-    internal fun onProfileModeClick() {
-        viewModel.onProfileModeChanged {
-            this.handleEditModeChange(it)
-        }
     }
 
     override fun handleSuccess(success: AddDataStatus.Success) {
@@ -109,8 +103,6 @@ class ProfileFragment : DataFragment<ProfileViewModel>(), BackPressFragment {
     }
 
     companion object {
-
-        private const val TAG = "ProfileFragment"
 
         fun newInstance(): ProfileFragment {
             return ProfileFragment()

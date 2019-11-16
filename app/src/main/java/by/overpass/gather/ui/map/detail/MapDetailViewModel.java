@@ -5,18 +5,19 @@ import android.location.Location;
 import androidx.core.util.Consumer;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 
-import by.overpass.gather.model.usecase.meeting.MeetingsUseCase;
-import by.overpass.gather.model.usecase.permission.LocationPermissionUseCase;
-import by.overpass.gather.ui.map.Meeting;
+import com.hadilq.liveevent.LiveEvent;
 import com.mapbox.mapboxsdk.annotations.Marker;
 
 import java.util.Map;
 
 import javax.inject.Inject;
 
+import by.overpass.gather.model.usecase.meeting.MeetingsUseCase;
 import by.overpass.gather.model.usecase.permission.LocationPermissionUseCase;
+import by.overpass.gather.ui.map.Meeting;
 
 public class MapDetailViewModel extends BaseMapDetailViewModel {
 
@@ -26,11 +27,13 @@ public class MapDetailViewModel extends BaseMapDetailViewModel {
     private MarkersHelper markersHelper;
 
     @Inject
-    public MapDetailViewModel(MeetingsUseCase meetingsUseCase,
+    public MapDetailViewModel(LiveEvent<Boolean> grantedLiveEvent,
+                              MutableLiveData<FabAction> fabActionLiveData,
+                              MutableLiveData<Location> locationLiveData,
+                              MeetingsUseCase meetingsUseCase,
                               LocationPermissionUseCase locationPermissionUseCase) {
-        super();
+        super(grantedLiveEvent, locationLiveData, fabActionLiveData, locationPermissionUseCase);
         this.meetingsUseCase = meetingsUseCase;
-        setLocationPermissionUseCase(locationPermissionUseCase);
     }
 
     public LiveData<Map<String, Meeting>> scanArea(Location location) {

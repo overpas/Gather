@@ -3,12 +3,15 @@ package by.overpass.gather.ui.meeting.chat.attachments
 import android.app.Application
 import android.net.Uri
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import by.overpass.gather.commons.abstractions.Result
 import by.overpass.gather.commons.android.lifecycle.SingleLiveEvent
+import by.overpass.gather.commons.image.ChooseImageHelper
 import by.overpass.gather.commons.image.ImageConverter
 import by.overpass.gather.model.usecase.attachment.PhotosUseCase
 import by.overpass.gather.model.usecase.image.ImageSourceUseCase
+import by.overpass.gather.model.usecase.userdata.PersonalDataUseCase
 import by.overpass.gather.ui.base.personal.DataViewModel
 import by.overpass.gather.ui.map.Meeting
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -20,6 +23,11 @@ import javax.inject.Inject
 class PhotosViewModel @Inject constructor(
         application: Application,
         imageSourceUseCase: ImageSourceUseCase,
+        chooseImageHelper: ChooseImageHelper,
+        personalDataUseCase: PersonalDataUseCase,
+        chosenImageData: MutableLiveData<Uri>,
+        writePermissionDeniedData: SingleLiveEvent<Boolean>,
+        readPermissionDeniedData: SingleLiveEvent<Boolean>,
         private val attachmentsUseCase: PhotosUseCase,
         private val photoUploadSuccessData: SingleLiveEvent<Void>,
         private val photoUploadProgressData: SingleLiveEvent<Int>,
@@ -27,11 +35,15 @@ class PhotosViewModel @Inject constructor(
         private val suggestToChooseData: SingleLiveEvent<Boolean>,
         private val imageConverter: ImageConverter,
         private val meetingId: String
-) : DataViewModel(application) {
-
-    init {
-        setImageSourceUseCase(imageSourceUseCase)
-    }
+) : DataViewModel(
+        application,
+        chooseImageHelper,
+        personalDataUseCase,
+        chosenImageData,
+        writePermissionDeniedData,
+        readPermissionDeniedData,
+        imageSourceUseCase
+) {
 
     fun photoUploadSuccess(): LiveData<Void> = photoUploadSuccessData
 

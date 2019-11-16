@@ -17,6 +17,7 @@ import com.mapbox.mapboxsdk.annotations.Marker
 import com.mapbox.mapboxsdk.maps.MapboxMap
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback
 import com.mapbox.mapboxsdk.maps.Style
+import kotlinx.android.synthetic.main.fragment_map.*
 
 class MapFragment : BaseMapFragment<MapDetailViewModel>(), BackPressFragment, OnMapReadyCallback {
 

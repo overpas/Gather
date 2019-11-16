@@ -1,7 +1,7 @@
 package by.overpass.gather.ui.auth.register.confirm
 
-import android.app.Application
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.ViewModel
 import by.overpass.gather.commons.android.lifecycle.SingleLiveEvent
 import by.overpass.gather.commons.exception.NotAuthorized
 import by.overpass.gather.commons.firebase.toLiveData
@@ -9,17 +9,15 @@ import by.overpass.gather.model.entity.confirm.ConfirmEmailStatus
 import by.overpass.gather.model.entity.splash.StartStatus
 import by.overpass.gather.model.usecase.confirm.ConfirmEmailUseCase
 import by.overpass.gather.model.usecase.login.StartStatusUseCase
-import by.overpass.gather.ui.auth.register.RegistrationStepViewModel
 import javax.inject.Inject
 
 class ConfirmEmailViewModel @Inject constructor(
-        application: Application,
         private val confirmEmailUseCase: ConfirmEmailUseCase,
         private val startStatusUseCase: StartStatusUseCase,
         private val confirmErrorData: SingleLiveEvent<String>,
         private val confirmSuccessData: SingleLiveEvent<Void>,
         private val confirmProgressData: SingleLiveEvent<Void>
-) : RegistrationStepViewModel(application) {
+) : ViewModel() {
 
     fun confirm() {
         confirmEmailUseCase.confirmEmail()

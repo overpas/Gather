@@ -8,6 +8,7 @@ import by.overpass.gather.R
 import by.overpass.gather.ui.base.personal.DataFragment
 import by.overpass.gather.ui.dialog.progress.indeterminate.ProgressDialogFragment
 import by.overpass.gather.ui.map.MapActivity
+import kotlinx.android.synthetic.main.content_personal_data.*
 import kotlinx.android.synthetic.main.fragment_add_personal_data.*
 
 class AddPersonalDataFragment : DataFragment<AddPersonalDataViewModel>() {
