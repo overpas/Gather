@@ -13,3 +13,11 @@ fun <T> Fragment.on(liveData: LiveData<T>, callback: (T) -> Unit) {
     viewLifecycleOwner.on(liveData, callback)
 }
 
+fun <T> LifecycleOwner.onMaybeNull(liveData: LiveData<T>, callback: (T?) -> Unit) {
+    liveData.observe(this, Observer { callback(it) })
+}
+
+fun <T> Fragment.onMaybeNull(liveData: LiveData<T>, callback: (T?) -> Unit) {
+    viewLifecycleOwner.onMaybeNull(liveData, callback)
+}
+

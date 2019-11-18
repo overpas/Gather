@@ -7,6 +7,8 @@ import android.view.View
 import android.widget.ImageView
 import androidx.lifecycle.Observer
 import by.overpass.gather.R
+import by.overpass.gather.commons.android.lifecycle.on
+import by.overpass.gather.commons.android.lifecycle.onMaybeNull
 import by.overpass.gather.commons.android.snackbar
 import by.overpass.gather.commons.android.text
 import by.overpass.gather.ui.auth.register.RegistrationFragment
@@ -30,12 +32,18 @@ abstract class DataFragment<VM : DataViewModel> : RegistrationFragment<VM>() {
 
     override fun onBind() {
         super.onBind()
-        viewModel.getChosenImageData().observe(viewLifecycleOwner, Observer<Uri> { this.handleChosenImageUri(it) })
-        viewModel.imageSourceData.observe(viewLifecycleOwner, Observer<ImageSource> { this.handleImageSource(it) })
-        viewModel.getWritePermissionDeniedData()
-                .observe(viewLifecycleOwner, Observer<Boolean> { this.onPermissionChanged(it) })
-        viewModel.getReadPermissionDeniedData()
-                .observe(viewLifecycleOwner, Observer<Boolean> { this.onPermissionChanged(it) })
+        onMaybeNull(viewModel.getChosenImageData()) {
+            handleChosenImageUri(it)
+        }
+        on(viewModel.imageSourceData) {
+            handleImageSource(it)
+        }
+        on(viewModel.getWritePermissionDeniedData()) {
+            onPermissionChanged(it)
+        }
+        on(viewModel.getReadPermissionDeniedData()) {
+            onPermissionChanged(it)
+        }
     }
 
     protected fun onPermissionChanged(denied: Boolean) {

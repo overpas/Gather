@@ -1,8 +1,6 @@
 package by.overpass.gather.ui.auth.login.forgot
 
 import androidx.fragment.app.FragmentManager
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import by.overpass.gather.App.Companion.componentManager
 import by.overpass.gather.R
 import by.overpass.gather.commons.android.lifecycle.on
@@ -26,7 +24,6 @@ class ForgotPasswordBottomFragment : BaseBottomSheetDialogFragment<ForgotPasswor
             viewModelProvider.get(ForgotPasswordViewModel::class.java)
 
     override fun onBind() {
-        viewModel = ViewModelProviders.of(this).get(ForgotPasswordViewModel::class.java)
         tietEmail.setOnClickListener {
             viewModel.sendForgotPassword(tietEmail.text())
         }
@@ -42,10 +39,6 @@ class ForgotPasswordBottomFragment : BaseBottomSheetDialogFragment<ForgotPasswor
         on(viewModel.resetPasswordSuccess()) {
             handleSuccess()
         }
-        viewModel.invalidEmail().observe(viewLifecycleOwner, Observer { handleInvalidEmail() })
-        viewModel.resetPasswordError().observe(viewLifecycleOwner, Observer { handleError(it) })
-        viewModel.resetPasswordProgress().observe(viewLifecycleOwner, Observer { handleProgress() })
-        viewModel.resetPasswordSuccess().observe(viewLifecycleOwner, Observer { handleSuccess() })
     }
 
     private fun handleError(message: String) {
@@ -70,7 +63,7 @@ class ForgotPasswordBottomFragment : BaseBottomSheetDialogFragment<ForgotPasswor
 
     companion object {
 
-        private val TAG = "ForgotPasswordBottomFra"
+        private const val TAG = "ForgotPasswordBottomFra"
 
         @JvmStatic
         fun open(fragmentManager: FragmentManager) {
