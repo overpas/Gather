@@ -8,7 +8,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
-import butterknife.ButterKnife
 import javax.inject.Inject
 
 abstract class BaseActivityKt<VM : ViewModel> : AppCompatActivity() {
@@ -25,7 +24,6 @@ abstract class BaseActivityKt<VM : ViewModel> : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(getLayoutRes())
         inject()
-        ButterKnife.bind(this)
         setupToolbar()
         viewModel = createViewModel()
         onBind()

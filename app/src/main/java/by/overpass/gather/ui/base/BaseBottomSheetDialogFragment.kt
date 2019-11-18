@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
-import butterknife.ButterKnife
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import javax.inject.Inject
 
@@ -24,10 +23,7 @@ abstract class BaseBottomSheetDialogFragment<VM : ViewModel> : BottomSheetDialog
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(getLayoutRes(), container, false)
-        // TODO: Remove Butterknife
-        ButterKnife.bind(this, view)
-        return view
+        return inflater.inflate(getLayoutRes(), container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

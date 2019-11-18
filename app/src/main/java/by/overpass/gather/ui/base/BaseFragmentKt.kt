@@ -9,7 +9,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 
-import butterknife.ButterKnife
 import javax.inject.Inject
 
 abstract class BaseFragmentKt<VM : ViewModel> : Fragment() {
@@ -28,10 +27,7 @@ abstract class BaseFragmentKt<VM : ViewModel> : Fragment() {
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(getLayoutRes(), container, false)
-        // TODO: Remove Butterknife
-        ButterKnife.bind(this, view)
-        return view
+        return inflater.inflate(getLayoutRes(), container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

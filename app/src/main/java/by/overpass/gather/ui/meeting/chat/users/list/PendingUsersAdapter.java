@@ -5,14 +5,15 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 
-import com.annimon.stream.Stream;
 import com.chauthai.swipereveallayout.SwipeRevealLayout;
 import com.chauthai.swipereveallayout.ViewBinderHelper;
+
 import by.overpass.gather.R;
 import by.overpass.gather.ui.meeting.chat.users.list.viewholder.BaseViewHolder;
 import by.overpass.gather.ui.meeting.chat.users.list.viewholder.PendingUserViewHolder;
 import by.overpass.gather.ui.meeting.chat.users.list.viewholder.UserViewHolder;
-import by.overpass.gather.ui.meeting.chat.users.model.UserModel;
+
+import static by.overpass.gather.ui.meeting.chat.users.list.IdsKt.ids;
 
 public class PendingUsersAdapter extends UsersAdapter {
 
@@ -34,10 +35,7 @@ public class PendingUsersAdapter extends UsersAdapter {
     }
 
     public void setSwipeLocked(boolean locked) {
-        String[] ids = Stream.of(users)
-                .map(UserModel::getId)
-                .toList()
-                .toArray(new String[users.size()]);
+        String[] ids = ids(users);
         if (locked) {
             viewBinderHelper.lockSwipe(ids);
         } else {

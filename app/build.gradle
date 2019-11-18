@@ -43,8 +43,6 @@ dependencies {
     implementation project(':chatkit')
     // TODO: Exclude junk
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    // Java 8
-    implementation 'com.annimon:stream:1.2.1'
     // DI
     implementation 'com.google.dagger:dagger:2.24'
     kapt 'com.google.dagger:dagger-compiler:2.24'
@@ -63,8 +61,6 @@ dependencies {
     implementation 'com.chauthai.swipereveallayout:swipe-reveal-layout:1.4.1'
     implementation 'com.github.bumptech.glide:glide:4.9.0'
     implementation 'com.github.chrisbanes:PhotoView:2.3.0'
-    implementation 'com.jakewharton:butterknife:10.1.0'
-    kapt 'com.jakewharton:butterknife-compiler:10.1.0'
     // Firebase
     implementation 'com.google.firebase:firebase-core:17.2.0'
     implementation 'com.google.firebase:firebase-auth:19.0.0'
