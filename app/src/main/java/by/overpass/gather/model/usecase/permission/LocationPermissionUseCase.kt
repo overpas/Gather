@@ -1,10 +1,10 @@
 package by.overpass.gather.model.usecase.permission
 
-import by.overpass.gather.commons.android.lifecycle.SingleLiveEvent
 import by.overpass.gather.ui.map.PermissionRequestResult
+import com.hadilq.liveevent.LiveEvent
 
 class LocationPermissionUseCase(
-        val permissionRequestResultData: SingleLiveEvent<PermissionRequestResult>
+        val permissionRequestResultData: LiveEvent<PermissionRequestResult>
 ) {
 
     fun onRequestPermissionsResult(requestCode: Int,

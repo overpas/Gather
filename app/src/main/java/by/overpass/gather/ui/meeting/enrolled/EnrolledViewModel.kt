@@ -1,18 +1,19 @@
 package by.overpass.gather.ui.meeting.enrolled
 
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import by.overpass.gather.commons.android.lifecycle.SingleLiveEvent
+import by.overpass.gather.commons.android.lifecycle.JustLiveData
+import by.overpass.gather.commons.android.lifecycle.SimpleLiveEvent
+import by.overpass.gather.commons.android.lifecycle.trigger
 import javax.inject.Inject
 
 class EnrolledViewModel @Inject constructor(
-        private val playAnimationData: SingleLiveEvent<Void>
+        private val playAnimationData: SimpleLiveEvent
 ) : ViewModel() {
 
     init {
-        playAnimationData.call()
+        playAnimationData.trigger()
     }
 
-    fun playAnimation(): LiveData<Void> = playAnimationData
+    fun playAnimation(): JustLiveData = playAnimationData
 }

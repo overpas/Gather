@@ -16,4 +16,14 @@ object LiveEventModule {
     @JvmStatic
     @JvmSuppressWildcards
     fun stringLiveEvent(): LiveEvent<String> = LiveEvent()
+
+    @Provides
+    @JvmStatic
+    @JvmSuppressWildcards
+    fun booleanLiveEvent(): LiveEvent<Boolean> = LiveEvent()
+
+    @Provides
+    @JvmStatic
+    @JvmSuppressWildcards
+    fun intLiveEvent(): LiveEvent<Int> = LiveEvent()
 }

@@ -37,7 +37,7 @@ class RegisterActivity : BaseActivityKt<RegisterViewModel>(), RegistrationContro
     }
 
     override fun onBind() {
-        on(viewModel.registrationProgressData) {
+        on(viewModel.getRegistrationProgressData()) {
             moveToNextStep(it)
         }
     }
@@ -58,9 +58,9 @@ class RegisterActivity : BaseActivityKt<RegisterViewModel>(), RegistrationContro
         return getStep()
     }
 
-    private fun moveToNextStep(step: Int?) {
+    private fun moveToNextStep(step: Int) {
         if (viewModel.shouldShowNextStep(step)) {
-            viewFlipper.displayedChild = step!!
+            viewFlipper.displayedChild = step
         }
     }
 

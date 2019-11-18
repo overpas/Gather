@@ -2,19 +2,22 @@ package by.overpass.gather.ui.auth.login.forgot
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import by.overpass.gather.commons.android.lifecycle.SingleLiveEvent
+import by.overpass.gather.commons.android.lifecycle.JustLiveData
+import by.overpass.gather.commons.android.lifecycle.SimpleLiveEvent
+import by.overpass.gather.commons.android.lifecycle.trigger
 import by.overpass.gather.commons.exception.InvalidCredentialsException
 import by.overpass.gather.commons.firebase.toLiveData
 import by.overpass.gather.model.entity.forgot.ForgotStatus
 import by.overpass.gather.model.usecase.forgot.ForgotPasswordUseCase
+import com.hadilq.liveevent.LiveEvent
 import javax.inject.Inject
 
 class ForgotPasswordViewModel @Inject constructor(
         private val forgotPasswordUseCase: ForgotPasswordUseCase,
-        private val resetPasswordErrorData: SingleLiveEvent<String>,
-        private val resetPasswordSuccessData: SingleLiveEvent<Void>,
-        private val invalidEmailData: SingleLiveEvent<Void>,
-        private val resetPasswordProgressData: SingleLiveEvent<Void>
+        private val resetPasswordErrorData: LiveEvent<String>,
+        private val resetPasswordSuccessData: SimpleLiveEvent,
+        private val invalidEmailData: SimpleLiveEvent,
+        private val resetPasswordProgressData: SimpleLiveEvent
 ) : ViewModel() {
 
     fun sendForgotPassword(email: String) {
@@ -27,9 +30,9 @@ class ForgotPasswordViewModel @Inject constructor(
                 .observeForever {
                     when (it) {
                         is ForgotStatus.Error -> resetPasswordErrorData.value = it.throwable.localizedMessage
-                        is ForgotStatus.Success -> resetPasswordSuccessData.call()
-                        is ForgotStatus.InvalidEmail -> invalidEmailData.call()
-                        is ForgotStatus.Progress -> resetPasswordProgressData.call()
+                        is ForgotStatus.Success -> resetPasswordSuccessData.trigger()
+                        is ForgotStatus.InvalidEmail -> invalidEmailData.trigger()
+                        is ForgotStatus.Progress -> resetPasswordProgressData.trigger()
                     }
                 }
     }
@@ -41,7 +44,7 @@ class ForgotPasswordViewModel @Inject constructor(
     }
 
     fun resetPasswordError(): LiveData<String> = resetPasswordErrorData
-    fun resetPasswordSuccess(): LiveData<Void> = resetPasswordSuccessData
-    fun invalidEmail(): LiveData<Void> = invalidEmailData
-    fun resetPasswordProgress(): LiveData<Void> = resetPasswordProgressData
+    fun resetPasswordSuccess(): JustLiveData = resetPasswordSuccessData
+    fun invalidEmail(): JustLiveData = invalidEmailData
+    fun resetPasswordProgress(): JustLiveData = resetPasswordProgressData
 }

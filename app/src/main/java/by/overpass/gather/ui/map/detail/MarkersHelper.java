@@ -6,9 +6,7 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 
-import by.overpass.gather.commons.android.lifecycle.SingleLiveEvent;
-import by.overpass.gather.data.repo.icon.IconRepo;
-import by.overpass.gather.ui.map.Meeting;
+import com.hadilq.liveevent.LiveEvent;
 import com.mapbox.mapboxsdk.annotations.Marker;
 import com.mapbox.mapboxsdk.annotations.MarkerOptions;
 import com.mapbox.mapboxsdk.geometry.LatLng;
@@ -16,6 +14,9 @@ import com.mapbox.mapboxsdk.maps.MapboxMap;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import by.overpass.gather.data.repo.icon.IconRepo;
+import by.overpass.gather.ui.map.Meeting;
 
 public class MarkersHelper {
 
@@ -77,7 +78,7 @@ public class MarkersHelper {
 
     public LiveData<Marker> updateSnippet(Marker marker, Current2MaxPeopleRatio ratio) {
         Log.d(TAG, "Marker to update: " + marker + ", " + System.identityHashCode(marker));
-        SingleLiveEvent<Marker> markerUpdateStatus = new SingleLiveEvent<>();
+        LiveEvent<Marker> markerUpdateStatus = new LiveEvent<>();
         for (Map.Entry<String, Marker> entry : data.entrySet()) {
             if (entry.getValue().equals(marker)) {
                 Log.d(TAG, "Updated marker: " + marker + ", " + System.identityHashCode(marker));

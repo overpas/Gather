@@ -6,7 +6,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import by.overpass.gather.commons.abstractions.Result
-import by.overpass.gather.commons.android.lifecycle.SingleLiveEvent
+import by.overpass.gather.commons.android.lifecycle.JustLiveData
+import by.overpass.gather.commons.android.lifecycle.SimpleLiveEvent
+import by.overpass.gather.commons.android.lifecycle.trigger
 import by.overpass.gather.commons.image.ChooseImageHelper
 import by.overpass.gather.commons.image.ImageConverter
 import by.overpass.gather.model.usecase.attachment.PhotosUseCase
@@ -14,6 +16,7 @@ import by.overpass.gather.model.usecase.image.ImageSourceUseCase
 import by.overpass.gather.model.usecase.userdata.PersonalDataUseCase
 import by.overpass.gather.ui.base.personal.DataViewModel
 import by.overpass.gather.ui.map.Meeting
+import com.hadilq.liveevent.LiveEvent
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.collect
@@ -26,13 +29,13 @@ class PhotosViewModel @Inject constructor(
         chooseImageHelper: ChooseImageHelper,
         personalDataUseCase: PersonalDataUseCase,
         chosenImageData: MutableLiveData<Uri>,
-        writePermissionDeniedData: SingleLiveEvent<Boolean>,
-        readPermissionDeniedData: SingleLiveEvent<Boolean>,
+        writePermissionDeniedData: LiveEvent<Boolean>,
+        readPermissionDeniedData: LiveEvent<Boolean>,
         private val attachmentsUseCase: PhotosUseCase,
-        private val photoUploadSuccessData: SingleLiveEvent<Void>,
-        private val photoUploadProgressData: SingleLiveEvent<Int>,
-        private val photoUploadErrorData: SingleLiveEvent<String>,
-        private val suggestToChooseData: SingleLiveEvent<Boolean>,
+        private val photoUploadSuccessData: SimpleLiveEvent,
+        private val photoUploadProgressData: LiveEvent<Int>,
+        private val photoUploadErrorData: LiveEvent<String>,
+        private val suggestToChooseData: LiveEvent<Boolean>,
         private val imageConverter: ImageConverter,
         private val meetingId: String
 ) : DataViewModel(
@@ -45,7 +48,7 @@ class PhotosViewModel @Inject constructor(
         imageSourceUseCase
 ) {
 
-    fun photoUploadSuccess(): LiveData<Void> = photoUploadSuccessData
+    fun photoUploadSuccess(): JustLiveData = photoUploadSuccessData
 
     fun photoUploadProgress(): LiveData<Int> = photoUploadProgressData
 
@@ -80,7 +83,7 @@ class PhotosViewModel @Inject constructor(
 //                .onStart { emit(Result.Loading()) }
                 .collect {
                     when (it) {
-                        is Result.Success -> photoUploadSuccessData.call()
+                        is Result.Success -> photoUploadSuccessData.trigger()
                         is Result.Loading -> photoUploadProgressData.value = it.percent
                         is Result.Error -> photoUploadErrorData.value = it.exception.localizedMessage
                     }

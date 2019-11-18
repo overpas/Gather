@@ -4,7 +4,6 @@ import android.location.Location
 import androidx.lifecycle.MutableLiveData
 import by.overpass.gather.di.ViewScope
 import by.overpass.gather.ui.map.detail.BaseMapDetailViewModel
-import com.hadilq.liveevent.LiveEvent
 import dagger.Module
 import dagger.Provides
 
@@ -20,9 +19,4 @@ object MapDetailsModule {
     @ViewScope
     @JvmStatic
     fun fabActionLiveData(): MutableLiveData<BaseMapDetailViewModel.FabAction> = MutableLiveData()
-
-    @Provides
-    @ViewScope
-    @JvmStatic
-    fun permissionsGrantedData(): LiveEvent<Boolean> = LiveEvent()
 }

@@ -14,12 +14,12 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import by.overpass.gather.commons.android.lifecycle.SingleLiveEvent
 import by.overpass.gather.commons.image.ChooseImageHelper
 import by.overpass.gather.model.usecase.image.ImageSourceUseCase
 import by.overpass.gather.model.usecase.userdata.PersonalDataUseCase
 import by.overpass.gather.ui.auth.register.add.AddDataStatus
 import by.overpass.gather.ui.auth.register.add.ImageSource
+import com.hadilq.liveevent.LiveEvent
 
 // TODO: It shouldn't be a subclass of RegistrationStepViewModel, but there's no time to refactor
 //  the whole hierarchy
@@ -28,8 +28,8 @@ abstract class DataViewModel(
         private val chooseImageHelper: ChooseImageHelper,
         private val personalDataUseCase: PersonalDataUseCase,
         protected val chosenImageData: MutableLiveData<Uri>,
-        private val writePermissionDeniedData: SingleLiveEvent<Boolean>,
-        private val readPermissionDeniedData: SingleLiveEvent<Boolean>,
+        private val writePermissionDeniedData: LiveEvent<Boolean>,
+        private val readPermissionDeniedData: LiveEvent<Boolean>,
         private var imageSourceUseCase: ImageSourceUseCase? = null
 ) : AndroidViewModel(application) {
 
@@ -148,7 +148,7 @@ abstract class DataViewModel(
     }
 
     private fun handlePermissionResult(grantResults: IntArray,
-                                       permissionDeniedData: SingleLiveEvent<Boolean>,
+                                       permissionDeniedData: LiveEvent<Boolean>,
                                        fragment: Fragment,
                                        action: () -> Unit) {
         // If request is cancelled, the result arrays are empty.
